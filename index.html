@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
+    <meta name="google" content="notranslate">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pyw31337.github.io/jhair/">
+    <meta property="og:title" content="제이헤어 시술예약 (J.Hair Shop)">
+    <meta property="og:image" content="image/1200x630.jpg">
+    <meta property="og:description" content="구리시 수택동 [제이헤어] 실시간 시술예약 및 캘린더 시스템">
+    <meta property="og:site_name" content="제이헤어 시술예약">
+    <meta property="og:locale" content="ko_KR">
+    <title>제이헤어 시술예약 | J.Hair Shop</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="제이헤어" />
+    <meta name="theme-color" content="#ffffff">
+    <link href="css/common.css" rel="stylesheet" />
+    <link href="css/checkbox.css" rel="stylesheet" />
+    <link href="css/infinite-carousel-css-only.webflow.182ee2047.css" rel="stylesheet" type="text/css"/>
+    <style>
+        .demo-badge-bar {
+            background: linear-gradient(90deg, #ec4899, #f43f5e);
+            color: #fff;
+            padding: 6px 12px;
+            font-size: 0.78rem;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .demo-badge-bar a {
+            color: #fff;
+            text-decoration: underline;
+            font-weight: 700;
+        }
+        .live-server-tag {
+            background: rgba(255, 255, 255, 0.25);
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 0.7rem;
+        }
+        .notice-banner {
+            padding: 8px 16px;
+            background: rgba(214, 189, 134, 0.15);
+            border-left: 3px solid #d6bd86;
+            margin: 10px 16px;
+            font-size: 0.85rem;
+            color: #444;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="demo-badge-bar">
+        <span class="live-server-tag">Interactive Demo</span>
+        <span>제이헤어 실시간 예약 시스템 GitHub Pages 체험 모드</span>
+        <a href="http://pyw31337.dothome.co.kr/reservation/jhair/" target="_blank" rel="noopener">실제 호스팅 서버 보기 →</a>
+    </div>
+
+    <div class="formcover">
+        <div class='aside'>
+            <div class='close' onclick="menuclose();"></div>
+            <div class='map' onclick="window.open('https://naver.me/50enuoRi');"><div class='map_icon'></div><span>위치보기</span></div>
+            <div class='tel' onclick="document.location.href='tel:0315550628'"><div class='tel_icon'></div><span>문의전화</span></div>
+            <div class='share' id="kakaotalk-sharing-btn" onclick="shareKakao();"><div class='share_icon'></div><span>카카오톡 공유</span></div>
+            <div class='share' onclick="share();"><div class='qr_icon'></div><span>QR코드 보기</span></div>
+            <div class='qr'></div>
+            <div class='admin' onclick="showAdminPrompt();">관리자 로그인</div>
+
+            <form class="form_admin" id="formAdminDemo" onsubmit="handleAdminLogin(event);">
+                <div class="list">
+                    <div class='icon_pw'></div> 
+                    <input type="password" id="apw" name="apw" class="inbox" placeholder='비밀번호 (데모: drem0428)'>
+                </div>
+                <button type="submit" class="submit">관리자 모드 전환</button>
+            </form>
+        </div>
+
+        <!-- 예약 폼 모달 -->
+        <form class="form_reserve" id="formReserve" onsubmit="handleReserveSubmit(event);">
+            <div class="card">
+                <div class="content">
+                    <div class="close" onclick="closeModal();"></div>
+                    <div class="store">제이헤어 미용실</div>
+                    <div class="discount"><span class='num'>10</span><span class='percent'>%</span><div>인터넷 예약후 시술시 <b>10% 결제 할인</b><span class='del'>해 드립니다.</span></div></div>
+                    <input type="text" id="cdate" name="cdate" class="box" placeholder='2026-10-27 (화) 15시' readonly="true">
+                    <input type="text" id="cname" name="cname" class="box" placeholder='예약자' readonly="true">
+                    <div class="cstyle">
+                        <span id="bb1">커트</span>
+                        <span id="bb2">염색</span>
+                        <span id="bb3">파마</span>
+                        <span id="bb4">기타</span>
+                    </div>
+                    <input type="hidden" id="cdate1" name="cdate1">
+                    <input type="hidden" id="cdate2" name="cdate2">
+                    <input type="hidden" id="cyoil" name="cyoil">
+                </div>
+                <div class="cardbg front"></div>
+                <div class="cardbg back"></div>
+            </div> 
+
+            <div class="list"><span id="cremain" name="cremain" class="box">예약시간까지 카운트다운</span></div>
+            <div class="list">
+                <span class="title">예약자</span> 
+                <div class='icon_human'></div> 
+                <input type="text" id="rname" name="rname" class="inbox" placeholder='성함을 입력하세요' required>
+                <div class="caution_name" style="display:none; color:#f35381; font-size:0.8rem; margin-top:4px;">↑ 성함을 입력해 주세요!</div>
+            </div>
+            <div class="list">
+                <span class="title">연락처</span> 
+                <div class='icon_phone'></div> 
+                <input type="tel" inputmode="numeric" id="rtel" name="rtel" class="inbox" placeholder='연락처 (- 없이 11자리)' onfocusout="telcheck()" required>
+                <div class="caution_tel" style="display:none; color:#f35381; font-size:0.8rem; margin-top:4px;">↑ 연락처를 입력해 주세요!</div>
+            </div>
+            <div class="list">
+                <span class="title">시술명</span> 
+                <div class='icon_style'></div>
+                <div class="checkbox-wrapper-10">
+                    <input class="tgl tgl-flip" id="cb1" type="checkbox" name="rstyle[]" value="커트" />
+                    <label class="tgl-btn" data-tg-off="커트" data-tg-on="커트" for="cb1"></label>
+                    <input class="tgl tgl-flip" id="cb2" type="checkbox" name="rstyle[]" value="염색"/>
+                    <label class="tgl-btn" data-tg-off="염색" data-tg-on="염색" for="cb2"></label>
+                    <input class="tgl tgl-flip" id="cb3" type="checkbox" name="rstyle[]" value="파마"/>
+                    <label class="tgl-btn" data-tg-off="파마" data-tg-on="파마" for="cb3"></label>
+                    <input class="tgl tgl-flip" id="cb4" type="checkbox" name="rstyle[]" value="기타"/>
+                    <label class="tgl-btn" data-tg-off="기타" data-tg-on="기타" for="cb4"></label>
+                </div>
+                <div class="caution_style" style="display:none; color:#f35381; font-size:0.8rem; margin-top:4px;">↑ 한 개 이상의 시술을 선택해 주세요!</div>
+            </div>
+
+            <div class="list">
+                <span class="title">요청사항</span> 
+                <div class='icon_note'></div> 
+                <textarea id="rcomment" name="rcomment" class="inbox" placeholder='요청사항을 입력하세요'></textarea>
+            </div>
+            <button type="submit" class="submit" value="submit">예약하기</button>
+        </form>
+
+        <!-- 예약 취소 폼 모달 -->
+        <form class="form_cancel" id="formCancel" onsubmit="handleCancelSubmit(event);">
+            <div class="card">
+                <div class="content">
+                    <div class="close" onclick="closeModal();"></div>
+                    <div class="store">제이헤어 미용실</div>
+                    <div class="discount"><span class='num'>10</span><span class='percent'>%</span><div><b>10% 예약할인</b> 혜택이 소멸됩니다</div></div>
+                    <input type="text" id="ddate" name="ddate" class="box" readonly="true">
+                    <input type="text" id="dname" name="dname" class="box" readonly="true">
+                    <div class="cstyle">
+                        <span id="cbb1" style="display:none;">커트</span>
+                        <span id="cbb2" style="display:none;">염색</span>
+                        <span id="cbb3" style="display:none;">파마</span>
+                        <span id="cbb4" style="display:none;">기타</span>
+                    </div>
+                </div>
+                <div class="cardbg front"></div>
+                <div class="cardbg back"></div>
+            </div> 
+
+            <div class="caution_cancel">진짜로 예약을 취소하시겠습니까?</div>
+            <div class="list">
+                <span class="title">비밀번호</span> 
+                <div class='icon_pw'></div> 
+                <input type="password" inputmode="numeric" pattern="[0-9]*" id="rpw" name="rpw" class="inbox" placeholder='휴대폰 뒷번호 4자리를 입력해 주세요' required>
+                <div class="caution_pw" style="display:none; color:#f35381; font-size:0.8rem; margin-top:4px;">↑ 휴대폰 뒷번호 4자리를 입력해 주세요!</div>
+            </div>
+            <input type="hidden" id="rid" name="rid">
+            <button type="submit" class="submit" value="submit">예약 취소하기</button>
+        </form>
+
+        <div class="dim" onclick="closeModal();"></div>
+    </div>
+    
+    <!-- 헤더 영역 -->
+    <div class='header'>
+        <div class='menu' onclick="menuopen();"></div>
+        <div class='store_name'>
+            <div class='logo'><span class='symbol'><img src='image/symbol.png' alt="J.Hair Symbol"></span><span class='txt'>J.Hair Shop</span></div>
+            <div class='info'>영업시간&nbsp; <b>12:00 ~ 20:00</b></div>
+            <div class='info'>매월 첫째주 / 셋째주 일요일 휴무</div>
+        </div>
+        
+        <div class='dim'></div>
+
+        <div class="slider-wrapper">
+            <div class="items-holder">
+                <div class="items">
+                    <img src="image/01.jpg" loading="eager" class="item" alt="헤어 갤러리 1"/>
+                    <img src="image/02.jpg" loading="eager" class="item" alt="헤어 갤러리 2"/>
+                    <img src="image/03.jpg" loading="eager" class="item" alt="헤어 갤러리 3"/>
+                    <img src="image/04.jpg" loading="eager" class="item" alt="헤어 갤러리 4"/>
+                    <img src="image/05.jpg" loading="eager" class="item" alt="헤어 갤러리 5"/>
+                    <img src="image/06.jpg" loading="eager" class="item" alt="헤어 갤러리 6"/>
+                    <img src="image/07.jpg" loading="eager" class="item" alt="헤어 갤러리 7"/>
+                    <img src="image/08.jpg" loading="eager" class="item" alt="헤어 갤러리 8"/>
+                    <img src="image/09.jpg" loading="eager" class="item" alt="헤어 갤러리 9"/>
+                    <img src="image/10.jpg" loading="eager" class="item" alt="헤어 갤러리 10"/>
+                </div>
+                <div class="items">
+                    <img src="image/01.jpg" loading="eager" class="item" alt="헤어 갤러리 1"/>
+                    <img src="image/02.jpg" loading="eager" class="item" alt="헤어 갤러리 2"/>
+                    <img src="image/03.jpg" loading="eager" class="item" alt="헤어 갤러리 3"/>
+                    <img src="image/04.jpg" loading="eager" class="item" alt="헤어 갤러리 4"/>
+                    <img src="image/05.jpg" loading="eager" class="item" alt="헤어 갤러리 5"/>
+                    <img src="image/06.jpg" loading="eager" class="item" alt="헤어 갤러리 6"/>
+                    <img src="image/07.jpg" loading="eager" class="item" alt="헤어 갤러리 7"/>
+                    <img src="image/08.jpg" loading="eager" class="item" alt="헤어 갤러리 8"/>
+                    <img src="image/09.jpg" loading="eager" class="item" alt="헤어 갤러리 9"/>
+                    <img src="image/10.jpg" loading="eager" class="item" alt="헤어 갤러리 10"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 탭 네비게이션 -->
+    <div class="container_tab">
+        <div class="tabs">
+            <span class='tab tab_select' id='tab1' onclick="viewmode(1);">날짜별보기</span>
+            <span class='tab' id='tab2' onclick="viewmode(2);">한번에보기</span>
+        </div>
+    </div>
+
+    <!-- 날짜별 상세 드롭다운 백드롭 -->
+    <div class='backdrop' style="display:none;">
+        <span class='bday'></span>
+        <span class='close' onclick="closeBackdrop();"></span>
+        <span class='div_content'></span>
+    </div>
+
+    <!-- 미니 달력 (날짜별 보기) -->
+    <div class='calcovermini' id="calCoverMini">
+        <!-- JS로 동적 렌더링 -->
+    </div>
+
+    <!-- 대형 달력 (한번에 보기) -->
+    <div class='calcover' id="calCoverAll" style="display:none;">
+        <!-- JS로 동적 렌더링 -->
+    </div>
+
+    <div class='copyright'>Copyright © 2024 J.Hairshop All Rights Reserved.</div>
+
+    <!-- 스크립트 영역 -->
+    <script src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js" crossorigin="anonymous"></script>
+    <script>
+        try {
+            Kakao.init('0236cfffa7cfef34abacd91a6d7c73c0');
+        } catch(e) {}
+
+        function shareKakao() {
+            try {
+                Kakao.Share.sendDefault({
+                    objectType: 'feed',
+                    content: {
+                        title: '제이헤어 시술예약',
+                        description: '구리시 수택동 [제이헤어] 1인 미용실 실시간 시술예약',
+                        imageUrl: window.location.origin + window.location.pathname + 'image/1200x630.jpg',
+                        link: {
+                            mobileWebUrl: window.location.href,
+                            webUrl: window.location.href,
+                        },
+                    },
+                });
+            } catch(e) {
+                share();
+            }
+        }
+    </script>
+    
+    <script>
+    /**
+     * LocalStorage 기반 클라이언트 인터랙티브 데모 엔진
+     */
+    const STORAGE_KEY = 'jhair_demo_reservations_v1';
+    let currentYear = new Date().getFullYear();
+    let currentMonth = new Date().getMonth() + 1; // 1 ~ 12
+    let activeTimer = null;
+    let selectedDate = '';
+    let selectedYoil = '';
+
+    // 초기 샘플 예약 데이터 세팅
+    function getStoredReservations() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+            try { return JSON.parse(stored); } catch(e) {}
+        }
+        const todayStr = getTodayStr();
+        const initial = [
+            { id: 101, name: '김민수', tel: '010-1234-5678', style: '커트', comment: '짧고 깔끔하게 부탁드립니다.', reserve_date: todayStr, reserve_time: 12, trash: 0 },
+            { id: 102, name: '이수진', tel: '010-9876-4321', style: '염색', comment: '애쉬브라운 상담 원합니다.', reserve_date: todayStr, reserve_time: 14, trash: 0 }
+        ];
+        saveReservations(initial);
+        return initial;
+    }
+
+    function saveReservations(list) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+
+    function getTodayStr() {
+        const d = new Date();
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+    }
+
+    function getYoil(year, month, day) {
+        const yoils = ['일', '월', '화', '수', '목', '금', '토'];
+        const dateObj = new Date(year, month - 1, day);
+        return yoils[dateObj.getDay()];
+    }
+
+    // 매월 첫째주 / 셋째주 일요일 휴무 계산
+    function isShopHoliday(year, month, day) {
+        const dateObj = new Date(year, month - 1, day);
+        if (dateObj.getDay() !== 0) return false; // 일요일 아님
+        const sundayCount = Math.ceil(day / 7);
+        return sundayCount === 1 || sundayCount === 3;
+    }
+
+    function renderCalendars() {
+        renderMiniCalendar();
+        renderAllCalendar();
+    }
+
+    function renderMiniCalendar() {
+        const container = document.getElementById('calCoverMini');
+        const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+        const prevYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+        const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
+        const nextYear = currentMonth === 12 ? currentYear + 1 : currentYear;
+
+        const firstDayWeek = new Date(currentYear, currentMonth - 1, 1).getDay();
+        const totalDays = new Date(currentYear, currentMonth, 0).getDate();
+        const todayStr = getTodayStr();
+
+        let html = `
+            <div class='head'>
+                <span class='month_prev_txt' onclick="changeMonth(-1)"><span class='del'>${prevYear}.</span>${String(prevMonth).padStart(2, '0')} <span class='month_prev'></span></span>
+                <div class='hdate' onclick="resetToToday()"><span class='hmonth'>${currentYear}</span><span class='hday'>${String(currentMonth).padStart(2, '0')}</span></div>
+                <span class='month_next_txt' onclick="changeMonth(1)"><span class='month_next'></span><span class='del'>${nextYear}.</span>${String(nextMonth).padStart(2, '0')}</span>
+            </div>
+            <table class='calendar'>
+                <thead><tr><th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th></tr></thead>
+                <tbody><tr>
+        `;
+
+        let cellCount = 0;
+        for (let i = 0; i < firstDayWeek; i++) {
+            html += `<td></td>`;
+            cellCount++;
+        }
+
+        for (let day = 1; day <= totalDays; day++) {
+            if (cellCount % 7 === 0 && cellCount !== 0) {
+                html += `</tr><tr>`;
+            }
+            const dateStr = `${currentYear}-${String(currentMonth).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const yoil = getYoil(currentYear, currentMonth, day);
+            const isPast = dateStr < todayStr;
+            const isToday = dateStr === todayStr;
+            const isHoliday = isShopHoliday(currentYear, currentMonth, day);
+
+            let dayClasses = ['date'];
+            if (isPast) dayClasses.push('past');
+            if (isToday) dayClasses.push('today');
+            if (isHoliday) dayClasses.push('holiday-date');
+
+            if (isPast || isHoliday) {
+                html += `<td><span class="${dayClasses.join(' ')}">${day}</span>${isHoliday ? "<div class='holiday'>휴무</div>" : ""}</td>`;
+            } else {
+                html += `<td><span class="${dayClasses.join(' ')}" id="${dateStr}" onclick="drop_date('${dateStr}','${yoil}')">${day}</span></td>`;
+            }
+            cellCount++;
+        }
+
+        while (cellCount % 7 !== 0) {
+            html += `<td></td>`;
+            cellCount++;
+        }
+
+        html += `</tr></tbody></table>`;
+        container.innerHTML = html;
+    }
+
+    function renderAllCalendar() {
+        const container = document.getElementById('calCoverAll');
+        const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+        const prevYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+        const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
+        const nextYear = currentMonth === 12 ? currentYear + 1 : currentYear;
+
+        const firstDayWeek = new Date(currentYear, currentMonth - 1, 1).getDay();
+        const totalDays = new Date(currentYear, currentMonth, 0).getDate();
+        const todayStr = getTodayStr();
+        const currentHour = new Date().getHours();
+        const reservations = getStoredReservations().filter(r => r.trash === 0);
+
+        let html = `
+            <div class='head'>
+                <span class='month_prev_txt' onclick="changeMonth(-1)"><span class='del'>${prevYear}.</span>${String(prevMonth).padStart(2, '0')} <span class='month_prev'></span></span>
+                <div class='hdate' onclick="resetToToday()"><span class='hmonth'>${currentYear}</span><span class='hday'>${String(currentMonth).padStart(2, '0')}</span></div>
+                <span class='month_next_txt' onclick="changeMonth(1)"><span class='month_next'></span><span class='del'>${nextYear}.</span>${String(nextMonth).padStart(2, '0')}</span>
+            </div>
+            <table class='calendar'>
+                <thead><tr><th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th></tr></thead>
+                <tbody><tr>
+        `;
+
+        let cellCount = 0;
+        for (let i = 0; i < firstDayWeek; i++) {
+            html += `<td></td>`;
+            cellCount++;
+        }
+
+        for (let day = 1; day <= totalDays; day++) {
+            if (cellCount % 7 === 0 && cellCount !== 0) {
+                html += `</tr><tr>`;
+            }
+            const dateStr = `${currentYear}-${String(currentMonth).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const yoil = getYoil(currentYear, currentMonth, day);
+            const isPast = dateStr < todayStr;
+            const isToday = dateStr === todayStr;
+            const isHoliday = isShopHoliday(currentYear, currentMonth, day);
+
+            let dayClasses = ['date'];
+            if (isPast) dayClasses.push('past');
+            if (isToday) dayClasses.push('today');
+
+            html += `<td><span class="${dayClasses.join(' ')}" id="f${dateStr}">${day}</span>`;
+
+            if (isPast) {
+                html += `<div class='holiday'>마감</div>`;
+            } else if (isHoliday) {
+                html += `<div class='holiday'>휴무</div>`;
+            } else {
+                for (let h = 12; h < 20; h++) {
+                    const match = reservations.find(r => r.reserve_date === dateStr && Number(r.reserve_time) === h);
+                    if (match) {
+                        html += `<div class='time reserved' onclick="popup_cancel('${currentYear}','${currentMonth}','${day}','${yoil}','${h}','${match.name}','${match.style}','${match.id}')">${h}시 <button><span class='del'>예약</span>마감</button></div>`;
+                    } else if (isToday && h <= currentHour) {
+                        html += `<div class='time reserved'>${h}시 <button><span class='del'>예약</span>마감</button></div>`;
+                    } else {
+                        html += `<div class='time' onclick="popup_reserve('${currentYear}','${currentMonth}','${day}','${yoil}','${h}')">${h}시 <button>예약<span class='del'>하기</span></button></div>`;
+                    }
+                }
+            }
+
+            html += `</td>`;
+            cellCount++;
+        }
+
+        while (cellCount % 7 !== 0) {
+            html += `<td></td>`;
+            cellCount++;
+        }
+
+        html += `</tr></tbody></table>`;
+        container.innerHTML = html;
+    }
+
+    function changeMonth(delta) {
+        currentMonth += delta;
+        if (currentMonth > 12) {
+            currentMonth = 1;
+            currentYear++;
+        } else if (currentMonth < 1) {
+            currentMonth = 12;
+            currentYear--;
+        }
+        renderCalendars();
+    }
+
+    function resetToToday() {
+        const now = new Date();
+        currentYear = now.getFullYear();
+        currentMonth = now.getMonth() + 1;
+        renderCalendars();
+    }
+
+    function viewmode(num) {
+        if (num === 1) {
+            $('#calCoverMini').fadeIn();
+            $('#calCoverAll').hide();
+            $('#tab1').addClass('tab_select');
+            $('#tab2').removeClass('tab_select');
+        } else {
+            $('#calCoverMini').hide();
+            $('#calCoverAll').fadeIn();
+            $('#tab1').removeClass('tab_select');
+            $('#tab2').addClass('tab_select');
+        }
+    }
+
+    function drop_date(date, yoil) {
+        selectedDate = date;
+        selectedYoil = yoil;
+        $('.date').removeClass('selected');
+        $('#' + date).addClass('selected');
+        $('#f' + date).addClass('selected');
+
+        $('.backdrop').slideDown('fast');
+        $('.bday').html(date.replaceAll("-", ".") + " (" + yoil + ") 예약내역");
+        loadDropSchedule(date, yoil);
+    }
+
+    function closeBackdrop() {
+        $('.backdrop').slideUp('fast');
+    }
+
+    function loadDropSchedule(date, yoil) {
+        const reservations = getStoredReservations().filter(r => r.trash === 0 && r.reserve_date === date);
+        const todayStr = getTodayStr();
+        const currentHour = new Date().getHours();
+        let contentHtml = '';
+
+        for (let h = 12; h < 20; h++) {
+            const match = reservations.find(r => Number(r.reserve_time) === h);
+            if (match) {
+                const masked = match.name ? match.name.charAt(0) + '**' : '고객';
+                contentHtml += `
+                    <div class='time reserved' id='m${date}-${h}' onclick="reserve_over('${date}-${h}');">
+                        ${h}시 <button class='btn_cancel' onclick="popup_cancel('${currentYear}','${currentMonth}','${date.slice(8,10)}','${yoil}','${h}','${match.name}','${match.style}','${match.id}')"><span class='del'>예약</span>취소</button>
+                        <span class='rdetail'><span class='style'>${match.style || ''}</span> ${masked}</span>
+                    </div>
+                `;
+            } else if (date === todayStr && h <= currentHour) {
+                contentHtml += `<div class='time reserved'>${h}시 <button><span class='del'>예약</span>마감</button></div>`;
+            } else {
+                contentHtml += `<div class='time' onclick="popup_reserve('${currentYear}','${currentMonth}','${date.slice(8,10)}','${yoil}','${h}');">${h}시 <button>예약<span class='del'>하기</span></button></div>`;
+            }
+        }
+        $('.div_content').html(contentHtml);
+    }
+
+    function reserve_over(id) {
+        $('#m' + id + ' > button').toggle();
+        $('#m' + id + ' > .rdetail').toggle();
+    }
+
+    function popup_reserve(year, month, day, yoil, time) {
+        $(".formcover").css("display", "flex");
+        $(".form_reserve").css("display", "block");
+        $(".form_cancel").css("display", "none");
+        $(".aside").css("display", "none");
+        $(".calcover, .calcovermini").css("filter", "blur(2px) opacity(0.5)");
+
+        const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        $("#cdate").val(`${dateStr} (${yoil}) ${time}시`);
+        $("#cdate1").val(dateStr);
+        $("#cdate2").val(`${time}:00:00`);
+        $("#cyoil").val(yoil);
+
+        startCountdown(new Date(`${dateStr}T${String(time).padStart(2, '0')}:00:00`));
+    }
+
+    function startCountdown(targetTime) {
+        if (activeTimer) clearInterval(activeTimer);
+        function update() {
+            const diff = targetTime - new Date();
+            if (diff <= 0) {
+                $('#cremain').html('예약 시간이 지났거나 임박했습니다.');
+            } else {
+                const hours = Math.floor(diff / 3600000);
+                const mins = Math.floor((diff % 3600000) / 60000);
+                const secs = Math.floor((diff % 60000) / 1000);
+                $('#cremain').html(`예약시간까지 <b>${hours ? hours + '시간 ' : ''}${mins}분 ${secs}초</b> 남았습니다<i>!</i>`);
+            }
+        }
+        update();
+        activeTimer = setInterval(update, 1000);
+    }
+
+    function popup_cancel(year, month, day, yoil, time, name, style, id) {
+        $(".formcover").css("display", "flex");
+        $(".form_cancel").css("display", "block");
+        $(".form_reserve").css("display", "none");
+        $(".aside").css("display", "none");
+        $(".calcover, .calcovermini").css("filter", "blur(2px) opacity(0.5)");
+
+        const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        $("#ddate").val(`${dateStr} (${yoil}) ${time}시`);
+        $("#dname").val(name ? name.charAt(0) + '**' : '예약자');
+        $("#rid").val(id);
+        $("#rpw").val('');
+
+        $('#cbb1, #cbb2, #cbb3, #cbb4').hide();
+        if (style && style.includes('커트')) $('#cbb1').show();
+        if (style && style.includes('염색')) $('#cbb2').show();
+        if (style && style.includes('파마')) $('#cbb3').show();
+        if (style && style.includes('기타')) $('#cbb4').show();
+    }
+
+    function closeModal() {
+        $(".formcover").fadeOut();
+        $(".form_reserve, .form_cancel").hide();
+        $(".calcover, .calcovermini").css("filter", "none");
+        if (activeTimer) clearInterval(activeTimer);
+    }
+
+    function menuopen() {
+        $(".formcover").css("display", "grid");
+        $(".aside").css("display", "block");
+        $(".form_reserve, .form_cancel").hide();
+        $(".calcover, .calcovermini").css("filter", "blur(2px) opacity(0.5)");
+    }
+
+    function menuclose() {
+        $(".calcover, .calcovermini").css("filter", "none");
+        $(".formcover, .aside").hide();
+        $(".admin").show();
+        $(".form_admin").hide();
+    }
+
+    function showAdminPrompt() {
+        $(".qr").hide();
+        $(".admin").hide();
+        $(".form_admin").show();
+        $('#apw').focus();
+    }
+
+    function handleAdminLogin(e) {
+        e.preventDefault();
+        const pw = $('#apw').val();
+        if (pw === 'drem0428') {
+            alert('관리자 모드로 전환합니다.');
+            window.location.href = 'admin.php';
+        } else {
+            alert('비밀번호가 일치하지 않습니다. (기본 비밀번호: drem0428)');
+        }
+    }
+
+    function telcheck() {
+        const val = $('#rtel').val();
+        $('#rtel').val(val.replace(/[^0-9]/g, ''));
+    }
+
+    function handleReserveSubmit(e) {
+        e.preventDefault();
+        const name = $('#rname').val().trim();
+        const tel = $('#rtel').val().trim();
+        const dateStr = $('#cdate1').val();
+        const timeStr = $('#cdate2').val();
+        const hour = parseInt(timeStr);
+        const comment = $('#rcomment').val().trim();
+
+        const styles = [];
+        if ($('#cb1').is(':checked')) styles.push('커트');
+        if ($('#cb2').is(':checked')) styles.push('염색');
+        if ($('#cb3').is(':checked')) styles.push('파마');
+        if ($('#cb4').is(':checked')) styles.push('기타');
+
+        if (!styles.length) {
+            $('.caution_style').fadeIn();
+            return;
+        }
+
+        const reservations = getStoredReservations();
+        const conflict = reservations.find(r => r.trash === 0 && r.reserve_date === dateStr && Number(r.reserve_time) === hour);
+        if (conflict) {
+            alert('선택하신 시간은 이미 예약이 완료되었습니다. 다른 시간을 선택해 주세요.');
+            return;
+        }
+
+        const newId = Date.now();
+        reservations.push({
+            id: newId,
+            name: name,
+            tel: tel,
+            style: styles.join(' '),
+            comment: comment || '-',
+            reserve_date: dateStr,
+            reserve_time: hour,
+            trash: 0
+        });
+        saveReservations(reservations);
+
+        alert('예약이 성공적으로 등록되었습니다! (데모 모드)');
+        closeModal();
+        renderCalendars();
+        if (selectedDate) loadDropSchedule(selectedDate, selectedYoil);
+    }
+
+    function handleCancelSubmit(e) {
+        e.preventDefault();
+        const id = Number($('#rid').val());
+        const pw = $('#rpw').val().trim();
+
+        const reservations = getStoredReservations();
+        const match = reservations.find(r => r.id === id);
+
+        if (!match) {
+            alert('예약 내역을 찾을 수 없습니다.');
+            return;
+        }
+
+        const cleanTel = match.tel.replace(/[^0-9]/g, '');
+        const last4 = cleanTel.slice(-4);
+
+        if (pw === last4 || pw === 'drem0428') {
+            match.trash = 1;
+            saveReservations(reservations);
+            alert('예약이 정상적으로 취소되었습니다.');
+            closeModal();
+            renderCalendars();
+            if (selectedDate) loadDropSchedule(selectedDate, selectedYoil);
+        } else {
+            alert('비밀번호(휴대폰 뒷번호 4자리)가 일치하지 않습니다.');
+        }
+    }
+
+    function share() {
+        $(".qr").show();
+        const urlToShare = window.location.href;
+        navigator.clipboard.writeText(urlToShare).then(() => {
+            alert('주소가 복사되었습니다: ' + urlToShare);
+        }).catch(() => {
+            alert('주소: ' + urlToShare);
+        });
+    }
+
+    $('#rname').on('input', function() {
+        $('#cname').val($(this).val());
+    });
+
+    $('#cb1, #cb2, #cb3, #cb4').on('change', function() {
+        $('#bb1').toggle($('#cb1').is(':checked'));
+        $('#bb2').toggle($('#cb2').is(':checked'));
+        $('#bb3').toggle($('#cb3').is(':checked'));
+        $('#bb4').toggle($('#cb4').is(':checked'));
+    });
+
+    // 초기화 실행
+    $(document).ready(function() {
+        renderCalendars();
+    });
+    </script>
+</body>
+</html>

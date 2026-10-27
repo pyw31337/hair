@@ -1,0 +1,15 @@
+# Environment & sensitive configs
+config.php
+.env
+*.log
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Backups
+*.bak
+*.zip
+*.tar.gz

@@ -1,0 +1,237 @@
+@import url(https://fonts.googleapis.com/earlyaccess/notosanskr.css); 
+
+.items-holder { animation: moveSlideshow 55s linear infinite; }
+
+@keyframes moveSlideshow { 100% {  transform: translateX(-50%); } }
+
+
+body {margin:0; word-break: keep-all; font-family: 'Noto Sans KR', sans-serif; }
+input {border-radius: 0;}
+
+.aside {width: 260px; height: 100dvh; position: absolute; top:0; right: 0; background-color: #fff; z-index: 20; filter: drop-shadow(0px 0px 40px rgba(0,0,0,0.5)); border-radius: 20px 0 0 0; background-image: url(../image/plant-2004483_640.jpg); background-repeat: no-repeat; background-position: center bottom;}
+.aside .close {background-image: url(../icon/x.png); background-size: cover; background-repeat: no-repeat; background-position: center; position: absolute; display: inline-block; width: 30px; height: 30px; top: 20px; right: 20px;}
+.aside .map {padding: 6% 10%; margin-top: 50px; cursor:pointer;}
+.aside .map span {font-size: 1.4rem; font-weight: 600; vertical-align: top;}
+.aside .map .map_icon {background-image: url(../icon/map-pinned.png); background-size: cover; background-repeat: no-repeat; width: 24px; height: 24px; display: inline-block; margin-right: 10px;}
+.aside .tel {margin: 10%; margin-top: 20px; cursor:pointer;}
+.aside .tel span {font-size: 1.4rem; font-weight: 600; vertical-align: top;}
+.aside .tel .tel_icon {background-image: url(../icon/phone-call.png); background-size: cover; background-repeat: no-repeat; width: 24px; height: 24px; display: inline-block; margin-right: 10px;}
+.aside .share {margin: 10%; margin-top: 35px; cursor:pointer;}
+.aside .share span {font-size: 1.4rem; font-weight: 600; vertical-align: top;}
+.aside .share .share_icon {background-image: url(../icon/share.png); background-size: cover; background-repeat: no-repeat; width: 24px; height: 24px; display: inline-block; margin-right: 10px;}
+.aside .share .qr_icon {background-image: url(../icon/qr-code.png); background-size: cover; background-repeat: no-repeat; width: 24px; height: 24px; display: inline-block; margin-right: 10px;}
+.aside .qr {display:none; background-image: url(../image/qr.jpg); background-size: cover; background-repeat: no-repeat; width: 200px; height: 200px; border: 1px solid #eee; border-radius: 20px; margin: 10%; margin-top: -10px;}
+
+.aside .admin {margin: 20px; border: 1px solid #ddd; border-radius: 5px; padding: 10px 0px; text-align: center; color: #888; margin-top: 50px; backdrop-filter: blur(5px); cursor:pointer;}
+.aside .form_admin {margin: 20px; width: auto; border: 1px solid #ddd; border-radius: 5px; overflow: hidden; position: static; margin-top: 50px; box-shadow: none; background-color: transparent; display:none;}
+.aside .form_admin .list {margin-top: 5px;}
+.aside .form_admin .submit {margin-top: 10px; border-radius: 0; font-size: 1.2rem;}
+.aside .inbox {font-size:1rem; padding-left: 36px;}
+.aside .icon_pw {display: block;}
+
+.aside .form_notice {margin: 20px; width: auto; border: 1px solid #ddd; border-radius: 5px; overflow: hidden; position: static; margin-top: 80px; box-shadow: none; background-color: transparent;}
+.aside .form_notice .list {margin-top: 5px;}
+.aside .form_notice .submit {margin-top: 10px; border-radius: 0; font-size: 1.2rem;}
+.aside .icon_notice {display: block;}
+
+
+.head { font-size: 4rem; font-weight: 100; text-align: center; margin-bottom:30px;}
+.head .hdate {line-height: 80%; display:inline-block; cursor:pointer;}
+.head .hmonth {display: block; font-size: 1.4rem; margin-bottom: -10px;}
+.head .hday {font-weight: 900;}
+
+.header {height:240px; overflow:hidden; display: flex; align-items: center; justify-content: center;}
+.header .menu {background-image: url(../icon/menu.png); background-size: cover; background-repeat: no-repeat; background-position: center; position: absolute; display: inline-block; width: 30px; height: 30px; top: 20px; right: 20px; z-index: 2; cursor:pointer;}
+.header .dim {position:absolute; z-index:1; height:240px;}
+.store_name {z-index:4; mix-blend-mode: plus-lighter; display: flex; align-items: center; flex-direction: column;}
+.store_name .symbol {vertical-align: super;}
+.store_name .symbol img {width:50px; height:50px;}
+.store_name .txt {font-size: 2rem; font-weight: 700; color:#d6bd86; margin-left: 10px;}
+.store_name .info {color: #fff; font-size: 0.8rem; opacity: 0.5;}
+.admin_total {margin: 5px 0; color: #000!important; background-color: #fff; width: 100%; text-align: center; border-radius: 20px; }
+.store_name .info span { width: 49%; display: inline-block; text-align: center; border: 1px solid; border-radius: 40px; margin: 2px 0; }
+.notice {padding: 2px 14px; width:100%!important; padding-left: 27px; display: inline!important; border: 0!important; border-radius: 0!important; margin: 0!important;}
+.notice_list { margin-top: 10px; border: 1px solid; border-radius: 40px; padding: 2px 0;}
+
+.slider-wrapper {position:absolute; height:240px; overflow: hidden; z-index:0;}
+
+.month_prev {background-image: url(../icon/circle-chevron-left.png); background-size: 40%; background-repeat: no-repeat; background-position: center; background-position-x: 13px; width: 50px; height: 50px; display: inline-block; margin: 0 3%; vertical-align: middle; border: 1px solid #999; border-radius: 100px; cursor:pointer;}
+.month_next {background-image: url(../icon/circle-chevron-right.png); background-size: 40%; background-repeat: no-repeat; background-position: center; background-position-x: 18px; width: 50px; height: 50px; display: inline-block; margin: 0 3%; vertical-align: middle; border: 1px solid #999; border-radius: 100px; cursor:pointer;}
+.month_prev_txt, .month_next_txt {font-size:1rem; vertical-align: super; opacity:0.5;}
+
+.backdrop {width: 100vw; position: fixed; bottom: 0; background-color: #f35381; border-radius: 40px 40px.0 0; z-index: 5; padding: 5% 10%; display:none;}
+.backdrop .bday {font-size: 1em; font-weight: 800; color: #fff; margin-bottom: 20px; display: block;}
+.backdrop .close {position: absolute; width: 50px; height: 50px; border-radius: 50px; right: 2%; top: 5%; background-image: url(../icon/x.png); background-size: 70%; background-repeat: no-repeat; background-position: center; filter: invert(1);}
+.backdrop .time {font-size: 1rem; color: #fff; margin: 1px; padding:12px; border: 1px solid rgba(255,255,255,0.15);}
+.backdrop .time button {color:#fff;}
+.backdrop .reserved { background-color: rgba(0,0,0,0.3); border: 0; box-shadow: inset 1px 1px 3px rgba(0,0,0,0.2); color: rgba(255,255,255,0.3);}
+.backdrop .reserved button { color: rgba(255,255,255,0.3);}
+.backdrop .style {border: 1px solid rgba(255,255,255,0.3); padding: 2px 6px; border-radius: 20px; font-size: 0.8rem;}
+.backdrop .call {background-color: #f35381; display: inline-block; width: 30px; height: 30px; float: right; transform: translate(5px, -4px); background-image: url(../icon/phone-call.png); background-size: 60%; background-repeat: no-repeat; background-position: center; opacity: 0.5;}
+
+.container_tab {margin-top: -30px; z-index: 5; position: relative;}
+.container_tab .tabs {display: flex; position: relative; background-color: #fff; box-shadow: 0 0 1px 0 rgba(24, 94, 224, 0.15), 0 6px 12px 0 rgba(24, 94, 224, 0.15); padding: 0.5rem; border-radius: 99px; margin: 0 5%; }
+.container_tab .tab {width: 50%; text-align: center; font-weight: 600; font-size: 1rem; border-radius:40px;padding:0.8rem; cursor:pointer;}
+.tab_select {background-color: #f35381; color:#fff;}
+
+.calcover {border-radius: 30px; padding: 2% 5%; display:none;}
+.calcovermini {border-radius: 30px; padding: 2% 5%;}
+.calcovermini .calendar {width: 100%; border-spacing: 0; text-align: center;}
+.calcovermini .calendar th {border:0;}
+.calcovermini .calendar td {border:0; padding:0.6rem 0;}
+.calcovermini .reservehere {transform: translate(0, -60px);}
+
+.calcover .calendar {width: 100%; border-spacing: 0; border: 1px solid #eee;border-radius: 20px; backdrop-filter: blur(20px);}
+.date {margin-bottom: 6px; font-weight: 600; display: inline-block; margin: 4px 4px; cursor:pointer;}
+.selected { border: 1px solid #f35381; padding: 1px 4px 2px 4px; border-radius: 30px; color: #f35381;}
+.time {background-color: transparent; padding: 5px; font-size: 0.8rem; margin-bottom: 2px; border:1px solid #fff; border-radius: 4px; text-align: center; }
+/* .time:hover {border:1px solid #f35381;} */
+.time > button {background-color: transparent; border: 0; border-radius:3px; font-size: inherit;}
+.time > span {background-color: transparent; margin-left: 0.4rem; border: 0; border-radius:3px; font-size: inherit;}
+.time .btn_cancel {display:none;}
+.time .btn_cancel:hover {background-color: #333; color: #fff;}
+
+.form_reserve, .form_cancel {display:none; }
+
+.calendar .reserved {background-color: #eee; color: #aaa;}
+.calendar .reserved:hover {border:1px solid #666; color:#333;}
+.calendar .style {border: 1px solid #bbb; border-radius: 20px; padding: 2px 6px; font-size: 0.5rem; font-weight: 800;}
+th {background-color: #fff;padding: 0.5% 0; border-right: 1px solid #eee; background-color:transparent}
+td {border: 1px solid #eee; padding: 0.5rem; border-left: 0; border-bottom: 0;width: 14%; vertical-align: baseline;}
+th:last-child, td:last-child {border-right:0;}
+
+.formcover {position: fixed; z-index: 10;display:none; min-height: 100%; overflow: hidden; justify-content: center; align-items: center;}
+.card {border-radius: 10px; transform: translate(0px, -100px); width: 90%; margin: 5%; margin-bottom: -80px;}
+.card .content {padding:5%; padding-bottom:60px;}
+.cardbg {width: 100%; height: 100%; position: absolute; top: 0; z-index:-1; border-radius:20px; background-image: linear-gradient(to right bottom, #f40fd2, #dc08d0, #c307cd, #a90aca, #8d0fc6, #7c16c2, #6b1abe, #581db9, #4f21b4, #4725af, #3f27aa, #3729a5); box-shadow: 2px 3px 0px #2e238a;}
+.card .back {filter: blur(20px); width: 90%; height: 80%; transform: translate(20px, 35px); z-index: -2;}
+.card .box {background-color: transparent; border: 0; color:#fff;outline:none;text-align:right;width:100%; font-weight: 600;}
+.card .box::placeholder {mix-blend-mode: overlay; opacity: 0.9;}
+.card .store {font-weight: 600; mix-blend-mode: overlay; opacity: 0.8;}
+.card .close {position: absolute; background-color: #fff; width: 50px; height: 50px; border-radius: 50px; right: 0; transform: translate(25px, -45px); box-shadow: 1px 2px 0px #888;background-image: url(../icon/x.png); background-size: 60%; background-repeat: no-repeat; background-position: center; filter: drop-shadow(2px 2px 6px rgba(0,0,0,0.3));}
+.card #cname, .card #dname {font-size:2em;}
+#dcomment {background-color: #ddd; padding: 5%; margin: 0 5% 3% 5%; border-radius: 10px; box-shadow: inset rgba(0,0,0,0.1) 1px 1px 2px 0px;}
+
+form {background-color: #fff; width: 30%; position: fixed; z-index: 1;border-radius: 20px;box-shadow: 10px 40px 40px -5px rgba(0,0,0,30%); bottom: 5vh;}
+form .list {display:grid; padding: 2% 10%}
+form .list .title {font-weight: 600;}
+.inbox {padding: 5px; border: 0; border-bottom: 1px solid #ccc;outline:none;background-color:transparent; overflow:hidden;font-size: 1.2rem; font-weight: 300;}
+.inbox::placeholder {color:#aaa;}
+.inbox:focus {border-bottom:1px solid #f35381;}
+.submit {width: 100%; margin-top: 20px; padding: 20px; background-color: #f35381; color: #fff; border: 0; border-radius: 0 0 20px 20px; font-size: 1.4rem; font-weight: 600;}
+.dim {width: 100vw; height: 110dvh; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(2px);}
+
+.caution_name, .caution_tel, .caution_style, .caution_pw {display:none; font-size: 0.8rem; color: #f35381;}
+.caution_cancel {font-size: 1rem; color: #f35381; text-align: center;}
+
+.checkbox-wrapper-10 { display: inline-flex; column-gap: 6px; margin: 10px 0;}
+.checkbox-wrapper-10 input { display: none;}
+#cremain {text-align: center; outline: none; border: 0; color: #975dff;font-size:0.8rem; word-break:keep-all; display:none;}
+
+.discount {position: absolute; bottom: 20px; color: #fff; font-size: 2rem; font-weight: 900;}
+.discount .percent {font-size: 1rem;}
+.discount div {font-size: 0.8rem; font-weight: 400; opacity:0.5;}
+
+.cstyle {text-align: right; color: #fff; font-size: 0.8rem; font-weight: 600; margin-top: 6px;}
+.cstyle span {border: 1px solid #FFf; border-radius: 50px; margin-left: 3px; padding: 2px 10px; display:none;}
+
+.today {background-color: #f35381; padding: 1px 4px 2px 4px; border-radius: 30px; color: #fff;}
+.todayover {padding: 1px 4px 2px 4px; border-radius: 30px; background-color: #ddd; color: #aaa;}
+.past {color:#ccc;}
+.holiday {color: #bbb; font-size: 0.8rem; text-align: center;}
+
+.reservehere {margin-bottom:-30px; background-color: #f35381; color: #fff; font-size: 0.8rem; padding: 5px 10px; border-radius: 20px; transform: translate(0, -32px); filter: drop-shadow(3px 3px 3px rgba(0,0,0,0.5)); text-align: center; word-break: keep-all;}
+.reservehere span {width: 20px; height: 20px; background-color: #f35381; transform: translate(-50%,6px)rotate(45deg); position: absolute;left: 50%; z-index: -1;}
+.close_set {font-size: 0.7rem; border-radius: 2px; background-color: #999; color: #fff; line-height: 110%; padding: 5px 2px;}
+.close_cancel {background-color: #ddd; color:#666;}
+
+.del {font-size: inherit;}
+
+.icon_human {display:none; background-image: url(../icon/user-round.png); background-size: cover; width: 20px; height: 20px; position: absolute; transform: translate(5px, 6px); filter: opacity(0.5);}
+.icon_phone {display:none; background-image: url(../icon/phone-call.png); background-size: cover; width: 20px; height: 20px; position: absolute; transform: translate(5px, 6px); filter: opacity(0.5);}
+.icon_style {display:none; background-image: url(../icon/scissors.png); background-size: cover; width: 20px; height: 20px; position: absolute; transform: translate(5px, 15px); filter: opacity(0.5);}
+.icon_note {display:none; background-image: url(../icon/notebook-pen.png); background-size: cover; width: 20px; height: 20px; position: absolute; transform: translate(5px, 6px); filter: opacity(0.5);}
+.icon_pw {display:none; background-image: url(../icon/lock-keyhole.png); background-size: cover; width: 20px; height: 20px; position: absolute; transform: translate(5px, 6px); filter: opacity(0.5);}
+.icon_share {display:none; background-image: url(../icon/share.png); background-size: cover; width: 20px; height: 20px; position: absolute; transform: translate(5px, 6px); filter: opacity(0.5);}
+
+.icon_notice {display:none; background-image: url(../icon/message-circle-warning.png); background-size: cover; width: 20px; height: 20px; position: absolute; transform: translate(5px, 6px); filter: opacity(0.5);}
+.icon_notice_w {background-image: url(../icon/message-circle-warning-white.png); background-size: cover; width: 20px; height: 20px; position: absolute; margin-left: 4px; }
+
+
+.copyright {text-align: center; font-size: 0.8rem; opacity: 0.3; margin-bottom:5vw;display: inline-block; width: 100%;}
+
+@media screen and (max-width: 1120px) {
+    form {width:40%;}
+    form #cdate {font-size:1rem;}
+
+    .discount {bottom:20px;}
+
+}
+
+
+
+@media screen and (max-width: 960px) {
+    .calendar .style { display: block; text-align: center; margin: 4px 0px;}
+    .time button {padding:0;}
+    .status {font-size:0.5rem;}
+
+}
+
+
+@media screen and (max-width: 834px) {
+    form {width:70%; bottom:5dvh;}
+    form .list .title {display:none;}
+
+    .inbox {padding-left: 36px;}
+    .card .content {padding-bottom: 50px;} 
+
+    .checkbox-wrapper-10 {padding-left: 40px; width: 85%;}
+    .icon_human, .icon_phone, .icon_style, .icon_note, .icon_pw {display:block;}
+
+}
+
+
+@media screen and (max-width: 594px) {
+    form {width:90%;}
+    th {font-size:0.8rem;}
+    td {padding: 0.1rem 0.2rem;}
+    .date {font-size:0.8rem;}
+    .calendar .style {padding:2px; line-height: 120%; margin:4px; border-radius: 5px; }
+    
+    .backdrop {padding:10%;}
+    .backdrop .close {top:3%;}
+
+    .time {font-size:0.6rem;padding: 5px 0;}
+    .time span {margin-left:0;}
+    .time button {display: contents;}
+
+    .close_set {font-size: 0.6rem; padding: 7px 2px;}
+    .reservehere {transform: translate(0, -30px);}
+
+    .holiday {font-size: 0.6rem; text-align: center;}
+    .status { float:none; }
+    .del {display:none;}
+
+}
+
+
+@media screen and (max-width: 460px) {
+    .month_prev {width:40px; height:40px; background-position-x: 11px;}
+    .month_next {width:40px; height:40px; background-position-x: 14px;}
+
+    .copyright {font-size: 0.6rem;}
+    
+}
+
+
+@media screen and (max-width: 340px) {
+
+    form #cdate {font-size: 0.8rem;}
+    .card .content { padding: 8%; padding-bottom: 55px;}
+    .card #cname {font-size: 1.8em;}
+    .checkbox-wrapper-10 {font-size:0.8rem;}
+
+    .discount .num, .discount .percent {display:none;}
+
+    .inbox {font-size:1rem;}
+}
