@@ -1,7 +1,7 @@
 # 렛츠헤어 (Let's Hair) | 실시간 미용실 예약 & 멀티 테넌트 SaaS
 
-> **공식 서비스 URL:** [https://pyw31337.github.io/jhair/](https://pyw31337.github.io/jhair/)  
-> **대표 레퍼런스 매장 (제이헤어):** [https://pyw31337.github.io/jhair/?shop=jhair](https://pyw31337.github.io/jhair/?shop=jhair)  
+> **공식 서비스 URL:** [https://pyw31337.github.io/hair/](https://pyw31337.github.io/hair/)  
+> **대표 레퍼런스 매장 (제이헤어):** [https://pyw31337.github.io/hair/?shop=jhair](https://pyw31337.github.io/hair/?shop=jhair)  
 > 링크 하나로 회원가입이나 앱 설치 없이 10초 만에 예약하고, 아이디 발급만으로 누구나 무료 매장 예약 시스템을 개설하는 **1인 미용실 & 뷰티숍 전용 실시간 예약 솔루션 (SaaS)**입니다.
 
 ---
@@ -9,7 +9,7 @@
 ## 🌟 주요 특징 및 기능
 
 ### 1. 💈 아이디 기반 멀티 테넌트 (Multi-Tenant SaaS)
-- **URL 파라미터 기반 매장 분리**: `https://pyw31337.github.io/jhair/?shop={shopId}`
+- **URL 파라미터 기반 매장 분리**: `https://pyw31337.github.io/hair/?shop={shopId}`
 - **신규 매장 즉시 무료 개설**: 상단 `+ 새 매장 개설` 버튼을 통해 매장 아이디, 상호명, 전화번호, 관리자 비밀번호를 입력하면 즉시 독립된 예약 시스템 발급.
 - 매장별 고유 설정: 상호명, 영업시간, 정기 휴무일 규칙, 시술 항목, 공지사항, 관리자 비밀번호 독립 운영.
 
