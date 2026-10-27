@@ -13,13 +13,13 @@
   "categories": ["lifestyle", "beauty", "social"],
   "icons": [
     {
-      "src": "favicon/android-icon-192x192.png",
+      "src": "favicon/android-icon-192x192.png?v=brand-20261028",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any"
     },
     {
-      "src": "favicon/512x512.png",
+      "src": "favicon/512x512.png?v=brand-20261028",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any"
