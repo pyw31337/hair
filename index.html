@@ -4,14 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
     <meta name="google" content="notranslate">
+    <meta name="description" content="링크 하나로 예약을 받고, 실시간 캘린더로 빈 시간과 휴무일을 관리하는 1인 미용실·뷰티숍 예약 서비스">
+    <link rel="canonical" href="https://pyw31337.github.io/hair/">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://pyw31337.github.io/hair/">
-    <meta property="og:title" content="렛츠헤어 | 실시간 미용실 예약 시스템">
-    <meta property="og:image" content="image/1200x630.jpg">
-    <meta property="og:description" content="링크 하나로 로그인 없이 예약하는 1인 미용실 & 뷰티숍 실시간 예약 시스템">
+    <meta property="og:title" content="렛츠헤어 | 로그인 없이 받는 실시간 미용실 예약">
+    <meta property="og:description" content="링크 하나로 예약을 받고, 실시간 캘린더로 빈 시간과 휴무일을 관리하는 1인 미용실·뷰티숍 예약 서비스">
+    <meta property="og:image" content="https://pyw31337.github.io/hair/image/1200x630.jpg">
+    <meta property="og:image:secure_url" content="https://pyw31337.github.io/hair/image/1200x630.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="네온 핑크 캘린더와 가위로 표현한 렛츠헤어 예약 서비스">
     <meta property="og:site_name" content="렛츠헤어">
     <meta property="og:locale" content="ko_KR">
-    <title id="pageTitle">제이헤어 시술예약 | 렛츠헤어</title>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="렛츠헤어 | 로그인 없이 받는 실시간 미용실 예약">
+    <meta name="twitter:description" content="링크 하나로 예약을 받고, 실시간 캘린더로 빈 시간과 휴무일을 관리하는 1인 미용실·뷰티숍 예약 서비스">
+    <meta name="twitter:image" content="https://pyw31337.github.io/hair/image/1200x630.jpg">
+    <title id="pageTitle">렛츠헤어 | 실시간 미용실 예약</title>
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
     <link rel="icon" href="favicon/favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png">
@@ -28,9 +39,9 @@
     <link href="css/infinite-carousel-css-only.webflow.182ee2047.css" rel="stylesheet" type="text/css"/>
 
     <style>
-        /* SaaS & Multi-tenant Header Enhancements */
+        /* Service Header */
         .tenant-bar {
-            background: #111827;
+            background: linear-gradient(105deg, #0b1020 0%, #171329 55%, #14101f 100%);
             color: #e5e7eb;
             padding: 8px 16px;
             font-size: 0.8rem;
@@ -38,7 +49,8 @@
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 1px 12px rgba(0,0,0,0.28);
             position: relative;
             z-index: 15;
             word-break: keep-all;
@@ -46,17 +58,21 @@
         .tenant-brand {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-weight: 700;
-            color: #f43f5e;
+            gap: 8px;
+            color: #fff;
             text-decoration: none;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.03em;
         }
-        .tenant-brand span {
-            color: #9ca3af;
-            font-weight: 400;
-            font-size: 0.72rem;
-            margin-left: 2px;
+        .tenant-brand-mark {
+            width: 31px;
+            height: 31px;
+            object-fit: contain;
+            filter: drop-shadow(0 3px 7px rgba(244, 63, 94, 0.42));
+        }
+        .tenant-brand-name {
+            font-size: 0.95rem;
+            font-weight: 800;
+            text-shadow: 0 1px 8px rgba(244, 63, 94, 0.38);
         }
         .tenant-actions {
             display: flex;
@@ -78,36 +94,24 @@
             transform: translateY(-1px);
             box-shadow: 0 2px 8px rgba(244, 63, 94, 0.4);
         }
-        .live-sync-indicator {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            color: #10b981;
-            font-size: 0.7rem;
-            font-weight: 500;
-        }
-        .live-sync-dot {
-            width: 7px;
-            height: 7px;
-            background: #10b981;
-            border-radius: 50%;
-            animation: pulse-dot 1.8s infinite;
-        }
-        @keyframes pulse-dot {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-        }
-
-        /* Notice Banner */
+        /* Notice overlay on the moving gallery */
         .store-notice-bar {
-            background: rgba(214, 189, 134, 0.15);
-            border-left: 4px solid #d6bd86;
-            margin: 10px 16px;
-            padding: 9px 14px;
-            font-size: 0.85rem;
-            color: #374151;
-            border-radius: 4px;
+            position: absolute;
+            left: clamp(12px, 4vw, 42px);
+            right: clamp(12px, 4vw, 42px);
+            bottom: 13px;
+            z-index: 3;
+            margin: 0;
+            padding: 10px 14px;
+            background: linear-gradient(115deg, rgba(19, 14, 39, 0.68), rgba(244, 63, 94, 0.20));
+            border: 1px solid rgba(255, 255, 255, 0.34);
+            border-radius: 16px;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+            backdrop-filter: blur(16px) saturate(135%);
+            -webkit-backdrop-filter: blur(16px) saturate(135%);
+            font-size: 0.82rem;
+            line-height: 1.45;
+            color: rgba(255, 255, 255, 0.96);
             display: flex;
             align-items: center;
             gap: 8px;
@@ -115,8 +119,16 @@
         }
         .store-notice-icon {
             font-weight: 700;
-            color: #b45309;
+            color: #fff;
             flex-shrink: 0;
+            white-space: nowrap;
+            text-shadow: 0 1px 8px rgba(255, 97, 159, 0.7);
+        }
+        @media screen and (max-width: 430px) {
+            .tenant-bar { padding: 7px 12px; }
+            .tenant-brand-mark { width: 28px; height: 28px; }
+            .tenant-brand-name { font-size: 0.88rem; }
+            .store-notice-bar { padding: 8px 10px; font-size: 0.72rem; gap: 6px; }
         }
 
         /* Modal for New Shop Registration */
@@ -254,16 +266,13 @@
 </head>
 <body>
 
-    <!-- SaaS Navigation Bar -->
+    <!-- Service navigation -->
     <div class="tenant-bar">
-        <a href="./" class="tenant-brand">
-            💇 렛츠헤어 <span>· SaaS</span>
+        <a href="./" class="tenant-brand" aria-label="렛츠헤어 홈">
+            <img class="tenant-brand-mark" src="favicon/512x512.png" alt="">
+            <span class="tenant-brand-name">렛츠헤어</span>
         </a>
         <div class="tenant-actions">
-            <span class="live-sync-indicator" title="Firebase Firestore 실시간 연결됨">
-                <span class="live-sync-dot"></span>
-                <span id="syncText">실시간 연결</span>
-            </span>
             <button type="button" class="btn-new-shop" onclick="openNewShopModal()">+ 새 매장 개설</button>
         </div>
     </div>
@@ -272,12 +281,6 @@
     <div class="admin-active-badge" id="adminActiveBadge">
         <span>👑 <strong>관리자 모드 활성화됨</strong> (<span id="adminShopName"></span>)</span>
         <button type="button" class="btn-admin-logout" onclick="logoutAdmin()">로그아웃</button>
-    </div>
-
-    <!-- 매장 공지사항 바 -->
-    <div class="store-notice-bar" id="storeNoticeBar" style="display:none;">
-        <span class="store-notice-icon">📢 공지</span>
-        <span id="storeNoticeText"></span>
     </div>
 
     <!-- 슬라이드 아웃 메뉴 & 팝업 커버 -->
@@ -429,6 +432,12 @@
         </div>
         
         <div class='dim'></div>
+
+        <!-- 매장 공지: 흐르는 헤어 갤러리 위 글래스 오버레이 -->
+        <div class="store-notice-bar" id="storeNoticeBar" style="display:none;" role="status" aria-live="polite">
+            <strong class="store-notice-icon">📢 공지</strong>
+            <span id="storeNoticeText"></span>
+        </div>
 
         <div class="slider-wrapper">
             <div class="items-holder">
@@ -627,7 +636,7 @@
 
         if (currentShop.notice && currentShop.notice.trim() !== '') {
             $('#storeNoticeText').text(currentShop.notice);
-            $('#storeNoticeBar').slideDown('fast');
+            $('#storeNoticeBar').css('display', 'flex');
         } else {
             $('#storeNoticeBar').hide();
         }
@@ -658,13 +667,11 @@
             snapshot.forEach((doc) => {
                 liveReservations.push({ id: doc.id, ...doc.data() });
             });
-            $('#syncText').text('실시간 동기화됨');
             renderCalendars();
             if (selectedDate) loadDropSchedule(selectedDate, selectedYoil);
             if (isAdmin) calculateMonthlyStats();
         }, (err) => {
             console.error('Reservation sync error:', err);
-            $('#syncText').text('로컬 캐시 모드');
             fallbackLocalLoad();
         });
     }

@@ -40,7 +40,7 @@ input {border-radius: 0;}
 .head .hmonth {display: block; font-size: 1.4rem; margin-bottom: -10px;}
 .head .hday {font-weight: 900;}
 
-.header {height:240px; overflow:hidden; display: flex; align-items: center; justify-content: center;}
+.header {height:240px; overflow:hidden; display: flex; align-items: center; justify-content: center; position:relative;}
 .header .menu {background-image: url(../icon/menu.png); background-size: cover; background-repeat: no-repeat; background-position: center; position: absolute; display: inline-block; width: 30px; height: 30px; top: 20px; right: 20px; z-index: 2; cursor:pointer;}
 .header .dim {position:absolute; z-index:1; height:240px;}
 .store_name {z-index:4; mix-blend-mode: plus-lighter; display: flex; align-items: center; flex-direction: column;}
@@ -69,7 +69,7 @@ input {border-radius: 0;}
 .backdrop .style {border: 1px solid rgba(255,255,255,0.3); padding: 2px 6px; border-radius: 20px; font-size: 0.8rem;}
 .backdrop .call {background-color: #f35381; display: inline-block; width: 30px; height: 30px; float: right; transform: translate(5px, -4px); background-image: url(../icon/phone-call.png); background-size: 60%; background-repeat: no-repeat; background-position: center; opacity: 0.5;}
 
-.container_tab {margin-top: -30px; z-index: 5; position: relative;}
+.container_tab {margin-top: -8px; z-index: 5; position: relative;}
 .container_tab .tabs {display: flex; position: relative; background-color: #fff; box-shadow: 0 0 1px 0 rgba(24, 94, 224, 0.15), 0 6px 12px 0 rgba(24, 94, 224, 0.15); padding: 0.5rem; border-radius: 99px; margin: 0 5%; }
 .container_tab .tab {width: 50%; text-align: center; font-weight: 600; font-size: 1rem; border-radius:40px;padding:0.8rem; cursor:pointer;}
 .tab_select {background-color: #f35381; color:#fff;}
