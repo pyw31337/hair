@@ -22,49 +22,8 @@
     <link href="css/common.css" rel="stylesheet" />
     <link href="css/checkbox.css" rel="stylesheet" />
     <link href="css/infinite-carousel-css-only.webflow.182ee2047.css" rel="stylesheet" type="text/css"/>
-    <style>
-        .demo-badge-bar {
-            background: linear-gradient(90deg, #ec4899, #f43f5e);
-            color: #fff;
-            padding: 6px 12px;
-            font-size: 0.78rem;
-            text-align: center;
-            font-weight: 500;
-            letter-spacing: -0.01em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .demo-badge-bar a {
-            color: #fff;
-            text-decoration: underline;
-            font-weight: 700;
-        }
-        .live-server-tag {
-            background: rgba(255, 255, 255, 0.25);
-            padding: 2px 8px;
-            border-radius: 999px;
-            font-size: 0.7rem;
-        }
-        .notice-banner {
-            padding: 8px 16px;
-            background: rgba(214, 189, 134, 0.15);
-            border-left: 3px solid #d6bd86;
-            margin: 10px 16px;
-            font-size: 0.85rem;
-            color: #444;
-            border-radius: 4px;
-        }
-    </style>
 </head>
 <body>
-
-    <div class="demo-badge-bar">
-        <span class="live-server-tag">Interactive Demo</span>
-        <span>제이헤어 실시간 예약 시스템 GitHub Pages 체험 모드</span>
-        <a href="http://pyw31337.dothome.co.kr/reservation/jhair/" target="_blank" rel="noopener">실제 호스팅 서버 보기 →</a>
-    </div>
 
     <div class="formcover">
         <div class='aside'>
@@ -79,9 +38,9 @@
             <form class="form_admin" id="formAdminDemo" onsubmit="handleAdminLogin(event);">
                 <div class="list">
                     <div class='icon_pw'></div> 
-                    <input type="password" id="apw" name="apw" class="inbox" placeholder='비밀번호 (데모: drem0428)'>
+                    <input type="password" id="apw" name="apw" class="inbox" placeholder='관리자 비밀번호를 입력해 주세요'>
                 </div>
-                <button type="submit" class="submit">관리자 모드 전환</button>
+                <button type="submit" class="submit">관리자 로그인</button>
             </form>
         </div>
 
@@ -635,7 +594,7 @@
             alert('관리자 모드로 전환합니다.');
             window.location.href = 'admin.php';
         } else {
-            alert('비밀번호가 일치하지 않습니다. (기본 비밀번호: drem0428)');
+            alert('비밀번호가 일치하지 않습니다.');
         }
     }
 
@@ -684,7 +643,7 @@
         });
         saveReservations(reservations);
 
-        alert('예약이 성공적으로 등록되었습니다! (데모 모드)');
+        alert('예약이 성공적으로 등록되었습니다!');
         closeModal();
         renderCalendars();
         if (selectedDate) loadDropSchedule(selectedDate, selectedYoil);
