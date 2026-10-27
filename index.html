@@ -6,41 +6,304 @@
     <meta name="google" content="notranslate">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://pyw31337.github.io/jhair/">
-    <meta property="og:title" content="제이헤어 시술예약 (J.Hair Shop)">
+    <meta property="og:title" content="렛츠헤어 | 실시간 미용실 예약 시스템">
     <meta property="og:image" content="image/1200x630.jpg">
-    <meta property="og:description" content="구리시 수택동 [제이헤어] 실시간 시술예약 및 캘린더 시스템">
-    <meta property="og:site_name" content="제이헤어 시술예약">
+    <meta property="og:description" content="링크 하나로 로그인 없이 예약하는 1인 미용실 & 뷰티숍 실시간 예약 시스템">
+    <meta property="og:site_name" content="렛츠헤어">
     <meta property="og:locale" content="ko_KR">
-    <title>제이헤어 시술예약 | J.Hair Shop</title>
+    <title id="pageTitle">제이헤어 시술예약 | 렛츠헤어</title>
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
     <link rel="manifest" href="manifest.json" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="제이헤어" />
+    <meta name="apple-mobile-web-app-title" content="렛츠헤어" />
     <meta name="theme-color" content="#ffffff">
     <link href="css/common.css" rel="stylesheet" />
     <link href="css/checkbox.css" rel="stylesheet" />
     <link href="css/infinite-carousel-css-only.webflow.182ee2047.css" rel="stylesheet" type="text/css"/>
+
+    <style>
+        /* SaaS & Multi-tenant Header Enhancements */
+        .tenant-bar {
+            background: #111827;
+            color: #e5e7eb;
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 15;
+            word-break: keep-all;
+        }
+        .tenant-brand {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+            color: #f43f5e;
+            text-decoration: none;
+            letter-spacing: -0.01em;
+        }
+        .tenant-brand span {
+            color: #9ca3af;
+            font-weight: 400;
+            font-size: 0.72rem;
+            margin-left: 2px;
+        }
+        .tenant-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-new-shop {
+            background: linear-gradient(135deg, #f43f5e 0%, #ec4899 100%);
+            color: #fff;
+            border: none;
+            border-radius: 9999px;
+            padding: 4px 11px;
+            font-size: 0.73rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-new-shop:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(244, 63, 94, 0.4);
+        }
+        .live-sync-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #10b981;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        .live-sync-dot {
+            width: 7px;
+            height: 7px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse-dot 1.8s infinite;
+        }
+        @keyframes pulse-dot {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        /* Notice Banner */
+        .store-notice-bar {
+            background: rgba(214, 189, 134, 0.15);
+            border-left: 4px solid #d6bd86;
+            margin: 10px 16px;
+            padding: 9px 14px;
+            font-size: 0.85rem;
+            color: #374151;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            word-break: keep-all;
+        }
+        .store-notice-icon {
+            font-weight: 700;
+            color: #b45309;
+            flex-shrink: 0;
+        }
+
+        /* Modal for New Shop Registration */
+        .modal-new-shop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+        .modal-content-shop {
+            background: #ffffff;
+            border-radius: 18px;
+            max-width: 440px;
+            width: 100%;
+            padding: 24px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+            box-sizing: border-box;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            word-break: keep-all;
+        }
+        .modal-content-shop h3 {
+            margin: 0 0 6px;
+            font-size: 1.25rem;
+            color: #111827;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal-content-shop p {
+            margin: 0 0 18px;
+            font-size: 0.85rem;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+        .shop-form-row {
+            margin-bottom: 13px;
+        }
+        .shop-form-row label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+        .shop-form-row input, .shop-form-row select, .shop-form-row textarea {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        .shop-form-row input:focus, .shop-form-row textarea:focus {
+            outline: none;
+            border-color: #f43f5e;
+            box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.15);
+        }
+        .shop-form-submit {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #f43f5e, #ec4899);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: #f3f4f6;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4b5563;
+        }
+
+        /* Admin Mode Banner */
+        .admin-active-badge {
+            display: none;
+            background: #1e1e24;
+            color: #facc15;
+            padding: 8px 16px;
+            text-align: center;
+            font-size: 0.82rem;
+            font-weight: 600;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-admin-logout {
+            background: #374151;
+            color: #fff;
+            border: none;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            cursor: pointer;
+        }
+
+        /* Holiday Setting Button */
+        .btn-holiday-toggle {
+            background: #fee2e2;
+            color: #ef4444;
+            border: 1px solid #fca5a5;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
 
+    <!-- SaaS Navigation Bar -->
+    <div class="tenant-bar">
+        <a href="./" class="tenant-brand">
+            💇 렛츠헤어 <span>· SaaS</span>
+        </a>
+        <div class="tenant-actions">
+            <span class="live-sync-indicator" title="Firebase Firestore 실시간 연결됨">
+                <span class="live-sync-dot"></span>
+                <span id="syncText">실시간 연결</span>
+            </span>
+            <button type="button" class="btn-new-shop" onclick="openNewShopModal()">+ 새 매장 개설</button>
+        </div>
+    </div>
+
+    <!-- 관리자 모드 활성화 알림 바 -->
+    <div class="admin-active-badge" id="adminActiveBadge">
+        <span>👑 <strong>관리자 모드 활성화됨</strong> (<span id="adminShopName"></span>)</span>
+        <button type="button" class="btn-admin-logout" onclick="logoutAdmin()">로그아웃</button>
+    </div>
+
+    <!-- 매장 공지사항 바 -->
+    <div class="store-notice-bar" id="storeNoticeBar" style="display:none;">
+        <span class="store-notice-icon">📢 공지</span>
+        <span id="storeNoticeText"></span>
+    </div>
+
+    <!-- 슬라이드 아웃 메뉴 & 팝업 커버 -->
     <div class="formcover">
         <div class='aside'>
             <div class='close' onclick="menuclose();"></div>
-            <div class='map' onclick="window.open('https://naver.me/50enuoRi');"><div class='map_icon'></div><span>위치보기</span></div>
-            <div class='tel' onclick="document.location.href='tel:0315550628'"><div class='tel_icon'></div><span>문의전화</span></div>
+            <div class='map' id="menuMapBtn" onclick="openShopMap();"><div class='map_icon'></div><span>위치보기</span></div>
+            <div class='tel' id="menuTelBtn" onclick="callShop();"><div class='tel_icon'></div><span>문의전화</span></div>
             <div class='share' id="kakaotalk-sharing-btn" onclick="shareKakao();"><div class='share_icon'></div><span>카카오톡 공유</span></div>
-            <div class='share' onclick="share();"><div class='qr_icon'></div><span>QR코드 보기</span></div>
+            <div class='share' onclick="share();"><div class='qr_icon'></div><span>QR / 주소 복사</span></div>
             <div class='qr'></div>
-            <div class='admin' onclick="showAdminPrompt();">관리자 로그인</div>
+            
+            <div class='admin' id="menuAdminBtn" onclick="showAdminPrompt();">관리자 로그인</div>
 
-            <form class="form_admin" id="formAdminDemo" onsubmit="handleAdminLogin(event);">
+            <!-- 관리자 로그인 폼 -->
+            <form class="form_admin" id="formAdmin" onsubmit="handleAdminLogin(event);">
                 <div class="list">
                     <div class='icon_pw'></div> 
-                    <input type="password" id="apw" name="apw" class="inbox" placeholder='관리자 비밀번호를 입력해 주세요'>
+                    <input type="password" id="apw" name="apw" class="inbox" placeholder='관리자 비밀번호를 입력하세요' required>
                 </div>
-                <button type="submit" class="submit">관리자 로그인</button>
+                <button type="submit" class="submit">관리자 인증</button>
+            </form>
+
+            <!-- 관리자 전용: 공지사항 등록 폼 -->
+            <form class="form_notice" id="formNotice" style="display:none;" onsubmit="handleNoticeSubmit(event);">
+                <div class="list">
+                    <div class='icon_notice'></div>
+                    <textarea cols="30" rows="3" id="anotice" name="anotice" class="inbox" placeholder='고객에게 노출될 공지사항을 입력하세요'></textarea>
+                </div>
+                <button type="submit" class="submit">공지사항 즉시 반영</button>
             </form>
         </div>
 
@@ -49,11 +312,11 @@
             <div class="card">
                 <div class="content">
                     <div class="close" onclick="closeModal();"></div>
-                    <div class="store">제이헤어 미용실</div>
+                    <div class="store" id="cardStoreName">제이헤어 미용실</div>
                     <div class="discount"><span class='num'>10</span><span class='percent'>%</span><div>인터넷 예약후 시술시 <b>10% 결제 할인</b><span class='del'>해 드립니다.</span></div></div>
                     <input type="text" id="cdate" name="cdate" class="box" placeholder='2026-10-27 (화) 15시' readonly="true">
                     <input type="text" id="cname" name="cname" class="box" placeholder='예약자' readonly="true">
-                    <div class="cstyle">
+                    <div class="cstyle" id="cardStylePills">
                         <span id="bb1">커트</span>
                         <span id="bb2">염색</span>
                         <span id="bb3">파마</span>
@@ -83,7 +346,7 @@
             <div class="list">
                 <span class="title">시술명</span> 
                 <div class='icon_style'></div>
-                <div class="checkbox-wrapper-10">
+                <div class="checkbox-wrapper-10" id="styleCheckboxes">
                     <input class="tgl tgl-flip" id="cb1" type="checkbox" name="rstyle[]" value="커트" />
                     <label class="tgl-btn" data-tg-off="커트" data-tg-on="커트" for="cb1"></label>
                     <input class="tgl tgl-flip" id="cb2" type="checkbox" name="rstyle[]" value="염색"/>
@@ -101,7 +364,7 @@
                 <div class='icon_note'></div> 
                 <textarea id="rcomment" name="rcomment" class="inbox" placeholder='요청사항을 입력하세요'></textarea>
             </div>
-            <button type="submit" class="submit" value="submit">예약하기</button>
+            <button type="submit" class="submit">예약하기</button>
         </form>
 
         <!-- 예약 취소 폼 모달 -->
@@ -109,7 +372,7 @@
             <div class="card">
                 <div class="content">
                     <div class="close" onclick="closeModal();"></div>
-                    <div class="store">제이헤어 미용실</div>
+                    <div class="store" id="cancelCardStoreName">제이헤어 미용실</div>
                     <div class="discount"><span class='num'>10</span><span class='percent'>%</span><div><b>10% 예약할인</b> 혜택이 소멸됩니다</div></div>
                     <input type="text" id="ddate" name="ddate" class="box" readonly="true">
                     <input type="text" id="dname" name="dname" class="box" readonly="true">
@@ -132,7 +395,7 @@
                 <div class="caution_pw" style="display:none; color:#f35381; font-size:0.8rem; margin-top:4px;">↑ 휴대폰 뒷번호 4자리를 입력해 주세요!</div>
             </div>
             <input type="hidden" id="rid" name="rid">
-            <button type="submit" class="submit" value="submit">예약 취소하기</button>
+            <button type="submit" class="submit">예약 취소하기</button>
         </form>
 
         <div class="dim" onclick="closeModal();"></div>
@@ -142,9 +405,23 @@
     <div class='header'>
         <div class='menu' onclick="menuopen();"></div>
         <div class='store_name'>
-            <div class='logo'><span class='symbol'><img src='image/symbol.png' alt="J.Hair Symbol"></span><span class='txt'>J.Hair Shop</span></div>
-            <div class='info'>영업시간&nbsp; <b>12:00 ~ 20:00</b></div>
-            <div class='info'>매월 첫째주 / 셋째주 일요일 휴무</div>
+            <div class='logo'>
+                <span class='symbol'><img src='image/symbol.png' alt="Logo" id="storeLogoImg"></span>
+                <span class='txt' id="storeTitleTxt">J.Hair Shop</span>
+            </div>
+            <div class='info'>영업시간&nbsp; <b id="storeHoursTxt">12:00 ~ 20:00</b></div>
+            <div class='info' id="storeHolidayTxt">매월 첫째주 / 셋째주 일요일 휴무</div>
+
+            <!-- 관리자 모드 전용 통계 카드 -->
+            <div id="adminStatsWrap" style="display:none; width:100%; margin-top:6px;">
+                <div class='info admin_total'><span id="statsMonthTxt"></span>월 누적 총계 <b id="statsTotalCount">0</b>건</div>
+                <div class='info'>
+                    <span id="statsCutCount">커트 0건</span>
+                    <span id="statsColorCount">염색 0건</span>
+                    <span id="statsPermCount">파마 0건</span>
+                    <span id="statsEtcCount">기타 0건</span>
+                </div>
+            </div>
         </div>
         
         <div class='dim'></div>
@@ -196,74 +473,233 @@
 
     <!-- 미니 달력 (날짜별 보기) -->
     <div class='calcovermini' id="calCoverMini">
-        <!-- JS로 동적 렌더링 -->
+        <!-- JS 실시간 렌더링 -->
     </div>
 
     <!-- 대형 달력 (한번에 보기) -->
     <div class='calcover' id="calCoverAll" style="display:none;">
-        <!-- JS로 동적 렌더링 -->
+        <!-- JS 실시간 렌더링 -->
     </div>
 
-    <div class='copyright'>Copyright © 2024 J.Hairshop All Rights Reserved.</div>
+    <div class='copyright'>Copyright © 2024 J.Hairshop & Let's Hair All Rights Reserved.</div>
 
-    <!-- 스크립트 영역 -->
+    <!-- 신규 매장 개설 모달 -->
+    <div class="modal-new-shop" id="modalNewShop">
+        <div class="modal-content-shop">
+            <button type="button" class="btn-modal-close" onclick="closeNewShopModal()">✕</button>
+            <h3>💈 새 미용실 예약시스템 개설</h3>
+            <p>나만의 고유 아이디를 발급받아 링크 하나로 10초 만에 예약받는 무료 시스템을 시작하세요.</p>
+            <form onsubmit="handleCreateShop(event)">
+                <div class="shop-form-row">
+                    <label for="newShopId">매장 영문 아이디 (URL 주소용) *</label>
+                    <input type="text" id="newShopId" placeholder="예: salon_gangnam, vogue_hair" pattern="[a-zA-Z0-9_-]+" required>
+                    <small style="color:#6b7280; font-size:0.75rem;">영문, 숫자, 하이픈(-)만 가능합니다.</small>
+                </div>
+                <div class="shop-form-row">
+                    <label for="newShopName">매장 상호명 *</label>
+                    <input type="text" id="newShopName" placeholder="예: 살롱 드 강남" required>
+                </div>
+                <div class="shop-form-row">
+                    <label for="newShopTel">문의 전화번호 *</label>
+                    <input type="tel" id="newShopTel" placeholder="예: 02-1234-5678" required>
+                </div>
+                <div class="shop-form-row">
+                    <label for="newShopAdminPw">관리자 비밀번호 *</label>
+                    <input type="password" id="newShopAdminPw" placeholder="예약 취소 및 매장 관리에 사용할 암호" required>
+                </div>
+                <div class="shop-form-row">
+                    <label for="newShopHours">영업시간</label>
+                    <input type="text" id="newShopHours" value="11:00 ~ 20:00">
+                </div>
+                <div class="shop-form-row">
+                    <label for="newShopHoliday">정기 휴무일</label>
+                    <input type="text" id="newShopHoliday" value="매주 월요일 휴무">
+                </div>
+                <button type="submit" class="shop-form-submit">지금 즉시 무료 개설하기</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDK (v10 compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- jQuery & Kakao SDK -->
     <script src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js" crossorigin="anonymous"></script>
-    <script>
-        try {
-            Kakao.init('0236cfffa7cfef34abacd91a6d7c73c0');
-        } catch(e) {}
 
-        function shareKakao() {
-            try {
-                Kakao.Share.sendDefault({
-                    objectType: 'feed',
-                    content: {
-                        title: '제이헤어 시술예약',
-                        description: '구리시 수택동 [제이헤어] 1인 미용실 실시간 시술예약',
-                        imageUrl: window.location.origin + window.location.pathname + 'image/1200x630.jpg',
-                        link: {
-                            mobileWebUrl: window.location.href,
-                            webUrl: window.location.href,
-                        },
-                    },
-                });
-            } catch(e) {
-                share();
-            }
-        }
-    </script>
-    
     <script>
     /**
-     * LocalStorage 기반 클라이언트 인터랙티브 데모 엔진
+     * Firebase Firestore Initialization
      */
-    const STORAGE_KEY = 'jhair_demo_reservations_v1';
+    const firebaseConfig = {
+      apiKey: "AIzaSyAEtPNOA2IxUwEt62SSEG1FKdv1g2pQVMI",
+      authDomain: "metro-live-2918e.firebaseapp.com",
+      projectId: "metro-live-2918e",
+      storageBucket: "metro-live-2918e.firebasestorage.app",
+      messagingSenderId: "154827314076",
+      appId: "1:154827314076:web:9cf0148e89914033c5ee59",
+      measurementId: "G-JF0HTXZVV0"
+    };
+
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+
+    // -------------------------------------------------------------
+    // Multi-tenant Shop ID Resolution
+    // -------------------------------------------------------------
+    const urlParams = new URL(location.href).searchParams;
+    let currentShopId = urlParams.get('shop') || urlParams.get('id') || 'jhair';
+    currentShopId = currentShopId.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '') || 'jhair';
+
+    let currentShop = null;
+    let liveReservations = [];
+    let customHolidays = [];
+    let isAdmin = false;
+
     let currentYear = new Date().getFullYear();
-    let currentMonth = new Date().getMonth() + 1; // 1 ~ 12
+    let currentMonth = new Date().getMonth() + 1;
     let activeTimer = null;
     let selectedDate = '';
     let selectedYoil = '';
 
-    // 초기 샘플 예약 데이터 세팅
-    function getStoredReservations() {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-            try { return JSON.parse(stored); } catch(e) {}
+    // Default Fallback Template for Default Shop (J.Hair)
+    const DEFAULT_SHOP_DATA = {
+        id: 'jhair',
+        name: '제이헤어 미용실',
+        title: 'J.Hair Shop',
+        tel: '031-555-0628',
+        mapUrl: 'https://naver.me/50enuoRi',
+        hoursText: '12:00 ~ 20:00',
+        startHour: 12,
+        endHour: 20,
+        holidayText: '매월 첫째주 / 셋째주 일요일 휴무',
+        holidayRule: '1_3_sun', // 1,3주 일요일
+        adminPw: 'drem0428',
+        notice: '영업시간 12:00 ~ 20:00 (인터넷 예약 후 방문 시 10% 결제 할인)',
+        styles: ['커트', '염색', '파마', '기타']
+    };
+
+    // -------------------------------------------------------------
+    // Shop Metadata & Realtime Sync
+    // -------------------------------------------------------------
+    function initShopSubscription() {
+        const shopRef = db.collection('hairShops').doc(currentShopId);
+
+        shopRef.onSnapshot((doc) => {
+            if (doc.exists) {
+                currentShop = { ...DEFAULT_SHOP_DATA, ...doc.data(), id: currentShopId };
+            } else {
+                // If shop doesn't exist, create it with default or clean template
+                currentShop = {
+                    ...DEFAULT_SHOP_DATA,
+                    id: currentShopId,
+                    name: currentShopId === 'jhair' ? '제이헤어 미용실' : `${currentShopId} 헤어`,
+                    title: currentShopId === 'jhair' ? 'J.Hair Shop' : `${currentShopId.toUpperCase()} Hair`
+                };
+                shopRef.set(currentShop).catch(() => {});
+            }
+            updateShopUI();
+            listenReservations();
+            listenHolidays();
+        }, (err) => {
+            console.warn('Firestore shop sync fallback to local:', err);
+            currentShop = { ...DEFAULT_SHOP_DATA, id: currentShopId };
+            updateShopUI();
+            fallbackLocalLoad();
+        });
+    }
+
+    function updateShopUI() {
+        if (!currentShop) return;
+        document.title = `${currentShop.name} 시술예약 | 렛츠헤어`;
+        $('#storeTitleTxt').text(currentShop.title || currentShop.name);
+        $('#cardStoreName').text(currentShop.name);
+        $('#cancelCardStoreName').text(currentShop.name);
+        $('#storeHoursTxt').text(currentShop.hoursText || `${currentShop.startHour || 12}:00 ~ ${currentShop.endHour || 20}:00`);
+        $('#storeHolidayTxt').text(currentShop.holidayText || '정기 휴무');
+
+        if (currentShop.notice && currentShop.notice.trim() !== '') {
+            $('#storeNoticeText').text(currentShop.notice);
+            $('#storeNoticeBar').slideDown('fast');
+        } else {
+            $('#storeNoticeBar').hide();
         }
-        const todayStr = getTodayStr();
-        const initial = [
-            { id: 101, name: '김민수', tel: '010-1234-5678', style: '커트', comment: '짧고 깔끔하게 부탁드립니다.', reserve_date: todayStr, reserve_time: 12, trash: 0 },
-            { id: 102, name: '이수진', tel: '010-9876-4321', style: '염색', comment: '애쉬브라운 상담 원합니다.', reserve_date: todayStr, reserve_time: 14, trash: 0 }
-        ];
-        saveReservations(initial);
-        return initial;
+
+        if (isAdmin) {
+            $('#adminShopName').text(currentShop.name);
+            $('#adminActiveBadge').css('display', 'flex');
+            $('#adminStatsWrap').show();
+            $('#formNotice').show();
+            $('#anotice').val(currentShop.notice || '');
+        } else {
+            $('#adminActiveBadge').hide();
+            $('#adminStatsWrap').hide();
+            $('#formNotice').hide();
+        }
     }
 
-    function saveReservations(list) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    // -------------------------------------------------------------
+    // Firestore Reservations Realtime Listener
+    // -------------------------------------------------------------
+    let unsubReservations = null;
+    function listenReservations() {
+        if (unsubReservations) unsubReservations();
+
+        const resCol = db.collection('hairShops').doc(currentShopId).collection('reservations');
+        unsubReservations = resCol.onSnapshot((snapshot) => {
+            liveReservations = [];
+            snapshot.forEach((doc) => {
+                liveReservations.push({ id: doc.id, ...doc.data() });
+            });
+            $('#syncText').text('실시간 동기화됨');
+            renderCalendars();
+            if (selectedDate) loadDropSchedule(selectedDate, selectedYoil);
+            if (isAdmin) calculateMonthlyStats();
+        }, (err) => {
+            console.error('Reservation sync error:', err);
+            $('#syncText').text('로컬 캐시 모드');
+            fallbackLocalLoad();
+        });
     }
 
+    // -------------------------------------------------------------
+    // Firestore Holidays Realtime Listener
+    // -------------------------------------------------------------
+    let unsubHolidays = null;
+    function listenHolidays() {
+        if (unsubHolidays) unsubHolidays();
+        const holCol = db.collection('hairShops').doc(currentShopId).collection('holidays');
+        unsubHolidays = holCol.onSnapshot((snapshot) => {
+            customHolidays = [];
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                if (data.date) customHolidays.push(data.date);
+            });
+            renderCalendars();
+        });
+    }
+
+    // Fallback Local Storage
+    function fallbackLocalLoad() {
+        const localKey = `jhair_res_${currentShopId}`;
+        const stored = localStorage.getItem(localKey);
+        if (stored) {
+            try { liveReservations = JSON.parse(stored); } catch(e) {}
+        }
+        renderCalendars();
+    }
+
+    function saveFallbackLocal() {
+        const localKey = `jhair_res_${currentShopId}`;
+        localStorage.setItem(localKey, JSON.stringify(liveReservations));
+    }
+
+    // -------------------------------------------------------------
+    // Calendar Helpers & Rules
+    // -------------------------------------------------------------
     function getTodayStr() {
         const d = new Date();
         const y = d.getFullYear();
@@ -278,12 +714,26 @@
         return yoils[dateObj.getDay()];
     }
 
-    // 매월 첫째주 / 셋째주 일요일 휴무 계산
     function isShopHoliday(year, month, day) {
+        const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        // Custom temporary holiday
+        if (customHolidays.includes(dateStr)) return true;
+
         const dateObj = new Date(year, month - 1, day);
-        if (dateObj.getDay() !== 0) return false; // 일요일 아님
-        const sundayCount = Math.ceil(day / 7);
-        return sundayCount === 1 || sundayCount === 3;
+        const dayOfWeek = dateObj.getDay();
+
+        // 1,3주 일요일 휴무 (제이헤어 기본 규칙)
+        if (currentShop && currentShop.holidayRule === '1_3_sun') {
+            if (dayOfWeek === 0) {
+                const sundayCount = Math.ceil(day / 7);
+                return (sundayCount === 1 || sundayCount === 3);
+            }
+        } else if (currentShop && currentShop.holidayRule === 'mon') {
+            return dayOfWeek === 1; // 매주 월요일
+        } else if (currentShop && currentShop.holidayRule === 'sun') {
+            return dayOfWeek === 0; // 매주 일요일
+        }
+        return false;
     }
 
     function renderCalendars() {
@@ -332,10 +782,15 @@
             let dayClasses = ['date'];
             if (isPast) dayClasses.push('past');
             if (isToday) dayClasses.push('today');
-            if (isHoliday) dayClasses.push('holiday-date');
 
-            if (isPast || isHoliday) {
+            if (isPast) {
                 html += `<td><span class="${dayClasses.join(' ')}">${day}</span>${isHoliday ? "<div class='holiday'>휴무</div>" : ""}</td>`;
+            } else if (isHoliday) {
+                html += `<td><span class="${dayClasses.join(' ')}">${day}</span><div class='holiday'>휴무</div>`;
+                if (isAdmin) {
+                    html += `<button type="button" class="btn-holiday-toggle" onclick="toggleHoliday('${dateStr}')">해제</button>`;
+                }
+                html += `</td>`;
             } else {
                 html += `<td><span class="${dayClasses.join(' ')}" id="${dateStr}" onclick="drop_date('${dateStr}','${yoil}')">${day}</span></td>`;
             }
@@ -362,7 +817,10 @@
         const totalDays = new Date(currentYear, currentMonth, 0).getDate();
         const todayStr = getTodayStr();
         const currentHour = new Date().getHours();
-        const reservations = getStoredReservations().filter(r => r.trash === 0);
+        const activeRes = liveReservations.filter(r => Number(r.trash) !== 1);
+
+        const startH = (currentShop && currentShop.startHour) || 12;
+        const endH = (currentShop && currentShop.endHour) || 20;
 
         let html = `
             <div class='head'>
@@ -401,16 +859,23 @@
                 html += `<div class='holiday'>마감</div>`;
             } else if (isHoliday) {
                 html += `<div class='holiday'>휴무</div>`;
+                if (isAdmin) {
+                    html += `<button type="button" class="btn-holiday-toggle" onclick="toggleHoliday('${dateStr}')">해제</button>`;
+                }
             } else {
-                for (let h = 12; h < 20; h++) {
-                    const match = reservations.find(r => r.reserve_date === dateStr && Number(r.reserve_time) === h);
+                for (let h = startH; h < endH; h++) {
+                    const match = activeRes.find(r => r.reserve_date === dateStr && Number(r.reserve_time) === h);
                     if (match) {
+                        const masked = match.name ? match.name.charAt(0) + '**' : '예약완료';
                         html += `<div class='time reserved' onclick="popup_cancel('${currentYear}','${currentMonth}','${day}','${yoil}','${h}','${match.name}','${match.style}','${match.id}')">${h}시 <button><span class='del'>예약</span>마감</button></div>`;
                     } else if (isToday && h <= currentHour) {
                         html += `<div class='time reserved'>${h}시 <button><span class='del'>예약</span>마감</button></div>`;
                     } else {
                         html += `<div class='time' onclick="popup_reserve('${currentYear}','${currentMonth}','${day}','${yoil}','${h}')">${h}시 <button>예약<span class='del'>하기</span></button></div>`;
                     }
+                }
+                if (isAdmin) {
+                    html += `<button type="button" class="btn-holiday-toggle" style="margin-top:6px; width:100%;" onclick="toggleHoliday('${dateStr}')">휴무지정</button>`;
                 }
             }
 
@@ -437,6 +902,7 @@
             currentYear--;
         }
         renderCalendars();
+        if (isAdmin) calculateMonthlyStats();
     }
 
     function resetToToday() {
@@ -444,6 +910,7 @@
         currentYear = now.getFullYear();
         currentMonth = now.getMonth() + 1;
         renderCalendars();
+        if (isAdmin) calculateMonthlyStats();
     }
 
     function viewmode(num) {
@@ -477,19 +944,26 @@
     }
 
     function loadDropSchedule(date, yoil) {
-        const reservations = getStoredReservations().filter(r => r.trash === 0 && r.reserve_date === date);
+        const activeRes = liveReservations.filter(r => Number(r.trash) !== 1 && r.reserve_date === date);
         const todayStr = getTodayStr();
         const currentHour = new Date().getHours();
+        const startH = (currentShop && currentShop.startHour) || 12;
+        const endH = (currentShop && currentShop.endHour) || 20;
+
         let contentHtml = '';
 
-        for (let h = 12; h < 20; h++) {
-            const match = reservations.find(r => Number(r.reserve_time) === h);
+        for (let h = startH; h < endH; h++) {
+            const match = activeRes.find(r => Number(r.reserve_time) === h);
             if (match) {
-                const masked = match.name ? match.name.charAt(0) + '**' : '고객';
+                const displayName = isAdmin ? match.name : (match.name ? match.name.charAt(0) + '**' : '고객');
                 contentHtml += `
                     <div class='time reserved' id='m${date}-${h}' onclick="reserve_over('${date}-${h}');">
-                        ${h}시 <button class='btn_cancel' onclick="popup_cancel('${currentYear}','${currentMonth}','${date.slice(8,10)}','${yoil}','${h}','${match.name}','${match.style}','${match.id}')"><span class='del'>예약</span>취소</button>
-                        <span class='rdetail'><span class='style'>${match.style || ''}</span> ${masked}</span>
+                        ${h}시 
+                        <button class='btn_cancel' onclick="popup_cancel('${currentYear}','${currentMonth}','${date.slice(8,10)}','${yoil}','${h}','${match.name}','${match.style}','${match.id}')"><span class='del'>예약</span>취소</button>
+                        <span class='rdetail'>
+                            <span class='style'>${match.style || ''}</span> ${displayName}
+                        </span>
+                        ${isAdmin && match.tel ? `<button class='call' style="margin-left:8px;" onclick="window.location.href='tel:${match.tel}'">📞</button>` : ''}
                     </div>
                 `;
             } else if (date === todayStr && h <= currentHour) {
@@ -498,6 +972,11 @@
                 contentHtml += `<div class='time' onclick="popup_reserve('${currentYear}','${currentMonth}','${date.slice(8,10)}','${yoil}','${h}');">${h}시 <button>예약<span class='del'>하기</span></button></div>`;
             }
         }
+
+        if (isAdmin) {
+            contentHtml += `<div style="text-align:center; padding:10px 0;"><button type="button" class="btn-holiday-toggle" onclick="toggleHoliday('${date}')">${customHolidays.includes(date) ? '임시 휴무 해제' : '이 날짜를 임시 휴무로 지정'}</button></div>`;
+        }
+
         $('.div_content').html(contentHtml);
     }
 
@@ -506,6 +985,9 @@
         $('#m' + id + ' > .rdetail').toggle();
     }
 
+    // -------------------------------------------------------------
+    // Popup & Form Handling
+    // -------------------------------------------------------------
     function popup_reserve(year, month, day, yoil, time) {
         $(".formcover").css("display", "flex");
         $(".form_reserve").css("display", "block");
@@ -589,12 +1071,80 @@
 
     function handleAdminLogin(e) {
         e.preventDefault();
-        const pw = $('#apw').val();
-        if (pw === 'drem0428') {
-            alert('관리자 모드로 전환합니다.');
-            window.location.href = 'admin.php';
+        const pw = $('#apw').val().trim();
+        const correctPw = (currentShop && currentShop.adminPw) || 'drem0428';
+
+        if (pw === correctPw) {
+            isAdmin = true;
+            menuclose();
+            updateShopUI();
+            calculateMonthlyStats();
+            alert(`[${currentShop.name}] 관리자로 인증되었습니다.`);
+            renderCalendars();
+            if (selectedDate) loadDropSchedule(selectedDate, selectedYoil);
         } else {
-            alert('비밀번호가 일치하지 않습니다.');
+            alert('관리자 비밀번호가 일치하지 않습니다.');
+        }
+    }
+
+    function logoutAdmin() {
+        isAdmin = false;
+        updateShopUI();
+        renderCalendars();
+        if (selectedDate) loadDropSchedule(selectedDate, selectedYoil);
+        alert('관리자 모드에서 로그아웃되었습니다.');
+    }
+
+    function calculateMonthlyStats() {
+        $('#statsMonthTxt').text(currentMonth);
+        const monthPrefix = `${currentYear}-${String(currentMonth).padStart(2, '0')}`;
+        const thisMonthRes = liveReservations.filter(r => Number(r.trash) !== 1 && (r.reserve_date || '').startsWith(monthPrefix));
+
+        let cut = 0, color = 0, perm = 0, etc = 0;
+        thisMonthRes.forEach(r => {
+            const st = r.style || '';
+            if (st.includes('커트')) cut++;
+            if (st.includes('염색')) color++;
+            if (st.includes('파마')) perm++;
+            if (st.includes('기타')) etc++;
+        });
+
+        $('#statsTotalCount').text(thisMonthRes.length);
+        $('#statsCutCount').text(`커트 ${cut}건`);
+        $('#statsColorCount').text(`염색 ${color}건`);
+        $('#statsPermCount').text(`파마 ${perm}건`);
+        $('#statsEtcCount').text(`기타 ${etc}건`);
+    }
+
+    function handleNoticeSubmit(e) {
+        e.preventDefault();
+        const text = $('#anotice').val().trim();
+        db.collection('hairShops').doc(currentShopId).update({
+            notice: text
+        }).then(() => {
+            alert('공지사항이 저장되어 모든 고객 화면에 즉시 반영됩니다.');
+        }).catch(err => {
+            console.error('Notice save err:', err);
+            alert('공지사항 저장 중 오류가 발생했습니다.');
+        });
+    }
+
+    function toggleHoliday(dateStr) {
+        const holRef = db.collection('hairShops').doc(currentShopId).collection('holidays');
+        if (customHolidays.includes(dateStr)) {
+            // Remove holiday
+            holRef.where('date', '==', dateStr).get().then(snap => {
+                snap.forEach(doc => doc.ref.delete());
+                alert(`${dateStr} 임시 휴무가 해제되었습니다.`);
+            });
+        } else {
+            // Set holiday
+            holRef.add({
+                date: dateStr,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                alert(`${dateStr} 가 임시 휴무로 지정되어 예약이 마감되었습니다.`);
+            });
         }
     }
 
@@ -603,7 +1153,10 @@
         $('#rtel').val(val.replace(/[^0-9]/g, ''));
     }
 
-    function handleReserveSubmit(e) {
+    // -------------------------------------------------------------
+    // Realtime Reservation Submit to Firestore
+    // -------------------------------------------------------------
+    async function handleReserveSubmit(e) {
         e.preventDefault();
         const name = $('#rname').val().trim();
         const tel = $('#rtel').val().trim();
@@ -623,57 +1176,167 @@
             return;
         }
 
-        const reservations = getStoredReservations();
-        const conflict = reservations.find(r => r.trash === 0 && r.reserve_date === dateStr && Number(r.reserve_time) === hour);
+        // Double Booking Prevention Check
+        const conflict = liveReservations.find(r => Number(r.trash) !== 1 && r.reserve_date === dateStr && Number(r.reserve_time) === hour);
         if (conflict) {
             alert('선택하신 시간은 이미 예약이 완료되었습니다. 다른 시간을 선택해 주세요.');
             return;
         }
 
-        const newId = Date.now();
-        reservations.push({
-            id: newId,
+        const newDoc = {
             name: name,
             tel: tel,
             style: styles.join(' '),
             comment: comment || '-',
             reserve_date: dateStr,
             reserve_time: hour,
-            trash: 0
-        });
-        saveReservations(reservations);
+            trash: 0,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            createdDate: getTodayStr()
+        };
 
-        alert('예약이 성공적으로 등록되었습니다!');
-        closeModal();
-        renderCalendars();
-        if (selectedDate) loadDropSchedule(selectedDate, selectedYoil);
+        try {
+            await db.collection('hairShops').doc(currentShopId).collection('reservations').add(newDoc);
+            alert(`예약이 성공적으로 완료되었습니다!\n${dateStr} ${hour}시 (${styles.join(', ')})`);
+            closeModal();
+            $('#formReserve')[0].reset();
+        } catch(err) {
+            console.error('Reservation add error:', err);
+            // Fallback
+            newDoc.id = Date.now().toString();
+            liveReservations.push(newDoc);
+            saveFallbackLocal();
+            alert('예약이 접수되었습니다.');
+            closeModal();
+            renderCalendars();
+        }
     }
 
-    function handleCancelSubmit(e) {
+    // -------------------------------------------------------------
+    // Realtime Reservation Cancel
+    // -------------------------------------------------------------
+    async function handleCancelSubmit(e) {
         e.preventDefault();
-        const id = Number($('#rid').val());
+        const id = $('#rid').val();
         const pw = $('#rpw').val().trim();
 
-        const reservations = getStoredReservations();
-        const match = reservations.find(r => r.id === id);
-
+        const match = liveReservations.find(r => r.id === id);
         if (!match) {
             alert('예약 내역을 찾을 수 없습니다.');
             return;
         }
 
-        const cleanTel = match.tel.replace(/[^0-9]/g, '');
+        const cleanTel = (match.tel || '').replace(/[^0-9]/g, '');
         const last4 = cleanTel.slice(-4);
+        const correctAdminPw = (currentShop && currentShop.adminPw) || 'drem0428';
 
-        if (pw === last4 || pw === 'drem0428') {
-            match.trash = 1;
-            saveReservations(reservations);
-            alert('예약이 정상적으로 취소되었습니다.');
-            closeModal();
-            renderCalendars();
-            if (selectedDate) loadDropSchedule(selectedDate, selectedYoil);
+        if (pw === last4 || pw === correctAdminPw || isAdmin) {
+            try {
+                await db.collection('hairShops').doc(currentShopId).collection('reservations').doc(id).update({
+                    trash: 1,
+                    cancelledAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                alert('예약이 정상적으로 취소되었습니다.');
+                closeModal();
+            } catch(err) {
+                console.error('Cancel error:', err);
+                match.trash = 1;
+                saveFallbackLocal();
+                alert('예약이 취소되었습니다.');
+                closeModal();
+                renderCalendars();
+            }
         } else {
             alert('비밀번호(휴대폰 뒷번호 4자리)가 일치하지 않습니다.');
+        }
+    }
+
+    // -------------------------------------------------------------
+    // New Shop Modal & Creation
+    // -------------------------------------------------------------
+    function openNewShopModal() {
+        $('#modalNewShop').css('display', 'flex');
+    }
+
+    function closeNewShopModal() {
+        $('#modalNewShop').hide();
+    }
+
+    async function handleCreateShop(e) {
+        e.preventDefault();
+        const shopId = $('#newShopId').val().trim().toLowerCase().replace(/[^a-z0-9_-]/g, '');
+        const shopName = $('#newShopName').val().trim();
+        const shopTel = $('#newShopTel').val().trim();
+        const adminPw = $('#newShopAdminPw').val().trim();
+        const hours = $('#newShopHours').val().trim() || '11:00 ~ 20:00';
+        const holiday = $('#newShopHoliday').val().trim() || '매주 월요일 휴무';
+
+        if (!shopId) {
+            alert('매장 영문 아이디를 입력해 주세요.');
+            return;
+        }
+
+        const shopData = {
+            id: shopId,
+            name: shopName,
+            title: shopName,
+            tel: shopTel,
+            adminPw: adminPw,
+            hoursText: hours,
+            startHour: 11,
+            endHour: 20,
+            holidayText: holiday,
+            holidayRule: 'mon',
+            notice: `${shopName}에 오신 것을 환영합니다! 인터넷 예약으로 대기 없이 시술받으세요.`,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        try {
+            await db.collection('hairShops').doc(shopId).set(shopData);
+            alert(`축하합니다! [${shopName}] 전용 예약시스템이 개설되었습니다.\n새 매장 주소로 이동합니다.`);
+            window.location.href = `?shop=${shopId}`;
+        } catch(err) {
+            console.error('Shop create error:', err);
+            alert('매장 개설 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+        }
+    }
+
+    // -------------------------------------------------------------
+    // Share & Actions
+    // -------------------------------------------------------------
+    function openShopMap() {
+        if (currentShop && currentShop.mapUrl) {
+            window.open(currentShop.mapUrl);
+        } else {
+            window.open(`https://map.naver.com/v5/search/${encodeURIComponent(currentShop ? currentShop.name : '미용실')}`);
+        }
+    }
+
+    function callShop() {
+        const tel = (currentShop && currentShop.tel) || '0315550628';
+        window.location.href = `tel:${tel.replace(/[^0-9]/g, '')}`;
+    }
+
+    function shareKakao() {
+        try {
+            Kakao.init('0236cfffa7cfef34abacd91a6d7c73c0');
+        } catch(e) {}
+
+        const shopName = currentShop ? currentShop.name : '제이헤어';
+        const shareUrl = window.location.href;
+
+        try {
+            Kakao.Share.sendDefault({
+                objectType: 'feed',
+                content: {
+                    title: `${shopName} 시술예약`,
+                    description: `링크 하나로 로그인 없이 예약하는 ${shopName} 실시간 예약시스템`,
+                    imageUrl: 'https://pyw31337.github.io/jhair/image/1200x630.jpg',
+                    link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
+                },
+            });
+        } catch(e) {
+            share();
         }
     }
 
@@ -681,9 +1344,9 @@
         $(".qr").show();
         const urlToShare = window.location.href;
         navigator.clipboard.writeText(urlToShare).then(() => {
-            alert('주소가 복사되었습니다: ' + urlToShare);
+            alert(`[${currentShop ? currentShop.name : '미용실'}] 전용 예약 링크가 복사되었습니다:\n${urlToShare}`);
         }).catch(() => {
-            alert('주소: ' + urlToShare);
+            alert('예약 주소: ' + urlToShare);
         });
     }
 
@@ -698,9 +1361,11 @@
         $('#bb4').toggle($('#cb4').is(':checked'));
     });
 
-    // 초기화 실행
+    // -------------------------------------------------------------
+    // Initialize
+    // -------------------------------------------------------------
     $(document).ready(function() {
-        renderCalendars();
+        initShopSubscription();
     });
     </script>
 </body>
