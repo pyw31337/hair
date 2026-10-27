@@ -1,91 +1,28 @@
 {
-	"name": "제이헤어 시술예약",
-	"short_name": "제이헤어",
-	"description": "제이헤어샵 인터넷 시술예약",
-	"start_url": "/home",
-	"scope": "/",
-	"background_color": "#ffffff",
-	"theme_color": "#f35381",
-	"dir": "ltr",
-	"display": "standalone",
-	"orientation": "any",
-	"categories": ["lifestyle", "beauty", "social"],
-	"screenshots": [
-		{
-			"src": "favicon/512x512.png",
-			"sizes": "512x512",
-			"type": "image/png",
-			"platform": "narrow",
-			"label": "제이헤어 시술예약"
-		}
-	],
-	"icons": [
-		{
-			"src": "favicon/favicon_48x48.ico",
-			"type": "image/x-icon",
-			"sizes": "48x48"
-		},
-		{
-			"src": "favicon/android-icon-192x192.png",
-			"type": "image/png",
-			"sizes": "192x192",
-			"purpose": "any maskable"
-		},
-		{
-			"src": "favicon/512x512.png",
-			"type": "image/png",
-			"sizes": "512x512",
-			"purpose": "any"
-		},
-		{
-			"src": "favicon/favicon-16x16.png",
-			"type": "image/png",
-			"sizes": "16x16",
-			"purpose": "any"
-		},
-		{
-			"src": "favicon/favicon-32x32.png",
-			"type": "image/png",
-			"sizes": "32x32",
-			"purpose": "any"
-		}
-	],
-	"shortcuts": [
-		{
-			"name": "제이헤어 시술예약",
-			"short_name": "제이헤어",
-			"description": "제이헤어샵 인터넷 시술예약",
-			"url": "./",
-			"icons": [
-				{
-					"src": "favicon/android-icon-192x192.png",
-					"sizes": "192x192"
-				}
-			]
-		},
-		{
-			"name": "제이헤어 시술예약",
-			"short_name": "제이헤어",
-			"description": "제이헤어샵 인터넷 시술예약",
-			"url": "./",
-			"icons": [
-				{
-					"src": "favicon/android-icon-192x192.png",
-					"sizes": "192x192"
-				}
-			]
-		},
-		{
-			"name": "제이헤어 시술예약",
-			"short_name": "제이헤어",
-			"description": "제이헤어샵 인터넷 시술예약",
-			"url": "./",
-			"icons": [
-				{
-					"src": "favicon/android-icon-192x192.png",
-					"sizes": "192x192"
-				}
-			]
-		}
-	]
+  "id": "./",
+  "name": "렛츠헤어 | 실시간 미용실 예약",
+  "short_name": "렛츠헤어",
+  "description": "링크 하나로 로그인 없이 예약하는 1인 미용실 & 뷰티숍 실시간 예약 시스템",
+  "lang": "ko-KR",
+  "start_url": "./",
+  "scope": "./",
+  "background_color": "#0b1020",
+  "theme_color": "#0b1020",
+  "display": "standalone",
+  "orientation": "any",
+  "categories": ["lifestyle", "beauty", "social"],
+  "icons": [
+    {
+      "src": "favicon/android-icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "favicon/512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    }
+  ]
 }
