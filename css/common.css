@@ -8,7 +8,7 @@
 body {margin:0; word-break: keep-all; font-family: 'Noto Sans KR', sans-serif; }
 input {border-radius: 0;}
 
-.aside {width: 260px; height: 100dvh; position: absolute; top:0; right: 0; background-color: #fff; z-index: 20; filter: drop-shadow(0px 0px 40px rgba(0,0,0,0.5)); border-radius: 20px 0 0 0; background-image: url(../image/plant-2004483_640.jpg); background-repeat: no-repeat; background-position: center bottom;}
+.aside {width: 260px; height: 100dvh; position: absolute; top:0; right: 0; background: radial-gradient(circle at 18% 88%, rgba(243,83,129,.14), transparent 40%), linear-gradient(160deg, #fff 0%, #fff8fb 62%, #f4efff 100%); z-index: 20; filter: drop-shadow(0px 0px 40px rgba(0,0,0,0.5)); border-radius: 20px 0 0 0;}
 .aside .close {background-image: url(../icon/x.png); background-size: cover; background-repeat: no-repeat; background-position: center; position: absolute; display: inline-block; width: 30px; height: 30px; top: 20px; right: 20px;}
 .aside .map {padding: 6% 10%; margin-top: 50px; cursor:pointer;}
 .aside .map span {font-size: 1.4rem; font-weight: 600; vertical-align: top;}

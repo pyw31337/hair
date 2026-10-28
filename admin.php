@@ -277,28 +277,28 @@ foreach( $num as $key => $value ){
         <div class="slider-wrapper">
             <div class="items-holder">
                 <div class="items">
-                    <img src="image/01.jpg" loading="eager" class="item"/>
-                    <img src="image/02.jpg" loading="eager" class="item"/>
-                    <img src="image/03.jpg" loading="eager" class="item"/>
-                    <img src="image/04.jpg" loading="eager" class="item"/>
-                    <img src="image/05.jpg" loading="eager" class="item"/>
-                    <img src="image/06.jpg" loading="eager" class="item"/>
-                    <img src="image/07.jpg" loading="eager" class="item"/>
-                    <img src="image/08.jpg" loading="eager" class="item"/>
-                    <img src="image/09.jpg" loading="eager" class="item"/>
-                    <img src="image/10.jpg" loading="eager" class="item"/>
+                    <img src="image/generated-female-layered.jpg" loading="eager" class="item"/>
+                    <img src="image/generated-female-bob.jpg" loading="eager" class="item"/>
+                    <img src="image/generated-female-wave.jpg" loading="eager" class="item"/>
+                    <img src="image/generated-female-hush.jpg" loading="lazy" class="item"/>
+                    <img src="image/generated-female-bangs.jpg" loading="lazy" class="item"/>
+                    <img src="image/generated-female-lob.jpg" loading="lazy" class="item"/>
+                    <img src="image/generated-male-twoblock.jpg" loading="lazy" class="item"/>
+                    <img src="image/generated-male-part.jpg" loading="lazy" class="item"/>
+                    <img src="image/generated-male-leaf.jpg" loading="lazy" class="item"/>
+                    <img src="image/generated-male-crop.jpg" loading="lazy" class="item"/>
                 </div>
                 <div class="items">
-                    <img src="image/01.jpg" loading="eager" class="item"/>
-                    <img src="image/02.jpg" loading="eager" class="item"/>
-                    <img src="image/03.jpg" loading="eager" class="item"/>
-                    <img src="image/04.jpg" loading="eager" class="item"/>
-                    <img src="image/05.jpg" loading="eager" class="item"/>
-                    <img src="image/06.jpg" loading="eager" class="item"/>
-                    <img src="image/07.jpg" loading="eager" class="item"/>
-                    <img src="image/08.jpg" loading="eager" class="item"/>
-                    <img src="image/09.jpg" loading="eager" class="item"/>
-                    <img src="image/10.jpg" loading="eager" class="item"/>
+                    <img src="image/generated-female-layered.jpg" loading="lazy" class="item"/>
+                    <img src="image/generated-female-bob.jpg" loading="lazy" class="item"/>
+                    <img src="image/generated-female-wave.jpg" loading="lazy" class="item"/>
+                    <img src="image/generated-female-hush.jpg" loading="lazy" class="item"/>
+                    <img src="image/generated-female-bangs.jpg" loading="lazy" class="item"/>
+                    <img src="image/generated-female-lob.jpg" loading="lazy" class="item"/>
+                    <img src="image/generated-male-twoblock.jpg" loading="lazy" class="item"/>
+                    <img src="image/generated-male-part.jpg" loading="lazy" class="item"/>
+                    <img src="image/generated-male-leaf.jpg" loading="lazy" class="item"/>
+                    <img src="image/generated-male-crop.jpg" loading="lazy" class="item"/>
                 </div>
             </div>
         </div>     <!-- Slider Close -->
