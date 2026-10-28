@@ -1,1 +1,1719 @@
-FULL_CONTENT_FROM_FILE
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
+    <meta name="google" content="notranslate">
+    <meta name="description" content="링크 하나로 예약을 받고, 실시간 캘린더로 빈 시간과 휴무일을 관리하는 1인 미용실·뷰티숍 예약 서비스">
+    <link rel="canonical" href="https://pyw31337.github.io/hair/">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pyw31337.github.io/hair/">
+    <meta property="og:title" content="렛츠헤어 | 로그인 없이 받는 실시간 미용실 예약">
+    <meta property="og:description" content="링크 하나로 예약을 받고, 실시간 캘린더로 빈 시간과 휴무일을 관리하는 1인 미용실·뷰티숍 예약 서비스">
+    <meta property="og:image" content="https://pyw31337.github.io/hair/image/1200x630.png">
+    <meta property="og:image:secure_url" content="https://pyw31337.github.io/hair/image/1200x630.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="네온 핑크 캘린더와 가위로 표현한 렛츠헤어 예약 서비스">
+    <meta property="og:site_name" content="렛츠헤어">
+    <meta property="og:locale" content="ko_KR">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="렛츠헤어 | 로그인 없이 받는 실시간 미용실 예약">
+    <meta name="twitter:description" content="링크 하나로 예약을 받고, 실시간 캘린더로 빈 시간과 휴무일을 관리하는 1인 미용실·뷰티숍 예약 서비스">
+    <meta name="twitter:image" content="https://pyw31337.github.io/hair/image/1200x630.png">
+    <title id="pageTitle">렛츠헤어 | 실시간 미용실 예약</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png?v=brand-20261028b">
+    <link rel="icon" href="favicon/favicon.ico?v=brand-20261028b" sizes="any">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png?v=brand-20261028b">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png?v=brand-20261028b">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png?v=brand-20261028b">
+    <link rel="manifest" href="favicon/manifest.json?v=brand-20261028b" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="렛츠헤어" />
+    <meta name="msapplication-config" content="favicon/browserconfig.xml?v=brand-20261028">
+    <meta name="msapplication-TileColor" content="#0b1020">
+    <meta name="theme-color" content="#0b1020">
+    <link href="css/common.css?v=project-handoff-20261028" rel="stylesheet" />
+    <link href="css/checkbox.css" rel="stylesheet" />
+    <link href="css/infinite-carousel-css-only.webflow.182ee2047.css" rel="stylesheet" type="text/css"/>
+
+    <style>
+        /* Service Header */
+        .tenant-bar {
+            color: #fff;
+            padding: 14px 18px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            position: absolute;
+            inset: 0 0 auto;
+            z-index: 6;
+            word-break: keep-all;
+        }
+        .tenant-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: -0.03em;
+        }
+        .tenant-brand-mark {
+            width: 34px;
+            height: 34px;
+            object-fit: contain;
+            filter: drop-shadow(0 3px 7px rgba(244, 63, 94, 0.42));
+        }
+        .tenant-brand-name {
+            font-size: 0.95rem;
+            font-weight: 800;
+            text-shadow: 0 1px 8px rgba(244, 63, 94, 0.38);
+        }
+        .tenant-menu {
+            appearance: none;
+            border: 0;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            background: url('icon/menu.png') center / cover no-repeat;
+            cursor: pointer;
+        }
+        .btn-new-shop {
+            background: linear-gradient(135deg, #f43f5e 0%, #ec4899 100%);
+            color: #fff;
+            border: none;
+            border-radius: 9999px;
+            padding: 4px 11px;
+            font-size: 0.73rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-new-shop:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(244, 63, 94, 0.4);
+        }
+        .aside .btn-new-shop {
+            display: block;
+            width: calc(100% - 40px);
+            margin: 22px 20px 0;
+            padding: 11px 14px;
+            font-size: 0.88rem;
+        }
+        .aside .btn-new-shop + .admin {
+            margin-top: 12px;
+        }
+        /* Notice overlay on the moving gallery */
+        .store-notice-bar {
+            position: absolute;
+            left: 5%;
+            right: 5%;
+            bottom: 54px;
+            z-index: 3;
+            margin: 0;
+            padding: 10px 14px;
+            background: linear-gradient(115deg, rgba(19, 14, 39, 0.68), rgba(244, 63, 94, 0.20));
+            border: 1px solid rgba(255, 255, 255, 0.34);
+            border-radius: 16px;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+            backdrop-filter: blur(16px) saturate(135%);
+            -webkit-backdrop-filter: blur(16px) saturate(135%);
+            font-size: 0.82rem;
+            line-height: 1.45;
+            color: rgba(255, 255, 255, 0.96);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            word-break: keep-all;
+        }
+        .store-notice-icon {
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+            white-space: nowrap;
+            text-shadow: 0 1px 8px rgba(255, 97, 159, 0.7);
+        }
+        @media screen and (max-width: 430px) {
+            .tenant-bar { padding: 11px 14px; }
+            .tenant-brand-mark { width: 30px; height: 30px; }
+            .tenant-brand-name { font-size: 0.88rem; }
+            .store-notice-bar { bottom: 46px; padding: 5px 10px; font-size: 0.7rem; line-height: 1.25; gap: 6px; }
+        }
+
+        /* Modal for New Shop Registration */
+        .modal-new-shop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            place-items: center;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+        .modal-content-shop {
+            background: #ffffff;
+            border-radius: 18px;
+            max-width: 440px;
+            width: 100%;
+            padding: 24px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+            box-sizing: border-box;
+            position: relative;
+            max-height: min(90vh, 760px);
+            overflow-y: auto;
+            word-break: keep-all;
+        }
+        .modal-content-shop form {
+            position: static;
+            bottom: auto;
+            display: block;
+            width: 100%;
+            margin: 0;
+            border-radius: 0;
+            box-shadow: none;
+            background: transparent;
+        }
+        .modal-content-shop h3 {
+            margin: 0 0 6px;
+            font-size: 1.25rem;
+            color: #111827;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal-content-shop p {
+            margin: 0 0 18px;
+            font-size: 0.85rem;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+        .shop-form-row {
+            margin-bottom: 13px;
+        }
+        .shop-form-row label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+        .shop-form-row input, .shop-form-row select, .shop-form-row textarea {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        .shop-form-row input:focus, .shop-form-row textarea:focus {
+            outline: none;
+            border-color: #f43f5e;
+            box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.15);
+        }
+        .shop-form-submit {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #f43f5e, #ec4899);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: #f3f4f6;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4b5563;
+        }
+
+        /* Admin Mode Banner */
+        .admin-active-badge {
+            display: none;
+            background: #1e1e24;
+            color: #facc15;
+            padding: 8px 16px;
+            text-align: center;
+            font-size: 0.82rem;
+            font-weight: 600;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-admin-logout {
+            background: #374151;
+            color: #fff;
+            border: none;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            cursor: pointer;
+        }
+
+        /* Holiday Setting Button */
+        .btn-holiday-toggle {
+            background: #fee2e2;
+            color: #ef4444;
+            border: 1px solid #fca5a5;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        /* Style catalog: opened from the side menu without competing with booking forms. */
+        .aside { overflow-y: auto; }
+        .aside .catalog-menu {
+            width: calc(100% - 40px);
+            margin: 28px 20px 0;
+            padding: 11px 14px;
+            border: 1px solid rgba(243, 83, 129, 0.28);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.72);
+            color: #d93869;
+            font: inherit;
+            font-size: 0.96rem;
+            font-weight: 800;
+            text-align: left;
+            cursor: pointer;
+        }
+        .catalog-panel {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 30;
+            padding: 20px;
+            overflow-y: auto;
+            background: rgba(8, 11, 25, 0.58);
+            backdrop-filter: blur(8px);
+            box-sizing: border-box;
+        }
+        .catalog-card {
+            width: min(920px, 100%);
+            margin: 0 auto;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.72);
+            border-radius: 24px;
+            background: rgba(255,255,255,0.96);
+            box-shadow: 0 22px 60px rgba(6, 8, 20, 0.28);
+            box-sizing: border-box;
+        }
+        .catalog-heading { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
+        .catalog-heading h2 { margin: 0; color: #171827; font-size: 1.45rem; }
+        .catalog-heading p { margin: 5px 0 0; color: #6b7280; font-size: 0.86rem; }
+        .catalog-close { border: 0; background: #f3f4f6; color: #4b5563; width: 34px; height: 34px; border-radius: 50%; font-size: 1.15rem; cursor: pointer; flex-shrink: 0; }
+        .catalog-gender { display: flex; gap: 8px; margin: 20px 0 14px; }
+        .catalog-gender button { flex: 1; padding: 10px; border: 1px solid #e5e7eb; border-radius: 10px; background: #fff; color: #6b7280; font: inherit; font-weight: 800; cursor: pointer; }
+        .catalog-gender button.is-active { border-color: #f35381; background: #fff0f5; color: #e3376b; }
+        .catalog-content { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(250px, 0.75fr); gap: 24px; align-items: start; }
+        .catalog-style-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+        .catalog-style-card { padding: 0; overflow: hidden; border: 2px solid transparent; border-radius: 14px; background: #f8f8fa; text-align: left; cursor: pointer; }
+        .catalog-style-card:hover, .catalog-style-card.is-selected { border-color: #f35381; box-shadow: 0 5px 16px rgba(243, 83, 129, 0.22); }
+        .catalog-style-card img { display: block; width: 100%; height: 126px; object-fit: cover; }
+        .catalog-style-card span { display: block; padding: 8px 9px 2px; color: #1f2937; font-size: 0.78rem; font-weight: 800; }
+        .catalog-style-card small { display: block; padding: 0 9px 9px; color: #9ca3af; font-size: 0.7rem; }
+        .catalog-preview { overflow: hidden; border: 1px solid #f0e7eb; border-radius: 18px; background: linear-gradient(155deg, #fff5f8, #f5f7ff); }
+        .catalog-preview-image { height: 270px; overflow: hidden; background: #e9e8ef; }
+        .catalog-preview-image img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
+        .catalog-preview-copy { padding: 15px; }
+        .catalog-preview-copy p { margin: 0; color: #6b7280; font-size: 0.78rem; }
+        .catalog-preview-copy strong { display: block; margin: 5px 0 12px; color: #1f2937; font-size: 1rem; }
+        .catalog-range { margin-top: 12px; }
+        .catalog-range label { display: flex; justify-content: space-between; color: #4b5563; font-size: 0.77rem; font-weight: 800; }
+        .catalog-range output { color: #e3376b; }
+        .catalog-range input { width: 100%; margin: 7px 0 0; accent-color: #f35381; }
+        .catalog-footnote { margin: 13px 0 0; color: #9ca3af; font-size: 0.68rem; line-height: 1.45; }
+        .admin-service-editor { margin: 20px; padding: 14px; border-radius: 12px; background: rgba(255,255,255,0.82); border: 1px solid rgba(31,41,55,0.1); }
+        .admin-service-editor h3 { margin: 0 0 5px; color: #374151; font-size: 0.93rem; }
+        .admin-service-editor p { margin: 0 0 10px; color: #6b7280; font-size: 0.7rem; line-height: 1.35; }
+        .service-editor-row { display: grid; grid-template-columns: minmax(0, 1fr) 70px 58px 28px; gap: 5px; margin-top: 6px; }
+        .service-editor-row input { min-width: 0; padding: 7px 5px; border: 1px solid #e5e7eb; border-radius: 6px; font: inherit; font-size: 0.7rem; }
+        .service-editor-row .service-delete { border: 0; border-radius: 6px; background: #fff1f2; color: #e3376b; cursor: pointer; }
+        .service-editor-actions { display: flex; gap: 7px; margin-top: 10px; }
+        .service-editor-actions button { flex: 1; border: 0; border-radius: 7px; padding: 8px; font: inherit; font-size: 0.74rem; font-weight: 800; cursor: pointer; }
+        .service-editor-add { background: #f3f4f6; color: #374151; }
+        .service-editor-save { background: #f35381; color: #fff; }
+        @media screen and (max-width: 640px) {
+            .catalog-panel { padding: 10px; }
+            .catalog-card { padding: 18px 14px; border-radius: 18px; }
+            .catalog-content { grid-template-columns: 1fr; }
+            .catalog-style-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .catalog-style-card img { height: 110px; }
+            .catalog-preview-image { height: 230px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 관리자 모드 활성화 알림 바 -->
+    <div class="admin-active-badge" id="adminActiveBadge">
+        <span>👑 <strong>관리자 모드 활성화됨</strong> (<span id="adminShopName"></span>)</span>
+        <button type="button" class="btn-admin-logout" onclick="logoutAdmin()">로그아웃</button>
+    </div>
+
+    <!-- 슬라이드 아웃 메뉴 & 팝업 커버 -->
+    <div class="formcover">
+        <div class='aside'>
+            <div class='close' onclick="menuclose();"></div>
+            <div class='map' id="menuMapBtn" onclick="openShopMap();"><div class='map_icon'></div><span>위치보기</span></div>
+            <div class='tel' id="menuTelBtn" onclick="callShop();"><div class='tel_icon'></div><span>문의전화</span></div>
+            <div class='share' id="kakaotalk-sharing-btn" onclick="shareKakao();"><div class='share_icon'></div><span>카카오톡 공유</span></div>
+            <div class='share' onclick="share();"><div class='qr_icon'></div><span>QR / 주소 복사</span></div>
+            <div class='qr'></div>
+            <button type="button" class="catalog-menu" onclick="openCatalog()">✦ 헤어 카탈로그</button>
+
+            <button type="button" class="btn-new-shop" onclick="openNewShopModal()">+ 새 매장 개설</button>
+            <div class='admin' id="menuAdminBtn" onclick="showAdminPrompt();">관리자 로그인</div>
+
+            <!-- 관리자 로그인 폼 -->
+            <form class="form_admin" id="formAdmin" onsubmit="handleAdminLogin(event);">
+                <div class="list">
+                    <div class='icon_pw'></div>
+                    <input type="password" id="apw" name="apw" class="inbox" placeholder='관리자 비밀번호를 입력하세요' required>
+                </div>
+                <button type="submit" class="submit">관리자 인증</button>
+            </form>
+
+            <!-- 관리자 전용: 공지사항 등록 폼 -->
+            <form class="form_notice" id="formNotice" style="display:none;" onsubmit="handleNoticeSubmit(event);">
+                <div class="list">
+                    <div class='icon_notice'></div>
+                    <textarea cols="30" rows="3" id="anotice" name="anotice" class="inbox" placeholder='고객에게 노출될 공지사항을 입력하세요'></textarea>
+                </div>
+                <button type="submit" class="submit">공지사항 즉시 반영</button>
+            </form>
+
+            <section class="admin-service-editor" id="adminServiceEditor" style="display:none;" aria-labelledby="serviceEditorTitle">
+                <h3 id="serviceEditorTitle">시술 메뉴 편집</h3>
+                <p>시술명 · 가격 · 소요시간을 수정하면 예약 화면에도 바로 반영됩니다.</p>
+                <div id="serviceEditorRows"></div>
+                <div class="service-editor-actions">
+                    <button type="button" class="service-editor-add" onclick="addServiceEditorRow()">+ 시술 추가</button>
+                    <button type="button" class="service-editor-save" onclick="saveServices()">저장</button>
+                </div>
+            </section>
+        </div>
+
+        <section class="catalog-panel" id="catalogPanel" aria-labelledby="catalogTitle" aria-modal="true" role="dialog">
+            <div class="catalog-card">
+                <div class="catalog-heading">
+                    <div>
+                        <h2 id="catalogTitle">헤어 카탈로그</h2>
+                        <p>원하는 스타일을 고르고, 기장과 연령대 기준으로 상담을 준비해 보세요.</p>
+                    </div>
+                    <button type="button" class="catalog-close" onclick="closeCatalog()" aria-label="카탈로그 닫기">×</button>
+                </div>
+                <div class="catalog-gender" role="tablist" aria-label="스타일 분류">
+                    <button type="button" class="is-active" id="catalogFemaleTab" onclick="setCatalogGender('female')" role="tab" aria-selected="true">여성 스타일</button>
+                    <button type="button" id="catalogMaleTab" onclick="setCatalogGender('male')" role="tab" aria-selected="false">남성 스타일</button>
+                </div>
+                <div class="catalog-content">
+                    <div class="catalog-style-grid" id="catalogStyleGrid" aria-label="기장별 스타일 목록">
+                        <button type="button" class="catalog-style-card is-selected" data-gender="female" data-name="소프트 레이어드" data-length="3" data-length-label="미디엄" onclick="selectCatalogStyle(this)">
+                            <img src="image/01.jpg" alt="소프트 레이어드 스타일 참고 이미지"><span>소프트 레이어드</span><small>미디엄</small>
+                        </button>
+                        <button type="button" class="catalog-style-card" data-gender="female" data-name="프렌치 보브" data-length="1" data-length-label="숏" onclick="selectCatalogStyle(this)">
+                            <img src="image/02.jpg" alt="프렌치 보브 스타일 참고 이미지"><span>프렌치 보브</span><small>숏</small>
+                        </button>
+                        <button type="button" class="catalog-style-card" data-gender="female" data-name="빌드펌 롱웨이브" data-length="5" data-length-label="롱" onclick="selectCatalogStyle(this)">
+                            <img src="image/03.jpg" alt="빌드펌 롱웨이브 스타일 참고 이미지"><span>빌드펌 롱웨이브</span><small>롱</small>
+                        </button>
+                        <button type="button" class="catalog-style-card" data-gender="female" data-name="허쉬컷" data-length="3" data-length-label="미디엄" onclick="selectCatalogStyle(this)">
+                            <img src="image/04.jpg" alt="허쉬컷 스타일 참고 이미지"><span>허쉬컷</span><small>미디엄</small>
+                        </button>
+                        <button type="button" class="catalog-style-card" data-gender="female" data-name="시스루 뱅 롱" data-length="5" data-length-label="롱" onclick="selectCatalogStyle(this)">
+                            <img src="image/05.jpg" alt="시스루 뱅 롱 스타일 참고 이미지"><span>시스루 뱅 롱</span><small>롱</small>
+                        </button>
+                        <button type="button" class="catalog-style-card" data-gender="female" data-name="C컬 보브" data-length="2" data-length-label="보브" onclick="selectCatalogStyle(this)">
+                            <img src="image/06.jpg" alt="C컬 보브 스타일 참고 이미지"><span>C컬 보브</span><small>보브</small>
+                        </button>
+                        <button type="button" class="catalog-style-card" data-gender="male" data-name="텍스처 투블럭" data-length="1" data-length-label="숏" onclick="selectCatalogStyle(this)" style="display:none;">
+                            <img src="image/07.jpg" alt="텍스처 투블럭 스타일 참고 이미지"><span>텍스처 투블럭</span><small>숏</small>
+                        </button>
+                        <button type="button" class="catalog-style-card" data-gender="male" data-name="가르마 펌" data-length="3" data-length-label="미디엄" onclick="selectCatalogStyle(this)" style="display:none;">
+                            <img src="image/08.jpg" alt="가르마 펌 스타일 참고 이미지"><span>가르마 펌</span><small>미디엄</small>
+                        </button>
+                        <button type="button" class="catalog-style-card" data-gender="male" data-name="리프컷" data-length="4" data-length-label="미디엄 롱" onclick="selectCatalogStyle(this)" style="display:none;">
+                            <img src="image/09.jpg" alt="리프컷 스타일 참고 이미지"><span>리프컷</span><small>미디엄 롱</small>
+                        </button>
+                        <button type="button" class="catalog-style-card" data-gender="male" data-name="댄디 크롭" data-length="1" data-length-label="숏" onclick="selectCatalogStyle(this)" style="display:none;">
+                            <img src="image/10.jpg" alt="댄디 크롭 스타일 참고 이미지"><span>댄디 크롭</span><small>숏</small>
+                        </button>
+                    </div>
+                    <aside class="catalog-preview" aria-live="polite">
+                        <div class="catalog-preview-image"><img id="catalogModelImage" src="image/catalog-model-female.png" alt="카메라를 바라보며 밝게 웃는 여성 스타일 참고 모델"></div>
+                        <div class="catalog-preview-copy">
+                            <p>선택한 상담 기준</p>
+                            <strong id="catalogChosenStyle">소프트 레이어드</strong>
+                            <div class="catalog-range">
+                                <label for="catalogLength">희망 기장 <output id="catalogLengthOutput">미디엄</output></label>
+                                <input id="catalogLength" type="range" min="1" max="5" step="1" value="3" oninput="updateCatalogPreview()">
+                            </div>
+                            <div class="catalog-range">
+                                <label for="catalogAge">추천 연령대 <output id="catalogAgeOutput">30대</output></label>
+                                <input id="catalogAge" type="range" min="10" max="70" step="10" value="30" oninput="updateCatalogPreview()">
+                            </div>
+                            <p class="catalog-footnote">모델 이미지는 상담을 돕는 참고용입니다. 실제 결과는 모발 상태와 시술 상담에 따라 달라질 수 있습니다.</p>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+
+        <!-- 예약 폼 모달 -->
+        <form class="form_reserve" id="formReserve" onsubmit="handleReserveSubmit(event);">
+            <div class="card">
+                <div class="content">
+                    <div class="close" onclick="closeModal();"></div>
+                    <div class="store" id="cardStoreName">제이헤어 미용실</div>
+                    <div class="discount"><span class='num'>10</span><span class='percent'>%</span><div>인터넷 예약후 시술시 <b>10% 결제 할인</b><span class='del'>해 드립니다.</span></div></div>
+                    <input type="text" id="cdate" name="cdate" class="box" placeholder='2026-10-27 (화) 15시' readonly="true">
+                    <input type="text" id="cname" name="cname" class="box" placeholder='예약자' readonly="true">
+                    <div class="cstyle" id="cardStylePills">
+                        <span id="bb1">커트</span>
+                        <span id="bb2">염색</span>
+                        <span id="bb3">파마</span>
+                        <span id="bb4">기타</span>
+                    </div>
+                    <input type="hidden" id="cdate1" name="cdate1">
+                    <input type="hidden" id="cdate2" name="cdate2">
+                    <input type="hidden" id="cyoil" name="cyoil">
+                </div>
+                <div class="cardbg front"></div>
+                <div class="cardbg back"></div>
+            </div>
+
+            <div class="list"><span id="cremain" name="cremain" class="box">예약시간까지 카운트다운</span></div>
+            <div class="list">
+                <span class="title">예약자</span>
+                <div class='icon_human'></div>
+                <input type="text" id="rname" name="rname" class="inbox" placeholder='성함을 입력하세요' required>
+                <div class="caution_name" style="display:none; color:#f35381; font-size:0.8rem; margin-top:4px;">↑ 성함을 입력해 주세요!</div>
+            </div>
+            <div class="list">
+                <span class="title">연락처</span>
+                <div class='icon_phone'></div>
+                <input type="tel" inputmode="numeric" id="rtel" name="rtel" class="inbox" placeholder='연락처 (- 없이 11자리)' onfocusout="telcheck()" required>
+                <div class="caution_tel" style="display:none; color:#f35381; font-size:0.8rem; margin-top:4px;">↑ 연락처를 입력해 주세요!</div>
+            </div>
+            <div class="list">
+                <span class="title">시술명</span>
+                <div class='icon_style'></div>
+                <div class="checkbox-wrapper-10" id="styleCheckboxes">
+                    <input class="tgl tgl-flip" id="cb1" type="checkbox" name="rstyle[]" value="커트" />
+                    <label class="tgl-btn" data-tg-off="커트" data-tg-on="커트" for="cb1"></label>
+                    <input class="tgl tgl-flip" id="cb2" type="checkbox" name="rstyle[]" value="염색"/>
+                    <label class="tgl-btn" data-tg-off="염색" data-tg-on="염색" for="cb2"></label>
+                    <input class="tgl tgl-flip" id="cb3" type="checkbox" name="rstyle[]" value="파마"/>
+                    <label class="tgl-btn" data-tg-off="파마" data-tg-on="파마" for="cb3"></label>
+                    <input class="tgl tgl-flip" id="cb4" type="checkbox" name="rstyle[]" value="기타"/>
+                    <label class="tgl-btn" data-tg-off="기타" data-tg-on="기타" for="cb4"></label>
+                </div>
+                <div class="caution_style" style="display:none; color:#f35381; font-size:0.8rem; margin-top:4px;">↑ 한 개 이상의 시술을 선택해 주세요!</div>
+            </div>
+
+            <div class="list">
+                <span class="title">요청사항</span>
+                <div class='icon_note'></div>
+                <textarea id="rcomment" name="rcomment" class="inbox" placeholder='요청사항을 입력하세요'></textarea>
+            </div>
+            <button type="submit" class="submit">예약하기</button>
+        </form>
+
+        <!-- 예약 취소 폼 모달 -->
+        <form class="form_cancel" id="formCancel" onsubmit="handleCancelSubmit(event);">
+            <div class="card">
+                <div class="content">
+                    <div class="close" onclick="closeModal();"></div>
+                    <div class="store" id="cancelCardStoreName">제이헤어 미용실</div>
+                    <div class="discount"><span class='num'>10</span><span class='percent'>%</span><div><b>10% 예약할인</b> 혜택이 소멸됩니다</div></div>
+                    <input type="text" id="ddate" name="ddate" class="box" readonly="true">
+                    <input type="text" id="dname" name="dname" class="box" readonly="true">
+                    <div class="cstyle">
+                        <span id="cbb1" style="display:none;">커트</span>
+                        <span id="cbb2" style="display:none;">염색</span>
+                        <span id="cbb3" style="display:none;">파마</span>
+                        <span id="cbb4" style="display:none;">기타</span>
+                    </div>
+                </div>
+                <div class="cardbg front"></div>
+                <div class="cardbg back"></div>
+            </div>
+
+            <div class="caution_cancel">진짜로 예약을 취소하시겠습니까?</div>
+            <div class="list">
+                <span class="title">비밀번호</span>
+                <div class='icon_pw'></div>
+                <input type="password" inputmode="numeric" pattern="[0-9]*" id="rpw" name="rpw" class="inbox" placeholder='휴대폰 뒷번호 4자리를 입력해 주세요' required>
+                <div class="caution_pw" style="display:none; color:#f35381; font-size:0.8rem; margin-top:4px;">↑ 휴대폰 뒷번호 4자리를 입력해 주세요!</div>
+            </div>
+            <input type="hidden" id="rid" name="rid">
+            <button type="submit" class="submit">예약 취소하기</button>
+        </form>
+
+        <div class="dim" onclick="closeModal();"></div>
+    </div>
+
+    <!-- 헤더 영역 -->
+    <div class='header'>
+        <nav class="tenant-bar" aria-label="서비스 메뉴">
+            <a href="./" class="tenant-brand" aria-label="렛츠헤어 홈">
+                <img class="tenant-brand-mark" src="favicon/android-icon-192x192.png?v=brand-20261028b" alt="" width="34" height="34">
+                <span class="tenant-brand-name">렛츠헤어</span>
+            </a>
+            <button type="button" class="tenant-menu" onclick="menuopen();" aria-label="메뉴 열기"></button>
+        </nav>
+        <div class='store_name'>
+            <div class='logo'>
+                <span class='symbol'><img src='image/symbol.png' alt="Logo" id="storeLogoImg"></span>
+                <span class='txt' id="storeTitleTxt">J.Hair Shop</span>
+            </div>
+            <div class='info'>영업시간&nbsp; <b id="storeHoursTxt">12:00 ~ 20:00</b></div>
+            <div class='info' id="storeHolidayTxt">매월 첫째주 / 셋째주 일요일 휴무</div>
+
+            <!-- 관리자 모드 전용 통계 카드 -->
+            <div id="adminStatsWrap" style="display:none; width:100%; margin-top:6px;">
+                <div class='info admin_total'><span id="statsMonthTxt"></span>월 누적 총계 <b id="statsTotalCount">0</b>건</div>
+                <div class='info'>
+                    <span id="statsCutCount">커트 0건</span>
+                    <span id="statsColorCount">염색 0건</span>
+                    <span id="statsPermCount">파마 0건</span>
+                    <span id="statsEtcCount">기타 0건</span>
+                </div>
+            </div>
+        </div>
+
+        <div class='dim'></div>
+
+        <!-- 매장 공지: 흐르는 헤어 갤러리 위 글래스 오버레이 -->
+        <div class="store-notice-bar" id="storeNoticeBar" style="display:none;" role="status" aria-live="polite">
+            <strong class="store-notice-icon">📢 공지</strong>
+            <span id="storeNoticeText"></span>
+        </div>
+
+        <div class="slider-wrapper">
+            <div class="items-holder">
+                <div class="items">
+                    <img src="image/01.jpg" loading="eager" class="item" alt="헤어 갤러리 1"/>
+                    <img src="image/02.jpg" loading="eager" class="item" alt="헤어 갤러리 2"/>
+                    <img src="image/03.jpg" loading="eager" class="item" alt="헤어 갤러리 3"/>
+                    <img src="image/04.jpg" loading="eager" class="item" alt="헤어 갤러리 4"/>
+                    <img src="image/05.jpg" loading="eager" class="item" alt="헤어 갤러리 5"/>
+                    <img src="image/06.jpg" loading="eager" class="item" alt="헤어 갤러리 6"/>
+                    <img src="image/07.jpg" loading="eager" class="item" alt="헤어 갤러리 7"/>
+                    <img src="image/08.jpg" loading="eager" class="item" alt="헤어 갤러리 8"/>
+                    <img src="image/09.jpg" loading="eager" class="item" alt="헤어 갤러리 9"/>
+                    <img src="image/10.jpg" loading="eager" class="item" alt="헤어 갤러리 10"/>
+                </div>
+                <div class="items">
+                    <img src="image/01.jpg" loading="eager" class="item" alt="헤어 갤러리 1"/>
+                    <img src="image/02.jpg" loading="eager" class="item" alt="헤어 갤러리 2"/>
+                    <img src="image/03.jpg" loading="eager" class="item" alt="헤어 갤러리 3"/>
+                    <img src="image/04.jpg" loading="eager" class="item" alt="헤어 갤러리 4"/>
+                    <img src="image/05.jpg" loading="eager" class="item" alt="헤어 갤러리 5"/>
+                    <img src="image/06.jpg" loading="eager" class="item" alt="헤어 갤러리 6"/>
+                    <img src="image/07.jpg" loading="eager" class="item" alt="헤어 갤러리 7"/>
+                    <img src="image/08.jpg" loading="eager" class="item" alt="헤어 갤러리 8"/>
+                    <img src="image/09.jpg" loading="eager" class="item" alt="헤어 갤러리 9"/>
+                    <img src="image/10.jpg" loading="eager" class="item" alt="헤어 갤러리 10"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 탭 네비게이션 -->
+    <div class="container_tab">
+        <div class="tabs">
+            <span class='tab tab_select' id='tab1' onclick="viewmode(1);">날짜별보기</span>
+            <span class='tab' id='tab2' onclick="viewmode(2);">한번에보기</span>
+        </div>
+    </div>
+
+    <!-- 날짜별 상세 드롭다운 백드롭 -->
+    <div class='backdrop' style="display:none;">
+        <span class='bday'></span>
+        <span class='close' onclick="closeBackdrop();"></span>
+        <span class='div_content'></span>
+    </div>
+
+    <!-- 미니 달력 (날짜별 보기) -->
+    <div class='calcovermini' id="calCoverMini">
+        <!-- JS 실시간 렌더링 -->
+    </div>
+
+    <!-- 대형 달력 (한번에 보기) -->
+    <div class='calcover' id="calCoverAll" style="display:none;">
+        <!-- JS 실시간 렌더링 -->
+    </div>
+
+    <div class='copyright'>Copyright © 2024 J.Hairshop & Let's Hair All Rights Reserved.</div>
+
+    <!-- 신규 매장 개설 모달 -->
+    <div class="modal-new-shop" id="modalNewShop" onclick="if (event.target === this) closeNewShopModal()">
+        <div class="modal-content-shop">
+            <button type="button" class="btn-modal-close" onclick="closeNewShopModal()">✕</button>
+            <h3>💈 새 미용실 예약시스템 개설</h3>
+            <p>나만의 고유 아이디를 발급받아 링크 하나로 10초 만에 예약받는 무료 시스템을 시작하세요.</p>
+            <form onsubmit="handleCreateShop(event)">
+                <div class="shop-form-row">
+                    <label for="newShopId">매장 영문 아이디 (URL 주소용) *</label>
+                    <input type="text" id="newShopId" placeholder="예: salon_gangnam, vogue_hair" pattern="[a-zA-Z0-9_-]+" required>
+                    <small style="color:#6b7280; font-size:0.75rem;">영문, 숫자, 하이픈(-)만 가능합니다.</small>
+                </div>
+                <div class="shop-form-row">
+                    <label for="newShopName">매장 상호명 *</label>
+                    <input type="text" id="newShopName" placeholder="예: 살롱 드 강남" required>
+                </div>
+                <div class="shop-form-row">
+                    <label for="newShopTel">문의 전화번호 *</label>
+                    <input type="tel" id="newShopTel" placeholder="예: 02-1234-5678" required>
+                </div>
+                <div class="shop-form-row">
+                    <label for="newShopAdminPw">관리자 비밀번호 *</label>
+                    <input type="password" id="newShopAdminPw" placeholder="예약 취소 및 매장 관리에 사용할 암호" required>
+                </div>
+                <div class="shop-form-row">
+                    <label for="newShopHours">영업시간</label>
+                    <input type="text" id="newShopHours" value="11:00 ~ 20:00">
+                </div>
+                <div class="shop-form-row">
+                    <label for="newShopHoliday">정기 휴무일</label>
+                    <input type="text" id="newShopHoliday" value="매주 월요일 휴무">
+                </div>
+                <button type="submit" class="shop-form-submit">지금 즉시 무료 개설하기</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDK (v10 compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- jQuery & Kakao SDK -->
+    <script src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js" crossorigin="anonymous"></script>
+
+    <script>
+    /**
+     * Firebase Firestore Initialization
+     */
+    const firebaseConfig = {
+      apiKey: "AIzaSyAEtPNOA2IxUwEt62SSEG1FKdv1g2pQVMI",
+      authDomain: "metro-live-2918e.firebaseapp.com",
+      projectId: "metro-live-2918e",
+      storageBucket: "metro-live-2918e.firebasestorage.app",
+      messagingSenderId: "154827314076",
+      appId: "1:154827314076:web:9cf0148e89914033c5ee59",
+      measurementId: "G-JF0HTXZVV0"
+    };
+
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+
+    // -------------------------------------------------------------
+    // Multi-tenant Shop ID Resolution
+    // -------------------------------------------------------------
+    const urlParams = new URL(location.href).searchParams;
+    let currentShopId = urlParams.get('shop') || urlParams.get('id') || 'jhair';
+    currentShopId = currentShopId.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '') || 'jhair';
+
+    let currentShop = null;
+    let liveReservations = [];
+    let customHolidays = [];
+    let isAdmin = false;
+
+    let currentYear = new Date().getFullYear();
+    let currentMonth = new Date().getMonth() + 1;
+    let activeTimer = null;
+    let selectedDate = '';
+    let selectedYoil = '';
+
+    // Canonical service data keeps the original `styles: string[]` field usable
+    // while adding price and duration for the administrator editor.
+    const DEFAULT_SERVICES = [
+        { id: 'cut', name: '커트', price: 20000, duration: 40 },
+        { id: 'color', name: '염색', price: 80000, duration: 120 },
+        { id: 'perm', name: '파마', price: 90000, duration: 120 },
+        { id: 'etc', name: '기타', price: 0, duration: 60 }
+    ];
+
+    function getDefaultServices() {
+        return DEFAULT_SERVICES.map((service) => ({ ...service }));
+    }
+
+    function escapeHtml(value) {
+        return String(value ?? '').replace(/[&<>'"]/g, (char) => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+        })[char]);
+    }
+
+    function normalizeServices(shop = currentShop) {
+        const storedServices = Array.isArray(shop && shop.services) && shop.services.length ? shop.services : null;
+        const legacyStyles = Array.isArray(shop && shop.styles) && shop.styles.length ? shop.styles : null;
+        const source = storedServices || legacyStyles || getDefaultServices();
+
+        return source.map((service, index) => {
+            const record = typeof service === 'string' ? { name: service } : (service || {});
+            return {
+                id: String(record.id || `service-${index + 1}`),
+                name: String(record.name || record.title || record.label || `시술 ${index + 1}`),
+                price: Math.max(0, Number(record.price ?? record.amount ?? 0) || 0),
+                duration: Math.max(0, Number(record.duration ?? record.minutes ?? record.durationMinutes ?? 0) || 0)
+            };
+        });
+    }
+
+    function renderBookingServiceChoices() {
+        if (!currentShop) return;
+        const services = normalizeServices();
+        const checkboxMarkup = services.map((service, index) => {
+            const id = `booking-service-${index}`;
+            const name = escapeHtml(service.name);
+            return `<input class="tgl tgl-flip" id="${id}" type="checkbox" name="rstyle[]" value="${name}">
+                <label class="tgl-btn" data-tg-off="${name}" data-tg-on="${name}" for="${id}"></label>`;
+        }).join('');
+        const pillMarkup = services.map((service, index) => `<span id="booking-pill-${index}" data-service-name="${escapeHtml(service.name)}">${escapeHtml(service.name)}</span>`).join('');
+
+        $('#styleCheckboxes').html(checkboxMarkup);
+        $('#cardStylePills').html(pillMarkup);
+        $('#cardStylePills span').hide();
+    }
+
+    function serviceEditorRow(service = { id: `new-${Date.now()}`, name: '', price: 0, duration: 60 }) {
+        const safeId = escapeHtml(service.id);
+        const safeName = escapeHtml(service.name);
+        return `<div class="service-editor-row" data-service-id="${safeId}">
+            <input type="text" data-field="name" value="${safeName}" placeholder="시술명" aria-label="시술명">
+            <input type="number" data-field="price" value="${Number(service.price) || 0}" min="0" step="1000" placeholder="가격" aria-label="가격">
+            <input type="number" data-field="duration" value="${Number(service.duration) || 0}" min="0" step="5" placeholder="분" aria-label="소요시간(분)">
+            <button type="button" class="service-delete" onclick="removeServiceEditorRow(this)" aria-label="시술 삭제">×</button>
+        </div>`;
+    }
+
+    function renderServiceEditor() {
+        if (!isAdmin || !currentShop) return;
+        $('#adminServiceEditor').show();
+        $('#serviceEditorRows').html(normalizeServices().map((service) => serviceEditorRow(service)).join(''));
+    }
+
+    function addServiceEditorRow() {
+        $('#serviceEditorRows').append(serviceEditorRow());
+        $('#serviceEditorRows .service-editor-row:last input[data-field="name"]').trigger('focus');
+    }
+
+    function removeServiceEditorRow(button) {
+        const rows = $('#serviceEditorRows .service-editor-row');
+        if (rows.length === 1) {
+            alert('최소 한 개의 시술은 유지해 주세요.');
+            return;
+        }
+        $(button).closest('.service-editor-row').remove();
+    }
+
+    async function saveServices() {
+        const services = $('#serviceEditorRows .service-editor-row').map(function(index) {
+            const row = $(this);
+            const name = String(row.find('[data-field="name"]').val() || '').trim();
+            if (!name) return null;
+            return {
+                id: String(row.data('service-id') || `service-${index + 1}`),
+                name,
+                price: Math.max(0, Math.round(Number(row.find('[data-field="price"]').val()) || 0)),
+                duration: Math.max(0, Math.round(Number(row.find('[data-field="duration"]').val()) || 0))
+            };
+        }).get().filter(Boolean);
+
+        if (!services.length) {
+            alert('시술명을 하나 이상 입력해 주세요.');
+            return;
+        }
+
+        const legacyStyles = services.map((service) => service.name);
+        try {
+            await db.collection('hairShops').doc(currentShopId).update({ services, styles: legacyStyles });
+            currentShop = { ...currentShop, services, styles: legacyStyles };
+            updateShopUI();
+            alert('시술 메뉴가 저장되었습니다.');
+        } catch (error) {
+            console.error('Service save error:', error);
+            alert('시술 메뉴를 저장하지 못했습니다. 네트워크 연결을 확인해 주세요.');
+        }
+    }
+
+    // Default Fallback Template for Default Shop (J.Hair)
+    const DEFAULT_SHOP_DATA = {
+        id: 'jhair',
+        name: '제이헤어 미용실',
+        title: 'J.Hair Shop',
+        tel: '031-555-0628',
+        mapUrl: 'https://naver.me/50enuoRi',
+        hoursText: '12:00 ~ 20:00',
+        startHour: 12,
+        endHour: 20,
+        holidayText: '매월 첫째주 / 셋째주 일요일 휴무',
+        holidayRule: '1_3_sun', // 1,3주 일요일
+        adminPw: 'drem0428',
+        notice: '영업시간 12:00 ~ 20:00 (인터넷 예약 후 방문 시 10% 결제 할인)',
+        styles: ['커트', '염색', '파마', '기타']
+    };
+
+    // -------------------------------------------------------------
+    // Shop Metadata & Realtime Sync
+    // -------------------------------------------------------------
+    function initShopSubscription() {
+        const shopRef = db.collection('hairShops').doc(currentShopId);
+
+        shopRef.onSnapshot((doc) => {
+            if (doc.exists) {
+                currentShop = { ...DEFAULT_SHOP_DATA, ...doc.data(), id: currentShopId };
+            } else {
+                // If shop doesn't exist, create it with default or clean template
+                currentShop = {
+                    ...DEFAULT_SHOP_DATA,
+                    id: currentShopId,
+                    name: currentShopId === 'jhair' ? '제이헤어 미용실' : `${currentShopId} 헤어`,
+                    title: currentShopId === 'jhair' ? 'J.Hair Shop' : `${currentShopId.toUpperCase()} Hair`
+                };
+                shopRef.set(currentShop).catch(() => {});
+            }
+            updateShopUI();
+            listenReservations();
+            listenHolidays();
+        }, (err) => {
+            console.warn('Firestore shop sync fallback to local:', err);
+            currentShop = { ...DEFAULT_SHOP_DATA, id: currentShopId };
+            updateShopUI();
+            fallbackLocalLoad();
+        });
+    }
+
+    function updateShopUI() {
+        if (!currentShop) return;
+        document.title = `${currentShop.name} 시술예약 | 렛츠헤어`;
+        $('#storeTitleTxt').text(currentShop.title || currentShop.name);
+        $('#cardStoreName').text(currentShop.name);
+        $('#cancelCardStoreName').text(currentShop.name);
+        $('#storeHoursTxt').text(currentShop.hoursText || `${currentShop.startHour || 12}:00 ~ ${currentShop.endHour || 20}:00`);
+        $('#storeHolidayTxt').text(currentShop.holidayText || '정기 휴무');
+        renderBookingServiceChoices();
+
+        if (currentShop.notice && currentShop.notice.trim() !== '') {
+            $('#storeNoticeText').text(currentShop.notice);
+            $('#storeNoticeBar').css('display', 'flex');
+        } else {
+            $('#storeNoticeBar').hide();
+        }
+
+        if (isAdmin) {
+            $('#adminShopName').text(currentShop.name);
+            $('#adminActiveBadge').css('display', 'flex');
+            $('#adminStatsWrap').show();
+            $('#formNotice').show();
+            $('#anotice').val(currentShop.notice || '');
+            renderServiceEditor();
+        } else {
+            $('#adminActiveBadge').hide();
+            $('#adminStatsWrap').hide();
+            $('#formNotice').hide();
+            $('#adminServiceEditor').hide();
+        }
+    }
+
+    // -------------------------------------------------------------
+    // Firestore Reservations Realtime Listener
+    // -------------------------------------------------------------
+    let unsubReservations = null;
+    function listenReservations() {
+        if (unsubReservations) unsubReservations();
+
+        const resCol = db.collection('hairShops').doc(currentShopId).collection('reservations');
+        unsubReservations = resCol.onSnapshot((snapshot) => {
+            liveReservations = [];
+            snapshot.forEach((doc) => {
+                liveReservations.push({ id: doc.id, ...doc.data() });
+            });
+            renderCalendars();
+            if (selectedDate) loadDropSchedule(selectedDate, selectedYoil);
+            if (isAdmin) calculateMonthlyStats();
+        }, (err) => {
+            console.error('Reservation sync error:', err);
+            fallbackLocalLoad();
+        });
+    }
+
+    // -------------------------------------------------------------
+    // Firestore Holidays Realtime Listener
+    // -------------------------------------------------------------
+    let unsubHolidays = null;
+    function listenHolidays() {
+        if (unsubHolidays) unsubHolidays();
+        const holCol = db.collection('hairShops').doc(currentShopId).collection('holidays');
+        unsubHolidays = holCol.onSnapshot((snapshot) => {
+            customHolidays = [];
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                if (data.date) customHolidays.push(data.date);
+            });
+            renderCalendars();
+        });
+    }
+
+    // Fallback Local Storage
+    function fallbackLocalLoad() {
+        const localKey = `jhair_res_${currentShopId}`;
+        const stored = localStorage.getItem(localKey);
+        if (stored) {
+            try { liveReservations = JSON.parse(stored); } catch(e) {}
+        }
+        renderCalendars();
+    }
+
+    function saveFallbackLocal() {
+        const localKey = `jhair_res_${currentShopId}`;
+        localStorage.setItem(localKey, JSON.stringify(liveReservations));
+    }
+
+    // -------------------------------------------------------------
+    // Calendar Helpers & Rules
+    // -------------------------------------------------------------
+    function getTodayStr() {
+        const d = new Date();
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+    }
+
+    function getYoil(year, month, day) {
+        const yoils = ['일', '월', '화', '수', '목', '금', '토'];
+        const dateObj = new Date(year, month - 1, day);
+        return yoils[dateObj.getDay()];
+    }
+
+    function isShopHoliday(year, month, day) {
+        const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        // Custom temporary holiday
+        if (customHolidays.includes(dateStr)) return true;
+
+        const dateObj = new Date(year, month - 1, day);
+        const dayOfWeek = dateObj.getDay();
+
+        // 1,3주 일요일 휴무 (제이헤어 기본 규칙)
+        if (currentShop && currentShop.holidayRule === '1_3_sun') {
+            if (dayOfWeek === 0) {
+                const sundayCount = Math.ceil(day / 7);
+                return (sundayCount === 1 || sundayCount === 3);
+            }
+        } else if (currentShop && currentShop.holidayRule === 'mon') {
+            return dayOfWeek === 1; // 매주 월요일
+        } else if (currentShop && currentShop.holidayRule === 'sun') {
+            return dayOfWeek === 0; // 매주 일요일
+        }
+        return false;
+    }
+
+    function renderCalendars() {
+        renderMiniCalendar();
+        renderAllCalendar();
+    }
+
+    function renderMiniCalendar() {
+        const container = document.getElementById('calCoverMini');
+        const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+        const prevYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+        const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
+        const nextYear = currentMonth === 12 ? currentYear + 1 : currentYear;
+
+        const firstDayWeek = new Date(currentYear, currentMonth - 1, 1).getDay();
+        const totalDays = new Date(currentYear, currentMonth, 0).getDate();
+        const todayStr = getTodayStr();
+
+        let html = `
+            <div class='head'>
+                <span class='month_prev_txt' onclick="changeMonth(-1)"><span class='del'>${prevYear}.</span>${String(prevMonth).padStart(2, '0')} <span class='month_prev'></span></span>
+                <div class='hdate' onclick="resetToToday()"><span class='hmonth'>${currentYear}</span><span class='hday'>${String(currentMonth).padStart(2, '0')}</span></div>
+                <span class='month_next_txt' onclick="changeMonth(1)"><span class='month_next'></span><span class='del'>${nextYear}.</span>${String(nextMonth).padStart(2, '0')}</span>
+            </div>
+            <table class='calendar'>
+                <thead><tr><th class="sunday">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th></tr></thead>
+                <tbody><tr>
+        `;
+
+        let cellCount = 0;
+        for (let i = 0; i < firstDayWeek; i++) {
+            html += `<td></td>`;
+            cellCount++;
+        }
+
+        for (let day = 1; day <= totalDays; day++) {
+            if (cellCount % 7 === 0 && cellCount !== 0) {
+                html += `</tr><tr>`;
+            }
+            const dateStr = `${currentYear}-${String(currentMonth).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const yoil = getYoil(currentYear, currentMonth, day);
+            const isPast = dateStr < todayStr;
+            const isToday = dateStr === todayStr;
+            const isHoliday = isShopHoliday(currentYear, currentMonth, day);
+
+            let dayClasses = ['date'];
+            if (yoil === '일') dayClasses.push('sunday');
+            if (isPast) dayClasses.push('past');
+            if (isToday) dayClasses.push('today');
+
+            if (isPast) {
+                html += `<td><span class="${dayClasses.join(' ')}">${day}</span>${isHoliday ? "<div class='holiday'>휴무</div>" : ""}</td>`;
+            } else if (isHoliday) {
+                html += `<td><span class="${dayClasses.join(' ')}">${day}</span><div class='holiday'>휴무</div>`;
+                if (isAdmin) {
+                    html += `<button type="button" class="btn-holiday-toggle" onclick="toggleHoliday('${dateStr}')">해제</button>`;
+                }
+                html += `</td>`;
+            } else {
+                html += `<td><span class="${dayClasses.join(' ')}" id="${dateStr}" onclick="drop_date('${dateStr}','${yoil}')">${day}</span></td>`;
+            }
+            cellCount++;
+        }
+
+        while (cellCount % 7 !== 0) {
+            html += `<td></td>`;
+            cellCount++;
+        }
+
+        html += `</tr></tbody></table>`;
+        container.innerHTML = html;
+    }
+
+    function renderAllCalendar() {
+        const container = document.getElementById('calCoverAll');
+        const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+        const prevYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+        const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
+        const nextYear = currentMonth === 12 ? currentYear + 1 : currentYear;
+
+        const firstDayWeek = new Date(currentYear, currentMonth - 1, 1).getDay();
+        const totalDays = new Date(currentYear, currentMonth, 0).getDate();
+        const todayStr = getTodayStr();
+        const currentHour = new Date().getHours();
+        const activeRes = liveReservations.filter(r => Number(r.trash) !== 1);
+
+        const startH = (currentShop && currentShop.startHour) || 12;
+        const endH = (currentShop && currentShop.endHour) || 20;
+
+        let html = `
+            <div class='head'>
+                <span class='month_prev_txt' onclick="changeMonth(-1)"><span class='del'>${prevYear}.</span>${String(prevMonth).padStart(2, '0')} <span class='month_prev'></span></span>
+                <div class='hdate' onclick="resetToToday()"><span class='hmonth'>${currentYear}</span><span class='hday'>${String(currentMonth).padStart(2, '0')}</span></div>
+                <span class='month_next_txt' onclick="changeMonth(1)"><span class='month_next'></span><span class='del'>${nextYear}.</span>${String(nextMonth).padStart(2, '0')}</span>
+            </div>
+            <table class='calendar'>
+                <thead><tr><th class="sunday">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th></tr></thead>
+                <tbody><tr>
+        `;
+
+        let cellCount = 0;
+        for (let i = 0; i < firstDayWeek; i++) {
+            html += `<td></td>`;
+            cellCount++;
+        }
+
+        for (let day = 1; day <= totalDays; day++) {
+            if (cellCount % 7 === 0 && cellCount !== 0) {
+                html += `</tr><tr>`;
+            }
+            const dateStr = `${currentYear}-${String(currentMonth).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const yoil = getYoil(currentYear, currentMonth, day);
+            const isPast = dateStr < todayStr;
+            const isToday = dateStr === todayStr;
+            const isHoliday = isShopHoliday(currentYear, currentMonth, day);
+
+            let dayClasses = ['date'];
+            if (yoil === '일') dayClasses.push('sunday');
+            if (isPast) dayClasses.push('past');
+            if (isToday) dayClasses.push('today');
+
+            html += `<td><span class="${dayClasses.join(' ')}" id="f${dateStr}">${day}</span>`;
+
+            if (isPast) {
+                html += `<div class='holiday'>마감</div>`;
+            } else if (isHoliday) {
+                html += `<div class='holiday'>휴무</div>`;
+                if (isAdmin) {
+                    html += `<button type="button" class="btn-holiday-toggle" onclick="toggleHoliday('${dateStr}')">해제</button>`;
+                }
+            } else {
+                for (let h = startH; h < endH; h++) {
+                    const match = activeRes.find(r => r.reserve_date === dateStr && Number(r.reserve_time) === h);
+                    if (match) {
+                        const masked = match.name ? match.name.charAt(0) + '**' : '예약완료';
+                        html += `<div class='time reserved' onclick="popup_cancel('${currentYear}','${currentMonth}','${day}','${yoil}','${h}','${match.name}','${match.style}','${match.id}')">${h}시 <button><span class='del'>예약</span>마감</button></div>`;
+                    } else if (isToday && h <= currentHour) {
+                        html += `<div class='time reserved'>${h}시 <button><span class='del'>예약</span>마감</button></div>`;
+                    } else {
+                        html += `<div class='time' onclick="popup_reserve('${currentYear}','${currentMonth}','${day}','${yoil}','${h}')">${h}시 <button>예약<span class='del'>하기</span></button></div>`;
+                    }
+                }
+                if (isAdmin) {
+                    html += `<button type="button" class="btn-holiday-toggle" style="margin-top:6px; width:100%;" onclick="toggleHoliday('${dateStr}')">휴무지정</button>`;
+                }
+            }
+
+            html += `</td>`;
+            cellCount++;
+        }
+
+        while (cellCount % 7 !== 0) {
+            html += `<td></td>`;
+            cellCount++;
+        }
+
+        html += `</tr></tbody></table>`;
+        container.innerHTML = html;
+    }
+
+    function changeMonth(delta) {
+        currentMonth += delta;
+        if (currentMonth > 12) {
+            currentMonth = 1;
+            currentYear++;
+        } else if (currentMonth < 1) {
+            currentMonth = 12;
+            currentYear--;
+        }
+        renderCalendars();
+        if (isAdmin) calculateMonthlyStats();
+    }
+
+    function resetToToday() {
+        const now = new Date();
+        currentYear = now.getFullYear();
+        currentMonth = now.getMonth() + 1;
+        renderCalendars();
+        if (isAdmin) calculateMonthlyStats();
+    }
+
+    function viewmode(num) {
+        if (num === 1) {
+            $('#calCoverMini').fadeIn();
+            $('#calCoverAll').hide();
+            $('#tab1').addClass('tab_select');
+            $('#tab2').removeClass('tab_select');
+        } else {
+            $('#calCoverMini').hide();
+            $('#calCoverAll').fadeIn();
+            $('#tab1').removeClass('tab_select');
+            $('#tab2').addClass('tab_select');
+        }
+    }
+
+    function drop_date(date, yoil) {
+        selectedDate = date;
+        selectedYoil = yoil;
+        $('.date').removeClass('selected');
+        $('#' + date).addClass('selected');
+        $('#f' + date).addClass('selected');
+
+        $('.backdrop').slideDown('fast');
+        $('.bday').html(date.replaceAll("-", ".") + " (" + yoil + ") 예약내역");
+        loadDropSchedule(date, yoil);
+    }
+
+    function closeBackdrop() {
+        $('.backdrop').slideUp('fast');
+    }
+
+    function loadDropSchedule(date, yoil) {
+        const activeRes = liveReservations.filter(r => Number(r.trash) !== 1 && r.reserve_date === date);
+        const todayStr = getTodayStr();
+        const currentHour = new Date().getHours();
+        const startH = (currentShop && currentShop.startHour) || 12;
+        const endH = (currentShop && currentShop.endHour) || 20;
+
+        let contentHtml = '';
+
+        for (let h = startH; h < endH; h++) {
+            const match = activeRes.find(r => Number(r.reserve_time) === h);
+            if (match) {
+                const displayName = isAdmin ? match.name : (match.name ? match.name.charAt(0) + '**' : '고객');
+                contentHtml += `
+                    <div class='time reserved' id='m${date}-${h}' onclick="reserve_over('${date}-${h}');">
+                        ${h}시
+                        <button class='btn_cancel' onclick="popup_cancel('${currentYear}','${currentMonth}','${date.slice(8,10)}','${yoil}','${h}','${match.name}','${match.style}','${match.id}')"><span class='del'>예약</span>취소</button>
+                        <span class='rdetail'>
+                            <span class='style'>${match.style || ''}</span> ${displayName}
+                        </span>
+                        ${isAdmin && match.tel ? `<button class='call' style="margin-left:8px;" onclick="window.location.href='tel:${match.tel}'">📞</button>` : ''}
+                    </div>
+                `;
+            } else if (date === todayStr && h <= currentHour) {
+                contentHtml += `<div class='time reserved'>${h}시 <button><span class='del'>예약</span>마감</button></div>`;
+            } else {
+                contentHtml += `<div class='time' onclick="popup_reserve('${currentYear}','${currentMonth}','${date.slice(8,10)}','${yoil}','${h}');">${h}시 <button>예약<span class='del'>하기</span></button></div>`;
+            }
+        }
+
+        if (isAdmin) {
+            contentHtml += `<div style="text-align:center; padding:10px 0;"><button type="button" class="btn-holiday-toggle" onclick="toggleHoliday('${date}')">${customHolidays.includes(date) ? '임시 휴무 해제' : '이 날짜를 임시 휴무로 지정'}</button></div>`;
+        }
+
+        $('.div_content').html(contentHtml);
+    }
+
+    function reserve_over(id) {
+        $('#m' + id + ' > button').toggle();
+        $('#m' + id + ' > .rdetail').toggle();
+    }
+
+    // -------------------------------------------------------------
+    // Popup & Form Handling
+    // -------------------------------------------------------------
+    function popup_reserve(year, month, day, yoil, time) {
+        $(".formcover").css("display", "flex");
+        $(".form_reserve").css("display", "block");
+        $(".form_cancel").css("display", "none");
+        $(".aside").css("display", "none");
+        $(".calcover, .calcovermini").css("filter", "blur(2px) opacity(0.5)");
+
+        const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        $("#cdate").val(`${dateStr} (${yoil}) ${time}시`);
+        $("#cdate1").val(dateStr);
+        $("#cdate2").val(`${time}:00:00`);
+        $("#cyoil").val(yoil);
+
+        startCountdown(new Date(`${dateStr}T${String(time).padStart(2, '0')}:00:00`));
+    }
+
+    function startCountdown(targetTime) {
+        if (activeTimer) clearInterval(activeTimer);
+        function update() {
+            const diff = targetTime - new Date();
+            if (diff <= 0) {
+                $('#cremain').html('예약 시간이 지났거나 임박했습니다.');
+            } else {
+                const hours = Math.floor(diff / 3600000);
+                const mins = Math.floor((diff % 3600000) / 60000);
+                const secs = Math.floor((diff % 60000) / 1000);
+                $('#cremain').html(`예약시간까지 <b>${hours ? hours + '시간 ' : ''}${mins}분 ${secs}초</b> 남았습니다<i>!</i>`);
+            }
+        }
+        update();
+        activeTimer = setInterval(update, 1000);
+    }
+
+    function popup_cancel(year, month, day, yoil, time, name, style, id) {
+        $(".formcover").css("display", "flex");
+        $(".form_cancel").css("display", "block");
+        $(".form_reserve").css("display", "none");
+        $(".aside").css("display", "none");
+        $(".calcover, .calcovermini").css("filter", "blur(2px) opacity(0.5)");
+
+        const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        $("#ddate").val(`${dateStr} (${yoil}) ${time}시`);
+        $("#dname").val(name ? name.charAt(0) + '**' : '예약자');
+        $("#rid").val(id);
+        $("#rpw").val('');
+
+        $('#cbb1, #cbb2, #cbb3, #cbb4').hide();
+        if (style && style.includes('커트')) $('#cbb1').show();
+        if (style && style.includes('염색')) $('#cbb2').show();
+        if (style && style.includes('파마')) $('#cbb3').show();
+        if (style && style.includes('기타')) $('#cbb4').show();
+    }
+
+    function closeModal() {
+        $(".formcover").fadeOut();
+        $(".form_reserve, .form_cancel, #catalogPanel").hide();
+        $(".calcover, .calcovermini").css("filter", "none");
+        if (activeTimer) clearInterval(activeTimer);
+    }
+
+    function openCatalog() {
+        $(".formcover").css("display", "grid");
+        $(".aside, .form_reserve, .form_cancel").hide();
+        $('#catalogPanel').show();
+        $('.calcover, .calcovermini').css('filter', 'blur(2px) opacity(0.5)');
+        setCatalogGender('female');
+    }
+
+    function closeCatalog() {
+        $('#catalogPanel').hide();
+        $('.aside').show();
+    }
+
+    function setCatalogGender(gender) {
+        const isFemale = gender === 'female';
+        $('#catalogFemaleTab').toggleClass('is-active', isFemale).attr('aria-selected', isFemale);
+        $('#catalogMaleTab').toggleClass('is-active', !isFemale).attr('aria-selected', !isFemale);
+        $('.catalog-style-card').each(function() {
+            $(this).toggle($(this).data('gender') === gender);
+        });
+        const firstStyle = $(`.catalog-style-card[data-gender="${gender}"]`).first().get(0);
+        if (firstStyle) selectCatalogStyle(firstStyle);
+    }
+
+    function selectCatalogStyle(button) {
+        const selected = $(button);
+        $('.catalog-style-card').removeClass('is-selected');
+        selected.addClass('is-selected');
+        const isMale = selected.data('gender') === 'male';
+        $('#catalogModelImage')
+            .attr('src', isMale ? 'image/catalog-model-male.png' : 'image/catalog-model-female.png')
+            .attr('alt', `카메라를 바라보며 밝게 웃는 ${isMale ? '남성' : '여성'} 스타일 참고 모델`);
+        $('#catalogChosenStyle').text(selected.data('name'));
+        $('#catalogLength').val(selected.data('length'));
+        updateCatalogPreview();
+    }
+
+    function updateCatalogPreview() {
+        const lengthNames = { 1: '숏', 2: '보브', 3: '미디엄', 4: '미디엄 롱', 5: '롱' };
+        const length = Number($('#catalogLength').val());
+        const age = Number($('#catalogAge').val());
+        $('#catalogLengthOutput').text(lengthNames[length] || '미디엄');
+        $('#catalogAgeOutput').text(`${age}대`);
+    }
+
+    function menuopen() {
+        $(".formcover").css("display", "grid");
+        $(".aside").css("display", "block");
+        $(".form_reserve, .form_cancel, #catalogPanel").hide();
+        $(".calcover, .calcovermini").css("filter", "blur(2px) opacity(0.5)");
+    }
+
+    function menuclose() {
+        $(".calcover, .calcovermini").css("filter", "none");
+        $(".formcover, .aside, #catalogPanel").hide();
+        $(".admin").show();
+        $(".form_admin").hide();
+    }
+
+    function showAdminPrompt() {
+        $(".qr").hide();
+        $(".admin").hide();
+        $(".form_admin").show();
+        $('#apw').focus();
+    }
+
+    function handleAdminLogin(e) {
+        e.preventDefault();
+        const pw = $('#apw').val().trim();
+        const correctPw = (currentShop && currentShop.adminPw) || 'drem0428';
+
+        if (pw === correctPw) {
+            isAdmin = true;
+            menuclose();
+            updateShopUI();
+            calculateMonthlyStats();
+            alert(`[${currentShop.name}] 관리자로 인증되었습니다.`);
+            renderCalendars();
+            if (selectedDate) loadDropSchedule(selectedDate, selectedYoil);
+        } else {
+            alert('관리자 비밀번호가 일치하지 않습니다.');
+        }
+    }
+
+    function logoutAdmin() {
+        isAdmin = false;
+        updateShopUI();
+        renderCalendars();
+        if (selectedDate) loadDropSchedule(selectedDate, selectedYoil);
+        alert('관리자 모드에서 로그아웃되었습니다.');
+    }
+
+    function calculateMonthlyStats() {
+        $('#statsMonthTxt').text(currentMonth);
+        const monthPrefix = `${currentYear}-${String(currentMonth).padStart(2, '0')}`;
+        const thisMonthRes = liveReservations.filter(r => Number(r.trash) !== 1 && (r.reserve_date || '').startsWith(monthPrefix));
+
+        let cut = 0, color = 0, perm = 0, etc = 0;
+        thisMonthRes.forEach(r => {
+            const st = r.style || '';
+            if (st.includes('커트')) cut++;
+            if (st.includes('염색')) color++;
+            if (st.includes('파마')) perm++;
+            if (st.includes('기타')) etc++;
+        });
+
+        $('#statsTotalCount').text(thisMonthRes.length);
+        $('#statsCutCount').text(`커트 ${cut}건`);
+        $('#statsColorCount').text(`염색 ${color}건`);
+        $('#statsPermCount').text(`파마 ${perm}건`);
+        $('#statsEtcCount').text(`기타 ${etc}건`);
+    }
+
+    function handleNoticeSubmit(e) {
+        e.preventDefault();
+        const text = $('#anotice').val().trim();
+        db.collection('hairShops').doc(currentShopId).update({
+            notice: text
+        }).then(() => {
+            alert('공지사항이 저장되어 모든 고객 화면에 즉시 반영됩니다.');
+        }).catch(err => {
+            console.error('Notice save err:', err);
+            alert('공지사항 저장 중 오류가 발생했습니다.');
+        });
+    }
+
+    function toggleHoliday(dateStr) {
+        const holRef = db.collection('hairShops').doc(currentShopId).collection('holidays');
+        if (customHolidays.includes(dateStr)) {
+            // Remove holiday
+            holRef.where('date', '==', dateStr).get().then(snap => {
+                snap.forEach(doc => doc.ref.delete());
+                alert(`${dateStr} 임시 휴무가 해제되었습니다.`);
+            });
+        } else {
+            // Set holiday
+            holRef.add({
+                date: dateStr,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                alert(`${dateStr} 가 임시 휴무로 지정되어 예약이 마감되었습니다.`);
+            });
+        }
+    }
+
+    function telcheck() {
+        const val = $('#rtel').val();
+        $('#rtel').val(val.replace(/[^0-9]/g, ''));
+    }
+
+    // -------------------------------------------------------------
+    // Realtime Reservation Submit to Firestore
+    // -------------------------------------------------------------
+    async function handleReserveSubmit(e) {
+        e.preventDefault();
+        const name = $('#rname').val().trim();
+        const tel = $('#rtel').val().trim();
+        const dateStr = $('#cdate1').val();
+        const timeStr = $('#cdate2').val();
+        const hour = parseInt(timeStr);
+        const comment = $('#rcomment').val().trim();
+
+        const styles = $('#styleCheckboxes input[name="rstyle[]"]:checked').map(function() {
+            return $(this).val();
+        }).get();
+
+        if (!styles.length) {
+            $('.caution_style').fadeIn();
+            return;
+        }
+
+        // Double Booking Prevention Check
+        const conflict = liveReservations.find(r => Number(r.trash) !== 1 && r.reserve_date === dateStr && Number(r.reserve_time) === hour);
+        if (conflict) {
+            alert('선택하신 시간은 이미 예약이 완료되었습니다. 다른 시간을 선택해 주세요.');
+            return;
+        }
+
+        const newDoc = {
+            name: name,
+            tel: tel,
+            style: styles.join(' '),
+            comment: comment || '-',
+            reserve_date: dateStr,
+            reserve_time: hour,
+            trash: 0,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            createdDate: getTodayStr()
+        };
+
+        try {
+            await db.collection('hairShops').doc(currentShopId).collection('reservations').add(newDoc);
+            alert(`예약이 성공적으로 완료되었습니다!\n${dateStr} ${hour}시 (${styles.join(', ')})`);
+            closeModal();
+            $('#formReserve')[0].reset();
+        } catch(err) {
+            console.error('Reservation add error:', err);
+            // Fallback
+            newDoc.id = Date.now().toString();
+            liveReservations.push(newDoc);
+            saveFallbackLocal();
+            alert('예약이 접수되었습니다.');
+            closeModal();
+            renderCalendars();
+        }
+    }
+
+    // -------------------------------------------------------------
+    // Realtime Reservation Cancel
+    // -------------------------------------------------------------
+    async function handleCancelSubmit(e) {
+        e.preventDefault();
+        const id = $('#rid').val();
+        const pw = $('#rpw').val().trim();
+
+        const match = liveReservations.find(r => r.id === id);
+        if (!match) {
+            alert('예약 내역을 찾을 수 없습니다.');
+            return;
+        }
+
+        const cleanTel = (match.tel || '').replace(/[^0-9]/g, '');
+        const last4 = cleanTel.slice(-4);
+        const correctAdminPw = (currentShop && currentShop.adminPw) || 'drem0428';
+
+        if (pw === last4 || pw === correctAdminPw || isAdmin) {
+            try {
+                await db.collection('hairShops').doc(currentShopId).collection('reservations').doc(id).update({
+                    trash: 1,
+                    cancelledAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                alert('예약이 정상적으로 취소되었습니다.');
+                closeModal();
+            } catch(err) {
+                console.error('Cancel error:', err);
+                match.trash = 1;
+                saveFallbackLocal();
+                alert('예약이 취소되었습니다.');
+                closeModal();
+                renderCalendars();
+            }
+        } else {
+            alert('비밀번호(휴대폰 뒷번호 4자리)가 일치하지 않습니다.');
+        }
+    }
+
+    // -------------------------------------------------------------
+    // New Shop Modal & Creation
+    // -------------------------------------------------------------
+    function openNewShopModal() {
+        $('#modalNewShop').css('display', 'grid');
+    }
+
+    function closeNewShopModal() {
+        $('#modalNewShop').hide();
+    }
+
+    async function handleCreateShop(e) {
+        e.preventDefault();
+        const shopId = $('#newShopId').val().trim().toLowerCase().replace(/[^a-z0-9_-]/g, '');
+        const shopName = $('#newShopName').val().trim();
+        const shopTel = $('#newShopTel').val().trim();
+        const adminPw = $('#newShopAdminPw').val().trim();
+        const hours = $('#newShopHours').val().trim() || '11:00 ~ 20:00';
+        const holiday = $('#newShopHoliday').val().trim() || '매주 월요일 휴무';
+
+        if (!shopId) {
+            alert('매장 영문 아이디를 입력해 주세요.');
+            return;
+        }
+
+        const shopData = {
+            id: shopId,
+            name: shopName,
+            title: shopName,
+            tel: shopTel,
+            adminPw: adminPw,
+            hoursText: hours,
+            startHour: 11,
+            endHour: 20,
+            holidayText: holiday,
+            holidayRule: 'mon',
+            notice: `${shopName}에 오신 것을 환영합니다! 인터넷 예약으로 대기 없이 시술받으세요.`,
+            styles: ['커트', '염색', '파마', '기타'],
+            services: getDefaultServices(),
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        try {
+            await db.collection('hairShops').doc(shopId).set(shopData);
+            alert(`축하합니다! [${shopName}] 전용 예약시스템이 개설되었습니다.\n새 매장 주소로 이동합니다.`);
+            window.location.href = `?shop=${shopId}`;
+        } catch(err) {
+            console.error('Shop create error:', err);
+            alert('매장 개설 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+        }
+    }
+
+    // -------------------------------------------------------------
+    // Share & Actions
+    // -------------------------------------------------------------
+    function openShopMap() {
+        if (currentShop && currentShop.mapUrl) {
+            window.open(currentShop.mapUrl);
+        } else {
+            window.open(`https://map.naver.com/v5/search/${encodeURIComponent(currentShop ? currentShop.name : '미용실')}`);
+        }
+    }
+
+    function callShop() {
+        const tel = (currentShop && currentShop.tel) || '0315550628';
+        window.location.href = `tel:${tel.replace(/[^0-9]/g, '')}`;
+    }
+
+    function shareKakao() {
+        try {
+            Kakao.init('0236cfffa7cfef34abacd91a6d7c73c0');
+        } catch(e) {}
+
+        const shopName = currentShop ? currentShop.name : '제이헤어';
+        const shareUrl = window.location.href;
+
+        try {
+            Kakao.Share.sendDefault({
+                objectType: 'feed',
+                content: {
+                    title: `${shopName} 시술예약`,
+                    description: `링크 하나로 로그인 없이 예약하는 ${shopName} 실시간 예약시스템`,
+                    imageUrl: 'https://pyw31337.github.io/jhair/image/1200x630.jpg',
+                    link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
+                },
+            });
+        } catch(e) {
+            share();
+        }
+    }
+
+    function share() {
+        $(".qr").show();
+        const urlToShare = window.location.href;
+        navigator.clipboard.writeText(urlToShare).then(() => {
+            alert(`[${currentShop ? currentShop.name : '미용실'}] 전용 예약 링크가 복사되었습니다:\n${urlToShare}`);
+        }).catch(() => {
+            alert('예약 주소: ' + urlToShare);
+        });
+    }
+
+    $('#rname').on('input', function() {
+        $('#cname').val($(this).val());
+    });
+
+    $(document).on('change', '#styleCheckboxes input[name="rstyle[]"]', function() {
+        const selected = $('#styleCheckboxes input[name="rstyle[]"]:checked').map(function() {
+            return $(this).val();
+        }).get();
+        $('#cardStylePills span').each(function() {
+            $(this).toggle(selected.includes($(this).data('service-name')));
+        });
+    });
+
+    // -------------------------------------------------------------
+    // Initialize
+    // -------------------------------------------------------------
+    $(document).ready(function() {
+        initShopSubscription();
+    });
+    </script>
+</body>
+</html>
