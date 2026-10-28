@@ -76,9 +76,11 @@ input {border-radius: 0;}
 
 .calcover {border-radius: 30px; padding: 2% 5%; display:none;}
 .calcovermini {border-radius: 30px; padding: 2% 5%;}
-.calcovermini .calendar {width: 100%; border-spacing: 0; text-align: center;}
+.calcovermini .calendar {width: 100%; border-spacing: 0; text-align: center; table-layout: fixed;}
 .calcovermini .calendar th {border:0;}
-.calcovermini .calendar td {border:0; padding:0.6rem 0;}
+.calcovermini .calendar tbody tr {height:72px;}
+.calcovermini .calendar td {border:0; height:72px; padding:0.6rem 0; vertical-align: top;}
+.calendar th.sunday, .calendar .date.sunday {color:#f35381;}
 .calcovermini .reservehere {transform: translate(0, -60px);}
 
 .calcover .calendar {width: 100%; border-spacing: 0; border: 1px solid #eee;border-radius: 20px; backdrop-filter: blur(20px);}

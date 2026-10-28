@@ -782,7 +782,7 @@
                 <span class='month_next_txt' onclick="changeMonth(1)"><span class='month_next'></span><span class='del'>${nextYear}.</span>${String(nextMonth).padStart(2, '0')}</span>
             </div>
             <table class='calendar'>
-                <thead><tr><th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th></tr></thead>
+                <thead><tr><th class="sunday">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th></tr></thead>
                 <tbody><tr>
         `;
 
@@ -803,6 +803,7 @@
             const isHoliday = isShopHoliday(currentYear, currentMonth, day);
 
             let dayClasses = ['date'];
+            if (yoil === '일') dayClasses.push('sunday');
             if (isPast) dayClasses.push('past');
             if (isToday) dayClasses.push('today');
 
@@ -852,7 +853,7 @@
                 <span class='month_next_txt' onclick="changeMonth(1)"><span class='month_next'></span><span class='del'>${nextYear}.</span>${String(nextMonth).padStart(2, '0')}</span>
             </div>
             <table class='calendar'>
-                <thead><tr><th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th></tr></thead>
+                <thead><tr><th class="sunday">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th></tr></thead>
                 <tbody><tr>
         `;
 
@@ -873,6 +874,7 @@
             const isHoliday = isShopHoliday(currentYear, currentMonth, day);
 
             let dayClasses = ['date'];
+            if (yoil === '일') dayClasses.push('sunday');
             if (isPast) dayClasses.push('past');
             if (isToday) dayClasses.push('today');
 
