@@ -76,22 +76,30 @@
         }
         .tenant-menu {
             appearance: none;
+            -webkit-appearance: none;
             border: 0;
             width: 34px;
             height: 34px;
+            min-width: 34px;
+            min-height: 34px;
             padding: 0;
             background: transparent !important;
-            background-image: url('icon/menu.png') !important;
-            background-position: center !important;
-            background-repeat: no-repeat !important;
-            background-size: 20px !important;
             cursor: pointer;
             border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: none !important;
             transition: background-color 0.16s ease, transform 0.16s ease;
         }
         .tenant-menu:hover {
-            background-color: rgba(255, 255, 255, 0.16) !important;
+            background-color: rgba(255, 255, 255, 0.18) !important;
             transform: scale(1.05);
+        }
+        .tenant-menu-icon {
+            display: block;
+            width: 22px;
+            height: 22px;
         }
         .btn-new-shop {
             background: var(--lh-pink) !important;
@@ -316,8 +324,7 @@
         .catalog-menu-copy { position: absolute; z-index: 1; inset: auto 14px 14px; display: grid; gap: 2px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
         .catalog-menu-copy em { color: #ffccdc; font-size: 0.58rem; font-style: normal; font-weight: 900; letter-spacing: 0.16em; }
         .catalog-menu-copy strong { font-size: 1.16rem; letter-spacing: -0.04em; }
-        .catalog-menu-copy small { color: rgba(255,255,255,0.86); font-size: 0.68rem; line-height: 1.35; }
-        .catalog-menu-arrow { position: absolute; right: 0; bottom: 1px; display: grid; width: 28px; height: 28px; place-items: center; border: 1px solid rgba(255,255,255,0.46); border-radius: 50%; font-size: 0.9rem; }
+        .catalog-menu-arrow { display: none !important; }
 
         /* Clean unboxed navigation items with harmonious compact icons */
         .aside-nav-list { display: flex; flex-direction: column; gap: 2px; margin-top: 12px; }
@@ -439,27 +446,25 @@
         .header .dim, .header .slider-wrapper, .header .slider-wrapper .items { height: 100%; }
         .tenant-bar { padding: max(18px, calc(var(--lh-safe-top) + 14px)) 18px 14px; }
         .tenant-bar { padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
-        .tenant-menu { width: 34px; height: 34px; min-width: 34px; min-height: 34px; border-radius: 8px; background: transparent !important; background-image: url('icon/menu.png'); background-position: center; background-repeat: no-repeat; background-size: 20px; border: 0; box-shadow: none; cursor: pointer; transition: background-color 0.16s ease, transform 0.16s ease; }
-        .tenant-menu:hover { background-color: rgba(255,255,255,0.16) !important; transform: scale(1.05); }
         .btn-holiday-quick-open { display: none; min-height: 36px; padding: 6px 14px; border: 1.5px solid rgba(255,255,255,0.4); border-radius: var(--lh-radius-pill); background: rgba(30, 25, 36, 0.45); color: #ffffff; font-family: inherit; font-size: 0.8125rem; font-weight: 700; cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: all 0.16s ease; }
         .btn-holiday-quick-open:hover { background: var(--lh-pink); border-color: var(--lh-pink); }
         .btn-holiday-link { display: none; align-items: center; padding: 2px 8px; margin-left: 6px; border: 1px solid rgba(243,83,129,0.35); border-radius: 6px; background: rgba(255,255,255,0.9); color: var(--lh-pink-deep); font: inherit; font-size: 0.75rem; font-weight: 800; cursor: pointer; }
         .btn-holiday-link:hover { background: var(--lh-pink); color: #fff; }
         .store_name { transform: translateY(-38px); }
         .store-notice-bar { bottom: 54px; min-height: 44px; box-sizing: border-box; }
-        .container_tab .tabs { min-height: 60px; box-sizing: border-box; background: var(--lh-surface); border: 1px solid var(--lh-line-subtle); box-shadow: var(--lh-shadow-md); }
+        .container_tab .tabs { min-height: 60px; box-sizing: border-box; background: var(--lh-surface); border: 1px solid var(--lh-line-subtle); box-shadow: var(--lh-shadow-md); margin: 0 5%; }
         .container_tab .tab { appearance: none; -webkit-appearance: none; border: 0; outline: none; background: transparent; color: var(--lh-muted); min-height: 48px; box-sizing: border-box; font: inherit; font-weight: 700; border-radius: var(--lh-radius-pill); cursor: pointer; transition: background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease; }
         .container_tab .tab:hover:not(.tab_select) { background: var(--lh-pink-soft); color: var(--lh-pink-deep); }
         .container_tab .tab.tab_select { background: var(--lh-pink) !important; color: #ffffff !important; box-shadow: 0 4px 14px rgba(243, 83, 129, 0.35); }
 
         /* Physics-based Calendar Viewport & Track */
-        .calendar-carousel-viewport { position: relative; width: 100%; max-width: 840px; margin: 0 auto; overflow: hidden; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
-        .calendar-carousel-track { position: relative; width: 100%; will-change: transform, opacity; transform: translateX(0); }
+        .calendar-carousel-viewport { position: relative; width: 100%; max-width: 100%; margin: 0 auto; overflow: hidden; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+        .calendar-carousel-track { position: relative; width: 100%; will-change: transform, opacity; transform: translateX(0); touch-action: pan-y; }
         .calendar-carousel-track.is-animating { transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.24s ease; }
         .calendar-carousel-track.is-bouncing { transition: transform 0.32s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity 0.32s ease; }
 
         .calendar-gesture-surface { touch-action: pan-y; user-select: none; -webkit-user-select: none; }
-        .calendar-head { display: grid; grid-template-columns: minmax(118px, 1fr) auto minmax(118px, 1fr); align-items: center; gap: 14px; max-width: 740px; margin: 0 auto 20px; }
+        .calendar-head { display: grid; grid-template-columns: minmax(118px, 1fr) auto minmax(118px, 1fr); align-items: center; gap: 14px; width: 100%; max-width: 100%; margin: 0 auto 20px; }
         .calendar-month-nav { display: flex; align-items: center; gap: 6px; }
         .calendar-month-nav--next { justify-content: flex-end; }
         .calendar-month-label { color: var(--lh-muted); font-size: 0.9375rem; font-weight: 700; white-space: nowrap; }
@@ -471,7 +476,7 @@
         .calendar-current-month { min-width: 96px; padding: 0; border: 0; background: transparent; color: var(--lh-ink); cursor: pointer; line-height: 1; text-align: center; }
         .calendar-current-month span { display: block; font-size: 1.125rem; font-weight: 700; }
         .calendar-current-month strong { display: block; margin-top: 1px; font-size: clamp(2.75rem, 6vw, 4rem); font-weight: 900; letter-spacing: -0.075em; }
-        .calcovermini, .calcover { width: min(100%, 1440px); box-sizing: border-box; margin: 0 auto; padding: 2% clamp(14px, 4vw, 72px) 4%; }
+        .calcovermini, .calcover { width: 100%; max-width: 100%; box-sizing: border-box; margin: 0; padding: 20px 5% 48px; }
         .calcovermini .calendar, .calcover .calendar { border-collapse: separate; border-spacing: 0; width: 100%; table-layout: fixed; }
         .calcovermini .calendar th, .calcover .calendar th { height: 42px; padding: 0 2px; color: var(--lh-muted); font-size: 0.9375rem; font-weight: 800; }
         .calcovermini .calendar th.sunday, .calcover .calendar th.sunday { color: var(--lh-pink-deep); }
@@ -492,6 +497,8 @@
         .btn-holiday-toggle { min-height: 38px; border: 1px solid rgba(243,83,129,0.42); border-radius: 9px; background: var(--lh-pink-soft); color: var(--lh-pink-deep); font: inherit; font-size: 0.75rem; font-weight: 800; cursor: pointer; }
         .calendar-grid-scroll-hint { display: none; }
         .backdrop { padding-bottom: max(5%, calc(var(--lh-safe-bottom) + 28px)); }
+        .backdrop .close { position: absolute; width: 38px; height: 38px; border: 0; border-radius: 50%; right: 20px; top: 18px; background-color: rgba(255, 255, 255, 0.22); background-image: url('icon/x.png'); background-size: 14px 14px; background-repeat: no-repeat; background-position: center; filter: invert(1); cursor: pointer; z-index: 12; transition: background-color 0.16s ease, transform 0.16s ease; }
+        .backdrop .close:hover { background-color: rgba(255, 255, 255, 0.38); transform: scale(1.08); }
         .catalog-panel { padding-bottom: max(20px, calc(var(--lh-safe-bottom) + 20px)); }
         .modal-new-shop { padding-top: max(16px, calc(var(--lh-safe-top) + 12px)); padding-bottom: max(16px, calc(var(--lh-safe-bottom) + 12px)); }
         .copyright { padding-bottom: max(16px, calc(var(--lh-safe-bottom) + 10px)); }
@@ -524,7 +531,7 @@
             .calendar-current-month { min-width: 78px; }
             .calendar-current-month span { font-size: 0.95rem; }
             .calendar-current-month strong { font-size: 2.75rem; }
-            .calcovermini, .calcover { padding: 3% 12px 7%; }
+            .calcovermini, .calcover { padding: 16px 16px 36px; }
             .calcovermini .calendar th, .calcover .calendar th { height: 36px; font-size: 0.8125rem; }
             .calcovermini .calendar tbody tr, .calcovermini .calendar td { height: 68px; }
             .calendar .calendar-date { min-width: 34px; min-height: 38px; padding: 2px; font-size: 0.875rem; }
@@ -571,7 +578,7 @@
             </div>
             <button type="button" class="catalog-menu" onclick="openCatalog()">
                 <span class="catalog-menu-thumb"><img src="image/hero-glam-wave.jpg" alt="롱 웨이브 헤어스타일 모델"></span>
-                <span class="catalog-menu-copy"><em>HAIR CATALOG</em><strong>헤어 카탈로그</strong><small>스타일을 고르고 360°로<br>상담 준비를 시작하세요</small><i class="catalog-menu-arrow" aria-hidden="true">↗</i></span>
+                <span class="catalog-menu-copy"><em>HAIR CATALOG</em><strong>헤어 카탈로그</strong><small>스타일을 고르고 360°로<br>상담 준비를 시작하세요</small></span>
             </button>
             <div class="aside-nav-list">
                 <div class='map' id="menuMapBtn" onclick="openShopMap();"><div class='map_icon'></div><span>위치보기</span></div>
@@ -928,7 +935,13 @@
             </a>
             <div class="tenant-nav-actions">
                 <button type="button" class="btn-holiday-quick-open" id="headerHolidayBtn" onclick="openHolidayModal();" style="display:none;" aria-label="매장 휴무일 설정">🗓️ 휴무일 설정</button>
-                <button type="button" class="tenant-menu" onclick="menuopen();" aria-label="메뉴 열기"></button>
+                <button type="button" class="tenant-menu" onclick="menuopen();" aria-label="메뉴 열기">
+                    <svg class="tenant-menu-icon" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="4" y1="6" x2="20" y2="6"></line>
+                        <line x1="4" y1="12" x2="20" y2="12"></line>
+                        <line x1="4" y1="18" x2="20" y2="18"></line>
+                    </svg>
+                </button>
             </div>
         </nav>
         <div class='store_name'>
@@ -1002,9 +1015,9 @@
     </div>
 
     <!-- 날짜별 상세 드롭다운 백드롭 -->
-    <div class='backdrop' style="display:none;">
+    <div class='backdrop' style="display:none;" id="dateBackdrop">
         <span class='bday'></span>
-        <span class='close' onclick="closeBackdrop();"></span>
+        <button type="button" class='close' onclick="closeBackdrop();" aria-label="닫기"></button>
         <span class='div_content'></span>
     </div>
 
@@ -1684,6 +1697,14 @@
     let isMonthTransitioning = false;
     let blockDateClickUntil = 0;
 
+    function closeBackdrop() {
+        $('.backdrop').slideUp('fast');
+        $('.calendar-date').removeClass('selected');
+        selectedDate = '';
+        selectedYoil = '';
+    }
+    window.closeBackdrop = closeBackdrop;
+
     function handleDateClick(dateStr, yoil) {
         if (performance.now() < blockDateClickUntil) return;
         drop_date(dateStr, yoil);
@@ -1709,6 +1730,8 @@
             track.addEventListener('pointerdown', (e) => {
                 if (isMonthTransitioning) return;
                 if (e.button !== undefined && e.button !== 0) return;
+                // Never hijack clicks on navigation buttons or interactive controls
+                if (e.target.closest('.calendar-month-button, .calendar-current-month, .btn-holiday-toggle, .btn-modal-close, button, a')) return;
                 startX = e.clientX;
                 startY = e.clientY;
                 startTime = performance.now();
@@ -1725,11 +1748,11 @@
                 const dy = e.clientY - startY;
 
                 if (!hasDecidedAxis) {
-                    if (Math.abs(dy) > 7 && Math.abs(dy) > Math.abs(dx)) {
+                    if (Math.abs(dy) > 6 && Math.abs(dy) > Math.abs(dx)) {
                         isTracking = false;
                         return;
                     }
-                    if (Math.abs(dx) > 7) {
+                    if (Math.abs(dx) > 6) {
                         hasDecidedAxis = true;
                         isDragging = true;
                         try { track.setPointerCapture(e.pointerId); } catch (_) {}
@@ -1737,14 +1760,13 @@
                 }
 
                 if (isDragging) {
-                    e.preventDefault();
                     let effectiveDx = dx;
                     // Boundary resistance (rubber-band physics when limit reached)
-                    if (dx > 0 && !canChangeMonth(-1)) effectiveDx = dx * 0.22;
-                    else if (dx < 0 && !canChangeMonth(1)) effectiveDx = dx * 0.22;
+                    if (dx > 0 && !canChangeMonth(-1)) effectiveDx = dx * 0.2;
+                    else if (dx < 0 && !canChangeMonth(1)) effectiveDx = dx * 0.2;
                     currentDx = effectiveDx;
                     track.style.transform = `translateX(${effectiveDx}px)`;
-                    const dampOpacity = 1 - Math.min(Math.abs(effectiveDx) / 1000, 0.42);
+                    const dampOpacity = 1 - Math.min(Math.abs(effectiveDx) / 1200, 0.42);
                     track.style.opacity = String(dampOpacity);
                 }
             });
@@ -1752,17 +1774,21 @@
             const onPointerEnd = (e) => {
                 if (!isTracking) return;
                 isTracking = false;
-                try { track.releasePointerCapture(e.pointerId); } catch (_) {}
+                try {
+                    if (track.hasPointerCapture && track.hasPointerCapture(e.pointerId)) {
+                        track.releasePointerCapture(e.pointerId);
+                    }
+                } catch (_) {}
 
                 if (isDragging) {
-                    blockDateClickUntil = performance.now() + 180;
+                    blockDateClickUntil = performance.now() + 200;
                     const dt = Math.max(performance.now() - startTime, 1);
                     const vx = currentDx / dt;
                     const canGoNext = canChangeMonth(1);
                     const canGoPrev = canChangeMonth(-1);
 
-                    const shouldGoNext = (currentDx < -45 || (vx < -0.32 && currentDx < -20)) && canGoNext;
-                    const shouldGoPrev = (currentDx > 45 || (vx > 0.32 && currentDx > 20)) && canGoPrev;
+                    const shouldGoNext = (currentDx < -40 || (vx < -0.3 && currentDx < -15)) && canGoNext;
+                    const shouldGoPrev = (currentDx > 40 || (vx > 0.3 && currentDx > 15)) && canGoPrev;
 
                     if (shouldGoNext) {
                         animateMonthTransition(1, currentDx);
@@ -1785,7 +1811,9 @@
     function animateMonthTransition(delta, startDx = 0) {
         if (isMonthTransitioning) return;
         isMonthTransitioning = true;
-        closeBackdrop();
+        try {
+            closeBackdrop();
+        } catch (_) {}
 
         const activeTrack = document.querySelector('#calCoverMini:not([style*="display: none"]) .calendar-carousel-track') ||
                             document.querySelector('#calCoverAll:not([style*="display: none"]) .calendar-carousel-track') ||
@@ -1800,54 +1828,69 @@
         }
 
         setTimeout(() => {
-            const target = getAdjacentMonth(delta);
-            currentYear = target.year;
-            currentMonth = target.month;
-            selectedDate = '';
-            renderCalendars();
-            if (isAdmin) calculateMonthlyStats();
+            try {
+                const target = getAdjacentMonth(delta);
+                currentYear = target.year;
+                currentMonth = target.month;
+                selectedDate = '';
+                renderCalendars();
+                if (isAdmin) calculateMonthlyStats();
 
-            // Slide in from opposite side
-            const newTrack = document.querySelector('#calCoverMini:not([style*="display: none"]) .calendar-carousel-track') ||
-                             document.querySelector('#calCoverAll:not([style*="display: none"]) .calendar-carousel-track');
-            if (newTrack) {
-                newTrack.style.transition = 'none';
-                newTrack.style.transform = `translateX(${delta > 0 ? '60px' : '-60px'})`;
-                newTrack.style.opacity = '0';
-                void newTrack.offsetHeight; // force reflow
-                newTrack.classList.add('is-animating');
-                newTrack.style.transform = 'translateX(0)';
-                newTrack.style.opacity = '1';
-                setTimeout(() => {
-                    newTrack.classList.remove('is-animating');
-                    newTrack.style.transform = '';
-                    newTrack.style.opacity = '';
+                // Slide in from opposite side
+                const newTrack = document.querySelector('#calCoverMini:not([style*="display: none"]) .calendar-carousel-track') ||
+                                 document.querySelector('#calCoverAll:not([style*="display: none"]) .calendar-carousel-track');
+                if (newTrack) {
+                    newTrack.style.transition = 'none';
+                    newTrack.style.transform = `translateX(${delta > 0 ? '60px' : '-60px'})`;
+                    newTrack.style.opacity = '0';
+                    void newTrack.offsetHeight; // force reflow
+                    newTrack.classList.add('is-animating');
+                    newTrack.style.transform = 'translateX(0)';
+                    newTrack.style.opacity = '1';
+                    setTimeout(() => {
+                        if (newTrack) {
+                            newTrack.classList.remove('is-animating');
+                            newTrack.style.transform = '';
+                            newTrack.style.opacity = '';
+                        }
+                        isMonthTransitioning = false;
+                    }, 240);
+                } else {
                     isMonthTransitioning = false;
-                }, 260);
-            } else {
+                }
+            } catch (err) {
+                console.error('Month transition error:', err);
                 isMonthTransitioning = false;
             }
-        }, 180);
+        }, 160);
     }
 
     function changeMonthWithAnimation(delta) {
+        if (isMonthTransitioning) return;
         if (!canChangeMonth(delta)) {
             showToast(`오늘 기준 ±${CALENDAR_MONTH_LIMIT}개월 범위에서만 달을 이동할 수 있어요.`);
             return;
         }
         animateMonthTransition(delta);
     }
+    window.changeMonthWithAnimation = changeMonthWithAnimation;
 
     function changeMonth(delta) {
         changeMonthWithAnimation(delta);
     }
+    window.changeMonth = changeMonth;
 
     function resetToToday() {
         const now = new Date();
+        if (currentYear === now.getFullYear() && currentMonth === now.getMonth() + 1) return;
         const delta = (now.getFullYear() - currentYear) * 12 + (now.getMonth() + 1 - currentMonth);
-        if (delta === 0) return;
-        animateMonthTransition(delta > 0 ? 1 : -1);
+        currentYear = now.getFullYear();
+        currentMonth = now.getMonth() + 1;
+        selectedDate = '';
+        renderCalendars();
+        if (isAdmin) calculateMonthlyStats();
     }
+    window.resetToToday = resetToToday;
 
     function renderCalendars() {
         renderMiniCalendar();
