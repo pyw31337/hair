@@ -9,6 +9,7 @@
   "background_color": "#0b1020",
   "theme_color": "#0b1020",
   "display": "standalone",
+  "display_override": ["standalone", "browser"],
   "orientation": "any",
   "categories": ["lifestyle", "beauty", "social"],
   "icons": [
@@ -16,13 +17,13 @@
       "src": "favicon/android-icon-192x192.png?v=brand-20261028",
       "type": "image/png",
       "sizes": "192x192",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "favicon/512x512.png?v=brand-20261028",
       "type": "image/png",
       "sizes": "512x512",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ]
 }
