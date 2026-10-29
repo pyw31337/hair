@@ -308,10 +308,13 @@
 
         /* The catalogue is a foreground consultation studio, not a competing form. */
         .catalog-panel { display: none; position: fixed; inset: 0; z-index: 40; padding: 20px; overflow: auto; background: rgba(7, 9, 21, 0.82); backdrop-filter: blur(14px) saturate(120%); -webkit-backdrop-filter: blur(14px) saturate(120%); place-items: center; box-sizing: border-box; }
-        .catalog-card { width: min(1120px, 100%); max-height: calc(100dvh - 40px); margin: 0 auto; padding: 26px; overflow: auto; border: 1px solid rgba(255,255,255,0.72); border-radius: 24px; background: rgba(255,255,255,0.98); box-shadow: 0 22px 60px rgba(6, 8, 20, 0.28); box-sizing: border-box; }
-        .catalog-heading { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
+        .catalog-card { width: min(1120px, 100%); max-height: calc(100dvh - 40px); margin: 0 auto; padding: 26px; overflow: auto; border: 1px solid rgba(255,255,255,0.72); border-radius: 24px; background: linear-gradient(145deg, #fff 0%, #fbf9fa 62%, #f8f5f8 100%); box-shadow: 0 22px 60px rgba(6, 8, 20, 0.28); box-sizing: border-box; }
+        .catalog-heading { display: flex; align-items: start; justify-content: space-between; gap: 16px; padding-bottom: 16px; border-bottom: 1px solid #ebe5e8; }
+        .catalog-kicker { display: block; margin-bottom: 6px; color: #e3376b; font-size: 0.64rem; font-weight: 900; letter-spacing: 0.16em; }
         .catalog-heading h2 { margin: 0; color: #171827; font-size: 1.45rem; }
         .catalog-heading p { margin: 5px 0 0; color: #6b7280; font-size: 0.86rem; }
+        .catalog-edition { display: grid; min-width: 74px; gap: 2px; padding: 7px 9px; border-left: 1px solid #e6dce2; color: #9a8c94; font-size: 0.6rem; font-weight: 900; letter-spacing: 0.12em; text-align: right; }
+        .catalog-edition b { color: #24202a; font-family: Georgia, serif; font-size: 1rem; font-weight: 400; letter-spacing: 0; }
         .catalog-close { border: 0; background: #f3f4f6; color: #4b5563; width: 34px; height: 34px; border-radius: 50%; font-size: 1.15rem; cursor: pointer; flex-shrink: 0; }
         .catalog-gender { display: flex; gap: 8px; margin: 20px 0 10px; }
         .catalog-gender button { flex: 1; padding: 10px; border: 1px solid #e5e7eb; border-radius: 10px; background: #fff; color: #6b7280; font: inherit; font-weight: 800; cursor: pointer; }
@@ -321,20 +324,22 @@
         .catalog-service-filter button { flex: 0 0 auto; min-width: 54px; padding: 7px 10px; border: 1px solid #ece7ec; border-radius: 999px; background: #fff; color: #6b7280; font: inherit; font-size: 0.72rem; font-weight: 800; cursor: pointer; }
         .catalog-service-filter button.is-active { border-color: #f35381; background: #f35381; color: #fff; box-shadow: 0 5px 12px rgba(243, 83, 129, 0.22); }
         .catalog-style-count { margin-left: auto; padding-left: 6px; color: #9ca3af; font-size: 0.72rem; font-weight: 800; white-space: nowrap; }
-        .catalog-content { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(320px, 0.88fr); gap: 24px; align-items: start; }
-        .catalog-style-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-        .catalog-style-card { position: relative; padding: 0; overflow: hidden; border: 2px solid transparent; border-radius: 14px; background: #f8f8fa; text-align: left; cursor: pointer; }
+        .catalog-content { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(320px, 0.88fr); gap: 28px; align-items: start; }
+        .catalog-style-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-content: start; }
+        .catalog-style-card { position: relative; padding: 0; overflow: hidden; border: 2px solid transparent; border-radius: 14px; background: #f8f8fa; text-align: left; cursor: pointer; transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease; }
         .catalog-style-card:hover, .catalog-style-card.is-selected { border-color: #f35381; box-shadow: 0 5px 16px rgba(243, 83, 129, 0.22); }
         .catalog-style-card img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: contain; background: #eeeaf0; }
         .catalog-style-card::after { content: attr(data-service); position: absolute; top: 7px; left: 7px; padding: 4px 6px; border-radius: 999px; background: rgba(24, 22, 31, 0.66); color: #fff; font-size: 0.56rem; font-weight: 900; letter-spacing: 0.05em; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
         .catalog-style-card span { display: block; padding: 8px 9px 2px; color: #1f2937; font-size: 0.78rem; font-weight: 800; }
         .catalog-style-card small { display: block; padding: 0 9px 9px; color: #9ca3af; font-size: 0.7rem; }
-        .catalog-preview { overflow: hidden; border: 1px solid #f0e7eb; border-radius: 18px; background: linear-gradient(155deg, #fff5f8, #f5f7ff); }
-        .catalog-360-stage { position: relative; height: 336px; overflow: hidden; background: radial-gradient(circle at center, #f7eff1, #d9dbe3); touch-action: pan-y; user-select: none; cursor: grab; --catalog-angle: 0deg; }
-        .catalog-360-stage:active { cursor: grabbing; }
+        .catalog-preview { position: sticky; top: 0; overflow: hidden; border: 1px solid #f0e7eb; border-radius: 18px; background: linear-gradient(155deg, #fff5f8, #f5f7ff); }
+        .catalog-preview-topline { display: flex; justify-content: space-between; padding: 10px 14px 9px; border-bottom: 1px solid rgba(219, 205, 213, 0.7); color: #7b6873; font-size: 0.61rem; font-weight: 900; letter-spacing: 0.1em; }
+        .catalog-preview-topline span:last-child { color: #e3376b; }
+        .catalog-360-stage { position: relative; height: 336px; overflow: hidden; background: radial-gradient(circle at center, #f7eff1, #d9dbe3); touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab; --catalog-angle: 0deg; }
+        .catalog-360-stage.is-rotating, .catalog-360-stage:active { cursor: grabbing; }
         .catalog-360-stage::after { content: ''; position: absolute; inset: auto 0 0; height: 32%; pointer-events: none; background: linear-gradient(transparent, rgba(18, 21, 36, 0.22)); }
         .catalog-preview-image { position: relative; width: 100%; height: 100%; }
-        .catalog-preview-image img { width: 100%; height: 100%; object-fit: contain; object-position: center; transition: opacity 0.16s ease, transform 0.16s ease; }
+        .catalog-preview-image img { width: 100%; height: 100%; object-fit: contain; object-position: center; user-select: none; -webkit-user-select: none; -webkit-user-drag: none; pointer-events: none; transition: opacity 0.16s ease, transform 0.16s ease; }
         .catalog-color-wash { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: transparent; mix-blend-mode: color; transition: background 0.2s ease, opacity 0.2s ease; }
         .catalog-rotation-badge { position: absolute; z-index: 1; top: 12px; left: 12px; padding: 6px 9px; border-radius: 999px; background: rgba(17, 18, 29, 0.62); color: #fff; font-size: 0.7rem; font-weight: 800; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
         .catalog-drag-hint { position: absolute; z-index: 1; right: 12px; bottom: 12px; color: #fff; font-size: 0.68rem; font-weight: 700; text-shadow: 0 1px 5px rgba(0,0,0,0.65); }
@@ -344,6 +349,13 @@
         .catalog-preview-copy { padding: 15px; }
         .catalog-preview-copy p { margin: 0; color: #6b7280; font-size: 0.78rem; }
         .catalog-preview-copy strong { display: block; margin: 5px 0 12px; color: #1f2937; font-size: 1rem; }
+        .catalog-live-style { display: grid; grid-template-columns: 64px 1fr; gap: 10px; align-items: center; margin: 0 0 13px; padding: 8px; border: 1px solid rgba(243,83,129,0.16); border-radius: 12px; background: rgba(255,255,255,0.68); }
+        .catalog-live-style-cover { position: relative; width: 64px; height: 76px; overflow: hidden; border-radius: 8px; background: #ebe5e8; }
+        .catalog-live-style-cover img { width: 100%; height: 100%; object-fit: contain; object-position: center; user-select: none; -webkit-user-drag: none; }
+        .catalog-live-style-cover span { position: absolute; inset: 0; pointer-events: none; opacity: 0; mix-blend-mode: color; transition: opacity 0.2s ease, background 0.2s ease; }
+        .catalog-live-style em { display: block; margin-bottom: 3px; color: #e3376b; font-size: 0.56rem; font-style: normal; font-weight: 900; letter-spacing: 0.11em; }
+        .catalog-live-style b, .catalog-live-style small { display: block; color: #31303b; font-size: 0.73rem; line-height: 1.35; }
+        .catalog-live-style small { margin-top: 2px; color: #8b8590; font-size: 0.65rem; }
         .catalog-range { margin-top: 12px; }
         .catalog-range label { display: flex; justify-content: space-between; color: #4b5563; font-size: 0.77rem; font-weight: 800; }
         .catalog-range output { color: #e3376b; }
@@ -382,7 +394,7 @@
             .catalog-card { width: 100%; min-height: 100dvh; max-height: none; padding: 20px 14px 28px; border-radius: 0; }
             .catalog-heading { position: sticky; z-index: 2; top: -20px; margin: -20px -14px 0; padding: 20px 14px 13px; background: rgba(255,255,255,0.96); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
             .catalog-content { grid-template-columns: 1fr; }
-            .catalog-preview { order: -1; }
+            .catalog-preview { position: static; order: -1; }
             .catalog-style-count { display: none; }
             .catalog-style-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .catalog-style-card img { height: auto; }
@@ -449,9 +461,11 @@
             <div class="catalog-card">
                 <div class="catalog-heading">
                     <div>
+                        <span class="catalog-kicker">LET'S HAIR · STYLE JOURNAL</span>
                         <h2 id="catalogTitle">헤어 카탈로그</h2>
-                        <p>커트·펌·컬러를 고르고, 12컷 360° 모델 뷰로 상담을 준비해 보세요.</p>
+                        <p>기장과 무드를 조절해 보세요. 선택한 스타일이 실시간 프리뷰와 360° 상담 뷰에 반영됩니다.</p>
                     </div>
+                    <span class="catalog-edition" aria-hidden="true">STYLE EDIT <b>01</b></span>
                     <button type="button" class="catalog-close" onclick="closeCatalog()" aria-label="카탈로그 닫기">×</button>
                 </div>
                 <div class="catalog-gender" role="tablist" aria-label="스타일 분류">
@@ -550,15 +564,20 @@
                         </button>
                     </div>
                     <aside class="catalog-preview" aria-live="polite">
-                        <div class="catalog-360-stage" id="catalog360Stage" role="slider" aria-label="모델 360도 회전 미리보기" aria-valuemin="0" aria-valuemax="330" aria-valuenow="0" tabindex="0" onpointerdown="startCatalogRotation(event)" onpointermove="moveCatalogRotation(event)" onpointerup="endCatalogRotation(event)" onpointercancel="endCatalogRotation(event)" onkeydown="handleCatalogRotationKey(event)">
-                            <div class="catalog-preview-image"><img id="catalogModelImage" src="image/catalog-spin-female-00.jpg" alt="소프트 레이어드 여성 스타일 참고 모델 정면 모습"><span class="catalog-color-wash" id="catalogColorWash"></span></div>
+                        <div class="catalog-preview-topline"><span>THE LOOKBOOK · 360 MOTION</span><span>LIVE CONSULT</span></div>
+                        <div class="catalog-360-stage" id="catalog360Stage" role="slider" aria-label="모델 360도 회전 미리보기" aria-valuemin="0" aria-valuemax="330" aria-valuenow="0" tabindex="0" draggable="false" ondragstart="return false" onpointerdown="startCatalogRotation(event)" onpointermove="moveCatalogRotation(event)" onpointerup="endCatalogRotation(event)" onpointercancel="endCatalogRotation(event)" onkeydown="handleCatalogRotationKey(event)">
+                            <div class="catalog-preview-image"><img id="catalogModelImage" src="image/generated-female-layered.jpg" alt="소프트 레이어드 여성 스타일 참고 모델 정면 모습" draggable="false"><span class="catalog-color-wash" id="catalogColorWash"></span></div>
                             <span class="catalog-rotation-badge" id="catalogRotationOutput">정면 · 0° · 1/12</span>
                             <span class="catalog-rotation-dial" aria-hidden="true"></span>
                             <span class="catalog-drag-hint">좌우로 드래그 · 스와이프</span>
                         </div>
                         <div class="catalog-preview-copy">
-                            <p>선택한 상담 기준 · 12컷 360° 프리뷰</p>
+                            <p>STYLE STUDY · 실시간 스타일 매치</p>
                             <strong id="catalogChosenStyle">소프트 레이어드</strong>
+                            <div class="catalog-live-style" aria-live="polite">
+                                <div class="catalog-live-style-cover"><img id="catalogLiveThumbnail" src="image/generated-female-layered.jpg" alt="현재 선택한 스타일 썸네일" draggable="false"><span id="catalogLiveColorWash"></span></div>
+                                <div><em>LIVE STYLE MATCH</em><b id="catalogLiveMeta">커트 · 미디엄</b><small id="catalogLiveHint">기장 슬라이더로 비슷한 길이의 스타일을 바로 찾아보세요.</small></div>
+                            </div>
                             <div class="catalog-range">
                                 <label for="catalogLength">희망 기장 <output id="catalogLengthOutput">미디엄</output></label>
                                 <input id="catalogLength" type="range" min="1" max="5" step="1" value="3" oninput="handleCatalogLengthChange(this.value)">
@@ -1477,6 +1496,7 @@
     let catalogPointerId = null;
     let catalogPointerStartX = 0;
     let catalogPointerStartAngle = 0;
+    let catalogPointerDidMove = false;
     const catalogRotationAssets = {
         female: Array.from({ length: 12 }, (_, index) => `image/catalog-spin-female-${String(index).padStart(2, '0')}.jpg`),
         male: Array.from({ length: 12 }, (_, index) => `image/catalog-spin-male-${String(index).padStart(2, '0')}.jpg`)
@@ -1537,6 +1557,7 @@
         if (!button) return;
         const selected = $(button);
         catalogGender = selected.data('gender');
+        if (!options.keepAngle) catalogAngle = 0;
         $('.catalog-style-card').removeClass('is-selected');
         selected.addClass('is-selected');
         const cards = getCatalogCards(catalogGender);
@@ -1577,11 +1598,25 @@
         const age = Number($('#catalogAge').val());
         $('#catalogLengthOutput').text(lengthNames[length] || '미디엄');
         $('#catalogAgeOutput').text(`${age}대`);
+        updateCatalogLiveReference();
+    }
+
+    function updateCatalogLiveReference() {
+        const selected = $('.catalog-style-card.is-selected');
+        if (!selected.length) return;
+        const categoryNames = { cut: '커트', perm: '펌', color: '컬러' };
+        const source = selected.find('img').attr('src');
+        const category = categoryNames[selected.data('category')] || '스타일';
+        const length = selected.attr('data-length-label') || '맞춤 기장';
+        const name = selected.data('name') || '선택한 스타일';
+        $('#catalogLiveThumbnail').attr({ src: source, alt: `${name} 현재 선택 스타일 썸네일` });
+        $('#catalogLiveMeta').text(`${category} · ${length}`);
+        $('#catalogLiveHint').text(`${name}을(를) 기준으로 기장과 컬러를 비교하고 있습니다.`);
     }
 
     function applyCatalogColor(tone, wash) {
         $('#catalogColorOutput').text(tone);
-        $('#catalogColorWash').css({ background: wash || 'transparent', opacity: wash ? 1 : 0 });
+        $('#catalogColorWash, #catalogLiveColorWash').css({ background: wash || 'transparent', opacity: wash ? 1 : 0 });
         $('.catalog-color-swatch').each(function() {
             $(this).toggleClass('is-active', $(this).data('tone') === tone);
         });
@@ -1600,12 +1635,14 @@
         const normalizedAngle = frame * 30;
         const styleName = selected.data('name');
         const isMale = catalogGender === 'male';
-        const source = catalogRotationAssets[catalogGender][frame];
+        const styleSource = selected.find('img').attr('src');
+        const isStylePreview = frame === 0;
+        const source = isStylePreview ? styleSource : catalogRotationAssets[catalogGender][frame];
 
         $('#catalogModelImage')
             .attr('src', source)
-            .attr('alt', `${styleName} ${isMale ? '남성' : '여성'} 스타일 참고 모델 ${catalogFrameNames[frame]} 모습`);
-        $('#catalogRotationOutput').text(`${catalogFrameNames[frame]} · ${normalizedAngle}° · ${frame + 1}/12`);
+            .attr('alt', isStylePreview ? `${styleName} 스타일 실시간 프리뷰` : `${styleName} ${isMale ? '남성' : '여성'} 스타일 참고 모델 ${catalogFrameNames[frame]} 모습`);
+        $('#catalogRotationOutput').text(isStylePreview ? `스타일 프리뷰 · 0° · 1/12` : `${catalogFrameNames[frame]} · ${normalizedAngle}° · ${frame + 1}/12`);
         $('#catalogFrameOutput').text(`${frame + 1} / 12`);
         $('#catalogRotationScrubber').val(frame);
         $('#catalog360Stage').css('--catalog-angle', `${normalizedAngle}deg`).attr('aria-valuenow', normalizedAngle).attr('aria-valuetext', catalogFrameNames[frame]);
@@ -1624,21 +1661,30 @@
     }
 
     function startCatalogRotation(event) {
+        if (event.button !== undefined && event.button !== 0) return;
         catalogPointerId = event.pointerId;
         catalogPointerStartX = event.clientX;
         catalogPointerStartAngle = catalogAngle;
+        catalogPointerDidMove = false;
+        event.currentTarget.classList.add('is-rotating');
         event.currentTarget.setPointerCapture?.(event.pointerId);
+        event.preventDefault();
     }
 
     function moveCatalogRotation(event) {
         if (event.pointerId !== catalogPointerId) return;
         const stageWidth = Math.max(event.currentTarget.clientWidth, 1);
-        const deltaAngle = ((event.clientX - catalogPointerStartX) / stageWidth) * 360;
+        const deltaX = event.clientX - catalogPointerStartX;
+        if (Math.abs(deltaX) > 2) catalogPointerDidMove = true;
+        const deltaAngle = (deltaX / stageWidth) * 360;
+        event.preventDefault();
         setCatalogAngle(catalogPointerStartAngle + deltaAngle);
     }
 
     function endCatalogRotation(event) {
         if (event.pointerId !== catalogPointerId) return;
+        event.currentTarget.releasePointerCapture?.(event.pointerId);
+        event.currentTarget.classList.remove('is-rotating');
         catalogPointerId = null;
         setCatalogAngle(Math.round(catalogAngle / 30) * 30);
     }
