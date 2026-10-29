@@ -1,116 +1,113 @@
 import os
-import glob
+import io
+import subprocess
 import numpy as np
-from PIL import Image, ImageFilter
+from PIL import Image
 
 TARGET_W = 360
 TARGET_H = 480
-TARGET_HAIR_TOP = 42
+TARGET_HAIR_TOP = 28
 
-PROFILES = {
-    "female-bob": {
-        "scale": 0.955,
-        "default_bg": (194, 182, 182),
-        "is_male": False
-    },
-    "female-medium": {
-        "scale": 1.092,
-        "default_bg": (202, 188, 188),
-        "is_male": False
-    },
-    "female-long": {
-        "scale": 1.180,
-        "default_bg": (189, 175, 174),
-        "is_male": False
-    },
-    "male": {
-        "scale": 0.931,
-        "default_bg": (170, 182, 198),
-        "is_male": True
-    }
-}
+PROFILES = ['female-bob', 'female-medium', 'female-long', 'male']
 
-def detect_frame_hair_top(arr, bg, center_x):
-    h, w, _ = arr.shape
-    for y in range(h):
-        # sample a 20px wide column in the center
-        strip = arr[y, max(0, center_x - 10) : min(w, center_x + 10)]
-        diffs = np.linalg.norm(strip.astype(float) - bg, axis=1)
-        if np.mean(diffs) > 22:
-            return y
-    return 0
+def get_raw_image(filepath):
+    # Fetch original uncorrupted source from git commit 5d2f849
+    try:
+        out = subprocess.check_output(['git', 'show', f'5d2f849:{filepath}'])
+        return Image.open(io.BytesIO(out))
+    except Exception:
+        return Image.open(filepath)
 
-for prof, cfg in PROFILES.items():
+for prof in PROFILES:
     print(f"Processing profile: {prof}...")
-    files = sorted(glob.glob(f"image/catalog-turntable/{prof}-*.jpg"))
-    raw_hair_tops = []
-    frames_data = []
+    for i in range(12):
+        filepath = f"image/catalog-turntable/{prof}-{i:02d}.jpg"
+        im = get_raw_image(filepath)
+        arr = np.array(im)
+        w, h = im.size
 
-    for f in files:
-        img = Image.open(f)
-        w, h = img.size
-        # Trim 3px from each side to remove any white border lines
-        img_trimmed = img.crop((3, 3, w - 3, h - 3))
-        tw, th = img_trimmed.size
-        arr = np.array(img_trimmed)
-        
-        # Sample background from top corners
-        bg_sample = np.mean([arr[0, 0], arr[0, -1], arr[5, 0], arr[5, -1]], axis=0)
-        
-        # Detect hair top
-        center_x = tw // 2
-        ht = detect_frame_hair_top(arr, bg_sample, center_x)
-        raw_hair_tops.append(ht)
-        frames_data.append((f, img_trimmed, bg_sample, ht))
+        # 1. Detect and cleanly trim all white borders:
+        # Left white stripe detection
+        lx = 0
+        for x in range(35):
+            if np.mean(np.all(arr[:150, x] > 230, axis=-1)) > 0.3:
+                lx = x + 1
+        if lx > 0:
+            lx += 2
 
-    # Calculate a smooth target y-offset for each frame
-    # We want the head top to align to TARGET_HAIR_TOP consistently
-    smooth_hair_tops = []
-    n = len(raw_hair_tops)
-    for i in range(n):
-        # circular 3-frame average
-        prev_i = (i - 1) % n
-        next_i = (i + 1) % n
-        val = (raw_hair_tops[prev_i] + raw_hair_tops[i]*2 + raw_hair_tops[next_i]) / 4.0
-        smooth_hair_tops.append(val)
+        # Right white stripe detection
+        rx = w
+        for x in range(w - 1, w - 35, -1):
+            if np.mean(np.all(arr[:150, x] > 230, axis=-1)) > 0.3:
+                rx = x
+        if rx < w:
+            rx -= 2
 
-    # Process and save each frame
-    for i, (filepath, img_trimmed, bg_sample, raw_ht) in enumerate(frames_data):
-        scale = cfg["scale"]
-        new_w = int(img_trimmed.width * scale)
-        new_h = int(img_trimmed.height * scale)
-        
-        img_scaled = img_trimmed.resize((new_w, new_h), Image.Resampling.LANCZOS)
-        arr_scaled = np.array(img_scaled)
-        
-        # Calculate paste position
-        scaled_hair_top = int(smooth_hair_tops[i] * scale)
-        paste_y = TARGET_HAIR_TOP - scaled_hair_top
-        paste_x = (TARGET_W - new_w) // 2
+        # Bottom white stripe/label detection (corners)
+        by = h
+        for y in range(h - 1, h - 50, -1):
+            corner_px = np.concatenate([arr[y, :40], arr[y, w-40:]], axis=0)
+            if np.mean(np.all(corner_px > 230, axis=-1)) > 0.3:
+                by = y
+        if by < h:
+            by -= 2
 
-        # Create target canvas filled with seamless studio background
-        canvas = Image.new("RGB", (TARGET_W, TARGET_H), tuple(int(c) for c in bg_sample[:3]))
-        
-        # Paste scaled subject
-        canvas.paste(img_scaled, (paste_x, paste_y))
-        
-        # If subject bottom doesn't reach TARGET_H, extend the bottom edge smoothly
-        subj_bottom = paste_y + new_h
-        if subj_bottom < TARGET_H:
-            # take bottom 2 rows of subject and stretch down
-            bottom_strip = img_scaled.crop((0, new_h - 2, new_w, new_h))
-            bottom_stretched = bottom_strip.resize((new_w, TARGET_H - subj_bottom + 2))
-            canvas.paste(bottom_stretched, (paste_x, subj_bottom - 2))
-            
-        # Also ensure side edges blend seamlessly if paste_x > 0
-        canvas_arr = np.array(canvas)
-        # Check and clean any remaining 1px edge artifacts
-        canvas_arr[0, :] = bg_sample[:3]
-        canvas_arr[:, 0] = bg_sample[:3]
-        canvas_arr[:, -1] = bg_sample[:3]
-        
-        final_img = Image.fromarray(canvas_arr)
-        final_img.save(filepath, quality=92)
-        print(f"  Saved {os.path.basename(filepath)}: 360x480, hair_top aligned to ~{TARGET_HAIR_TOP}px")
+        # Top white stripe detection
+        ty = 0
+        for y in range(25):
+            if np.mean(np.all(arr[y, :40] > 230, axis=-1)) > 0.3:
+                ty = y + 1
+        if ty > 0:
+            ty += 2
 
-print("All 48 turntable images successfully normalized!")
+        cropped = im.crop((lx, ty, rx, by))
+        cw, ch = cropped.size
+        c_arr = np.array(cropped)
+        bg = np.median(c_arr[:20, :20], axis=(0, 1))
+
+        # Detect top of hair along center column
+        ht = 0
+        for y in range(ch):
+            strip = c_arr[y, max(0, cw//2 - 25):min(cw, cw//2 + 25)]
+            if np.mean(np.linalg.norm(strip.astype(float) - bg, axis=-1)) > 25:
+                ht = y
+                break
+
+        # 2. Scale width to TARGET_W (360px) to completely eliminate any left/right empty bars
+        scale = TARGET_W / cw
+        new_w = TARGET_W
+        new_h = int(ch * scale)
+        scaled = cropped.resize((new_w, new_h), Image.Resampling.LANCZOS)
+        s_arr = np.array(scaled)
+
+        # 3. Position head locked at TARGET_HAIR_TOP (28px)
+        scaled_ht = int(ht * scale)
+        paste_y = TARGET_HAIR_TOP - scaled_ht
+
+        # 4. Canvas creation and seamless edge extension
+        canvas_arr = np.zeros((TARGET_H, TARGET_W, 3), dtype=np.uint8)
+        canvas_arr[:, :] = bg.astype(np.uint8)
+
+        y1 = max(0, paste_y)
+        y2 = min(TARGET_H, paste_y + new_h)
+        sy1 = y1 - paste_y
+        sy2 = sy1 + (y2 - y1)
+
+        canvas_arr[y1:y2, 0:TARGET_W] = s_arr[sy1:sy2, 0:TARGET_W]
+
+        # Extend top row of studio background upward if needed
+        if y1 > 0:
+            for y in range(y1):
+                canvas_arr[y, :] = canvas_arr[y1, :]
+
+        # Extend bottom row (shirt & background) downward if needed
+        if y2 < TARGET_H:
+            for y in range(y2, TARGET_H):
+                canvas_arr[y, :] = canvas_arr[y2 - 1, :]
+
+        # Save normalized image
+        res_im = Image.fromarray(canvas_arr)
+        res_im.save(filepath, quality=94)
+        print(f"  Processed {prof}-{i:02d}: {cw}x{ch} -> {TARGET_W}x{TARGET_H}, hair_top locked at {TARGET_HAIR_TOP}px")
+
+print("All 48 turntable images successfully normalized and saved without white bars!")

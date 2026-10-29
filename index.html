@@ -3846,6 +3846,8 @@
             if (stepParam) setTimeout(() => openCatalogStep(Number(stepParam)), 50);
             if (urlParams.has('testSampleFace')) setTimeout(loadSampleFace, 150);
             if (urlParams.has('expandReport')) setTimeout(toggleAiReport, 200);
+            if (urlParams.has('testAngle')) setCatalogAngle(Number(urlParams.get('testAngle')));
+            if (urlParams.has('testFrame')) setCatalogFrame(Number(urlParams.get('testFrame')));
         }
         if (urlParams.has('openDate')) {
             const targetDate = urlParams.get('openDate') || '2026-10-30';
