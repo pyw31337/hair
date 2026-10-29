@@ -1549,8 +1549,7 @@
         $('#catalogStyleVariant').attr('max', cards.length || 1);
         $('#catalogStyleCount').text(`${cards.length} styles`);
         const current = $('.catalog-style-card.is-selected').get(0);
-        if (cards.length && !cards.includes(current)) selectCatalogStyle(cards[0]);
-        if (cards.includes(current)) $('#catalogStyleVariant').val(cards.indexOf(current) + 1);
+        if (cards.length) selectCatalogStyle(cards.includes(current) ? current : cards[0]);
     }
 
     function selectCatalogStyle(button, options = {}) {
