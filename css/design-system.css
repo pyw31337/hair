@@ -643,6 +643,17 @@ button,
   white-space: nowrap;
 }
 
+.calendar-holiday-label--open {
+  background: rgba(243, 83, 129, 0.12);
+  color: var(--lh-pink-deep);
+  border: 1px solid rgba(243, 83, 129, 0.22);
+}
+
+.calendar-holiday-label--muted {
+  background: #f0ecf0;
+  color: #6e6570;
+}
+
 /* 7. Toast Alerts (Replaces system alerts) */
 .lh-toast-region {
   position: fixed;

@@ -656,9 +656,11 @@
         .calendar .calendar-date.selected { border-color: var(--lh-pink); background: var(--lh-pink) !important; color: #fff !important; box-shadow: 0 4px 12px rgba(243,83,129,0.35); }
         .calendar-holiday-label { min-height: 18px; margin-top: 2px; padding: 1px 4px; border-radius: 6px; background: var(--lh-danger-soft); color: var(--lh-danger); font-size: clamp(0.625rem, 1.5vw, 0.72rem); font-weight: 800; line-height: 1.35; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .calendar-holiday-label--muted { background: #f0ecf0; color: #6e6570; }
+        .calendar-holiday-label--open { background: rgba(243, 83, 129, 0.12); color: var(--lh-pink-deep); border: 1px solid rgba(243, 83, 129, 0.22); }
         .calcover .calendar td { min-height: 140px; padding: 9px 8px; vertical-align: top; text-align: center; }
         .calcover .calendar .time { min-height: 34px; box-sizing: border-box; font-size: 0.8125rem; }
-        .btn-holiday-toggle { min-height: 38px; border: 1px solid rgba(243,83,129,0.42); border-radius: 9px; background: var(--lh-pink-soft); color: var(--lh-pink-deep); font: inherit; font-size: 0.75rem; font-weight: 800; cursor: pointer; }
+        .btn-holiday-toggle { min-height: 34px; padding: 4px 10px; border: 1px solid rgba(243,83,129,0.35); border-radius: 8px; background: #fff; color: var(--lh-pink-deep); font: inherit; font-size: 0.75rem; font-weight: 800; cursor: pointer; transition: all 0.2s ease; }
+        .btn-holiday-toggle:hover { background: var(--lh-pink-soft); border-color: var(--lh-pink-deep); }
         .calendar-grid-scroll-hint { display: none; }
         .backdrop { padding-bottom: max(5%, calc(var(--lh-safe-bottom) + 28px)); }
         .catalog-panel { padding-bottom: max(20px, calc(var(--lh-safe-bottom) + 20px)); }
@@ -1360,7 +1362,7 @@
                 <span class='txt' id="storeTitleTxt">J.Hair Shop</span>
             </div>
             <div class='info'>영업시간&nbsp; <b id="storeHoursTxt">12:00 ~ 20:00</b></div>
-            <div class='info' id="storeHolidayTxt">매월 첫째주 / 셋째주 일요일 휴무 <button type="button" class="btn-holiday-link" onclick="openHolidayModal();" aria-label="휴무일 설정 열기">[휴무설정]</button></div>
+            <div class='info' id="storeHolidayTxt">매월 첫째주 / 셋째주 일요일 휴무</div>
 
             <!-- 관리자 모드 전용 통계 카드 -->
             <div id="adminStatsWrap" style="display:none; width:100%; margin-top:6px;">
@@ -1918,7 +1920,7 @@
         '2026-08-17': { name: '대체공휴일' },
         '2026-09-24': { name: '추석 연휴' }, '2026-09-25': { name: '추석' }, '2026-09-26': { name: '추석 연휴' },
         '2026-10-03': { name: '개천절' }, '2026-10-05': { name: '대체공휴일' },
-        '2026-10-09': { name: '한글날' }, '2026-12-25': { name: '기독탄신일' },
+        '2026-10-09': { name: '한글날' }, '2026-12-25': { name: '크리스마스' },
         '2027-01-01': { name: '새해 첫날' },
         '2027-02-06': { name: '설날 연휴' }, '2027-02-07': { name: '설날' },
         '2027-02-08': { name: '설날 연휴' }, '2027-02-09': { name: '대체공휴일' },
@@ -2001,12 +2003,16 @@
         const national = KOREAN_CLOSURE_DATES[dateStr];
         const custom = customHolidayDetails[dateStr];
         const regular = isRegularShopHoliday(year, month, day);
+        // Statutory national holidays (e.g. Christmas 12/25) are OPEN for reservations by default!
+        // A date is closed ONLY if it matches regular shop holiday or is designated by admin.
+        const closed = Boolean(custom || regular);
         return {
             dateStr,
-            closed: Boolean(national || custom || regular),
-            label: national ? national.name : custom ? custom.name : regular ? '정기 휴무' : '',
-            source: national ? 'national' : custom ? 'custom' : regular ? 'regular' : 'available',
-            isNational: Boolean(national)
+            closed,
+            label: custom ? (custom.name || '임시 휴무') : regular ? (national ? `${national.name} (정기 휴무)` : '정기 휴무') : (national ? national.name : ''),
+            source: custom ? 'custom' : regular ? 'regular' : (national ? 'national' : 'available'),
+            isNational: Boolean(national),
+            nationalName: national ? national.name : ''
         };
     }
 
@@ -2064,14 +2070,23 @@
         if (isPast) classes.push('past');
         if (isToday) classes.push('today');
         if (selectedDate === dateStr) classes.push('selected');
-        const disabled = isPast || info.closed;
-        const state = info.closed ? `${info.label}, 예약 불가` : isPast ? '지난 날짜' : '예약 가능';
+        // Regular customers cannot click closed dates; Admins can click closed dates to manage or unblock them!
+        const disabled = isPast || (info.closed && !isAdmin);
+        const state = info.closed ? `${info.label}, 예약 불가` : isPast ? '지난 날짜' : (info.isNational ? `${info.nationalName || info.label} (공휴일 정상영업), 예약 가능` : '예약 가능');
         return `<button type="button" class="${classes.join(' ')}" id="${idPrefix}${dateStr}" aria-label="${dateStr} ${yoil}요일, ${state}" ${disabled ? 'disabled aria-disabled="true"' : `onclick="handleDateClick('${dateStr}','${yoil}')"`}>${day}</button>`;
     }
 
     function getHolidayLabelMarkup(info, fallback = '') {
-        const label = info.closed ? info.label : fallback;
-        return label ? `<div class="calendar-holiday-label${info.closed ? '' : ' calendar-holiday-label--muted'}" title="${escapeHtml(label)}">${escapeHtml(label)}</div>` : '';
+        if (info.closed) {
+            return `<div class="calendar-holiday-label" title="${escapeHtml(info.label)}">${escapeHtml(info.label)}</div>`;
+        }
+        if (info.isNational && info.nationalName) {
+            return `<div class="calendar-holiday-label calendar-holiday-label--open" title="${escapeHtml(info.nationalName)} (정상영업)">${escapeHtml(info.nationalName)}</div>`;
+        }
+        if (fallback) {
+            return `<div class="calendar-holiday-label calendar-holiday-label--muted" title="${escapeHtml(fallback)}">${escapeHtml(fallback)}</div>`;
+        }
+        return '';
     }
 
     function renderMiniCalendar() {
@@ -2116,17 +2131,24 @@
             html += `<td>${getDateButtonMarkup({ dateStr, day, yoil, isPast, isToday, info, idPrefix: 'f' })}`;
             if (info.closed) {
                 html += getHolidayLabelMarkup(info);
-                if (info.source === 'custom' && !isPast) html += `<button type="button" class="btn-holiday-toggle" onclick="removeCustomHoliday('${dateStr}')">휴무 해제</button>`;
+                if (isAdmin && info.source === 'custom' && !isPast) {
+                    html += `<button type="button" class="btn-holiday-toggle" onclick="toggleHolidayAdmin('${dateStr}')">휴무 해제</button>`;
+                }
             } else if (isPast) {
                 html += getHolidayLabelMarkup(info, '마감');
             } else {
+                if (info.isNational) {
+                    html += getHolidayLabelMarkup(info);
+                }
                 for (let h = startH; h < endH; h++) {
                     const match = activeRes.find((r) => r.reserve_date === dateStr && Number(r.reserve_time) === h);
                     if (match) html += `<div class="time reserved" onclick="popup_cancel('${currentYear}','${currentMonth}','${day}','${yoil}','${h}','${match.name || ''}','${match.style || ''}','${match.id}')">${h}시 <button type="button"><span class="del">예약</span>마감</button></div>`;
                     else if (isToday && h <= currentHour) html += `<div class="time reserved">${h}시 <button type="button"><span class="del">예약</span>마감</button></div>`;
                     else html += `<div class="time" onclick="popup_reserve('${currentYear}','${currentMonth}','${day}','${yoil}','${h}')">${h}시 <button type="button">예약<span class="del">하기</span></button></div>`;
                 }
-                html += `<button type="button" class="btn-holiday-toggle" style="margin-top:6px; width:100%;" onclick="toggleHolidayQuick('${dateStr}')">휴무 지정</button>`;
+                if (isAdmin) {
+                    html += `<button type="button" class="btn-holiday-toggle" style="margin-top:6px; width:100%;" onclick="toggleHolidayAdmin('${dateStr}')">휴무 지정</button>`;
+                }
             }
             html += '</td>';
         }
@@ -2409,42 +2431,91 @@
         $('#modalHolidayDate').val(`${yyyy}-${mm}-${dd}`);
     }
 
-    function submitCustomHolidayModal() {
+    async function submitCustomHolidayModal() {
+        if (!isAdmin) {
+            showToast('관리자만 휴무일을 등록할 수 있어요.', 'error');
+            return;
+        }
         const dateInput = $('#modalHolidayDate').val().trim();
-        const reasonInput = $('#modalHolidayReason').val().trim() || '매장 휴무';
+        const reasonInput = $('#modalHolidayReason').val().trim() || '임시 휴무';
         if (!/^\d{4}-\d{2}-\d{2}$/.test(dateInput)) {
             showToast('올바른 날짜 형식(YYYY-MM-DD)을 입력해 주세요.', 'error');
             return;
         }
-        customHolidayDetails[dateInput] = { name: reasonInput, source: 'custom' };
-        if (!customHolidays.includes(dateInput)) customHolidays.push(dateInput);
-        saveStoredHolidayData();
+        await addCustomHolidayAdmin(dateInput, reasonInput);
         $('#modalHolidayDate').val('');
         $('#modalHolidayReason').val('');
-        showToast(`${dateInput} (${reasonInput}) 휴무일이 등록되어 캘린더에서 비활성화되었습니다!`, 'success');
     }
 
-    function removeCustomHoliday(dateStr) {
+    async function addCustomHolidayAdmin(dateStr, reason = '임시 휴무') {
+        if (!isAdmin) {
+            showToast('관리자만 휴무일을 지정할 수 있어요.', 'error');
+            return;
+        }
+        customHolidayDetails[dateStr] = { name: reason, source: 'custom' };
+        if (!customHolidays.includes(dateStr)) customHolidays.push(dateStr);
+        saveStoredHolidayData();
+
+        if (typeof db !== 'undefined' && currentShopId) {
+            try {
+                await db.collection('hairShops').doc(currentShopId).collection('holidays').doc(`custom-${dateStr}`).set({
+                    date: dateStr,
+                    name: reason,
+                    kind: 'custom',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+            } catch (err) {
+                console.warn('Firestore custom holiday save notice:', err);
+            }
+        }
+        renderCalendars();
+        if (selectedDate === dateStr) loadDropSchedule(dateStr, selectedYoil);
+        showToast(`${dateStr}을(를) “${reason}”(으)로 지정하여 예약을 차단했습니다.`, 'success');
+    }
+
+    async function removeCustomHolidayAdmin(dateStr) {
+        if (!isAdmin) {
+            showToast('관리자만 휴무일을 해제할 수 있어요.', 'error');
+            return;
+        }
         delete customHolidayDetails[dateStr];
         customHolidays = customHolidays.filter(d => d !== dateStr);
         saveStoredHolidayData();
-        showToast(`${dateStr} 휴무가 해제되었습니다.`, 'info');
+
+        if (typeof db !== 'undefined' && currentShopId) {
+            try {
+                const snapshot = await db.collection('hairShops').doc(currentShopId).collection('holidays').where('date', '==', dateStr).get();
+                await Promise.all(snapshot.docs.map(doc => doc.ref.delete()));
+            } catch (err) {
+                console.warn('Firestore custom holiday delete notice:', err);
+            }
+        }
+        renderCalendars();
+        if (selectedDate === dateStr) loadDropSchedule(dateStr, selectedYoil);
+        showToast(`${dateStr} 임시 휴무가 해제되어 정상 예약이 가능합니다.`, 'success');
     }
 
-    function toggleHolidayQuick(dateStr) {
+    async function toggleHolidayAdmin(dateStr) {
+        if (!isAdmin) {
+            showToast('관리자만 휴무일을 변경할 수 있어요.', 'error');
+            return;
+        }
         const [year, month, day] = dateStr.split('-').map(Number);
         const info = getClosedDateInfo(year, month, day);
         if (info.source === 'custom') {
-            removeCustomHoliday(dateStr);
-        } else if (info.closed) {
-            showToast(`${info.label}은(는) 정기 휴무 규칙이라 설정 모달에서 변경할 수 있어요.`);
+            await removeCustomHolidayAdmin(dateStr);
+        } else if (info.source === 'regular') {
+            showToast(`${info.label} 규칙에 의한 정기 휴무일입니다. 정기 휴무 설정에서 규칙을 변경할 수 있습니다.`, 'info');
         } else {
-            customHolidayDetails[dateStr] = { name: '임시 휴무', source: 'custom' };
-            if (!customHolidays.includes(dateStr)) customHolidays.push(dateStr);
-            saveStoredHolidayData();
-            showToast(`${dateStr}을(를) 임시 휴무로 지정했습니다.`, 'success');
+            await addCustomHolidayAdmin(dateStr, '임시 휴무');
         }
     }
+    window.toggleHolidayAdmin = toggleHolidayAdmin;
+    window.addCustomHolidayAdmin = addCustomHolidayAdmin;
+    window.removeCustomHolidayAdmin = removeCustomHolidayAdmin;
+    window.toggleHolidayQuick = toggleHolidayAdmin;
+    window.toggleHoliday = toggleHolidayAdmin;
+    window.removeCustomHoliday = removeCustomHolidayAdmin;
 
     function updateHolidaySummaryText() {
         let summary = '';
@@ -2458,7 +2529,7 @@
         } else {
             summary = '연중무휴';
         }
-        $('#storeHolidayTxt').html(`${summary} <button type="button" class="btn-holiday-link" onclick="openHolidayModal();" aria-label="휴무일 설정 열기">[휴무설정]</button>`);
+        $('#storeHolidayTxt').html(isAdmin ? `${summary} <button type="button" class="btn-holiday-link" onclick="openHolidayModal();" aria-label="휴무일 설정 열기">[휴무설정]</button>` : summary);
         $('#currentRuleSummary').text(summary);
     }
 
@@ -2479,7 +2550,7 @@
                         <strong style="color:var(--lh-ink);">${escapeHtml(date)}</strong>
                         <span style="color:var(--lh-danger); margin-left:6px; font-weight:700;">${escapeHtml(detail.name || '휴무')}</span>
                     </div>
-                    <button type="button" class="lh-button lh-button--ghost" style="min-height:32px; padding:2px 8px; font-size:0.75rem; color:var(--lh-danger);" onclick="removeCustomHoliday('${date}')">해제</button>
+                    <button type="button" class="lh-button lh-button--ghost" style="min-height:32px; padding:2px 8px; font-size:0.75rem; color:var(--lh-danger);" onclick="removeCustomHolidayAdmin('${date}')">해제</button>
                 </div>
             `).join('');
             $('#modalHolidayListView').html(html);
@@ -2491,7 +2562,7 @@
     function drop_date(date, yoil) {
         const [year, month, day] = date.split('-').map(Number);
         const info = getClosedDateInfo(year, month, day);
-        if (info.closed) return showToast(`${info.label}은(는) 휴무일이라 예약할 수 없어요.`, 'error');
+        if (info.closed && !isAdmin) return showToast(`${info.label}은(는) 휴무일이라 예약할 수 없어요.`, 'error');
         if (date < getTodayStr()) return;
         selectedDate = date;
         selectedYoil = yoil;
@@ -2501,7 +2572,7 @@
         menuclose();
         $('#dateBackdropDim').fadeIn('fast');
         $('#dateBackdrop').slideDown('fast');
-        $('.bday').text(`${date.replaceAll('-', '.')} (${yoil}) 예약 현황`);
+        $('.bday').text(`${date.replaceAll('-', '.')} (${yoil}) ${info.closed ? '휴무 관리' : '예약 현황'}`);
         loadDropSchedule(date, yoil);
     }
 
@@ -2509,7 +2580,18 @@
         const [year, month, day] = date.split('-').map(Number);
         const closedInfo = getClosedDateInfo(year, month, day);
         if (closedInfo.closed) {
-            $('.div_content').html(`<p class="calendar-holiday-label">${escapeHtml(closedInfo.label)}은(는) 휴무일입니다.</p>`);
+            let closedHtml = `<div style="padding: 24px 16px; text-align: center; background: var(--lh-surface-subtle); border-radius: 16px; margin: 8px 0 16px;">
+                <p style="font-weight: 800; color: var(--lh-danger); font-size: 1.05rem; margin-bottom: 6px;">${escapeHtml(closedInfo.label)}</p>
+                <p style="font-size: 0.85rem; color: var(--lh-text-muted); line-height: 1.5;">${closedInfo.source === 'regular' ? '정기 휴무 규칙에 따라 예약이 차단되었습니다.' : '관리자가 지정한 임시 휴무일로 예약이 차단되었습니다.'}</p>
+            </div>`;
+            if (isAdmin) {
+                if (closedInfo.source === 'custom') {
+                    closedHtml += `<div style="text-align:center; padding:8px 0;"><button type="button" class="lh-button lh-button--primary" style="min-height:44px; padding:0 24px; font-size:0.9rem;" onclick="toggleHolidayAdmin('${date}')">이 날짜 임시 휴무 해제 (예약 오픈)</button></div>`;
+                } else {
+                    closedHtml += `<div style="text-align:center; padding:8px 0;"><button type="button" class="lh-button lh-button--outline" style="min-height:44px; padding:0 20px; font-size:0.85rem;" onclick="openHolidayModal()">정기 휴무 설정 변경하기</button></div>`;
+                }
+            }
+            $('.div_content').html(closedHtml);
             return;
         }
         const activeRes = liveReservations.filter((r) => Number(r.trash) !== 1 && r.reserve_date === date);
@@ -2553,7 +2635,11 @@
                 </div>`;
             }
         }
-        if (isAdmin) contentHtml += `<div style="grid-column: 1 / -1; text-align:center; padding:12px 0 0;"><button type="button" class="btn-holiday-toggle" onclick="toggleHoliday('${date}')">이 날짜를 임시 휴무로 지정</button></div>`;
+        if (isAdmin) {
+            contentHtml += `<div style="grid-column: 1 / -1; text-align:center; padding:16px 0 8px;">
+                <button type="button" class="lh-button lh-button--ghost" style="color:var(--lh-danger); border-color:rgba(239,68,68,0.3); min-height:42px; padding:0 20px; font-size:0.875rem;" onclick="toggleHolidayAdmin('${date}')">이 날짜를 임시 휴무로 지정 (예약 차단)</button>
+            </div>`;
+        }
         $('.div_content').html(contentHtml);
     }
 
@@ -3490,50 +3576,16 @@
             showToast('오늘 이후 날짜만 휴무로 지정할 수 있어요.', 'error');
             return;
         }
-        if (KOREAN_CLOSURE_DATES[date]) {
-            showToast(`${KOREAN_CLOSURE_DATES[date].name}은(는) 이미 휴무일로 표시됩니다.`);
-            return;
-        }
-        try {
-            await db.collection('hairShops').doc(currentShopId).collection('holidays').doc(`custom-${date}`).set({
-                date,
-                name,
-                kind: 'custom',
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            }, { merge: true });
-            $('#customHolidayDate, #customHolidayName').val('');
-            showToast(`${date}을(를) “${name}” 휴무로 지정했어요.`, 'success');
-        } catch (error) {
-            console.error('Custom holiday save error:', error);
-            showToast('휴무일을 저장하지 못했어요. 연결을 확인해 주세요.', 'error');
-        }
+        await addCustomHolidayAdmin(date, name);
+        $('#customHolidayDate, #customHolidayName').val('');
     }
 
     async function removeCustomHoliday(dateStr) {
-        if (!isAdmin || !customHolidays.includes(dateStr)) return;
-        const holRef = db.collection('hairShops').doc(currentShopId).collection('holidays');
-        try {
-            const snapshot = await holRef.where('date', '==', dateStr).get();
-            await Promise.all(snapshot.docs.map((doc) => doc.ref.delete()));
-            showToast(`${dateStr} 휴무를 해제했어요.`, 'success');
-        } catch (error) {
-            console.error('Custom holiday removal error:', error);
-            showToast('휴무 해제 중 문제가 발생했어요.', 'error');
-        }
+        return removeCustomHolidayAdmin(dateStr);
     }
 
     async function toggleHoliday(dateStr) {
-        if (!isAdmin) return;
-        const [year, month, day] = dateStr.split('-').map(Number);
-        const info = getClosedDateInfo(year, month, day);
-        if (info.source === 'custom') return removeCustomHoliday(dateStr);
-        if (info.closed) {
-            showToast(`${info.label}은(는) 기본 휴무일이라 여기서 해제할 수 없어요.`);
-            return;
-        }
-        $('#customHolidayDate').val(dateStr);
-        $('#customHolidayName').val('임시 휴무');
-        await saveCustomHoliday();
+        return toggleHolidayAdmin(dateStr);
     }
 
     function telcheck() {
@@ -3775,18 +3827,31 @@
             updateShopUI();
             renderCalendars();
         }
+        const urlParams = new URLSearchParams(location.search);
+        if (urlParams.has('testYear')) currentYear = Number(urlParams.get('testYear'));
+        if (urlParams.has('testMonth')) currentMonth = Number(urlParams.get('testMonth'));
+        if (urlParams.has('testAdmin')) {
+            isAdmin = true;
+            updateShopUI();
+        }
+        if (urlParams.has('testView')) viewmode(Number(urlParams.get('testView')));
+        renderCalendars();
+
         $(document).on('input change', 'input[type="range"].lh-slider', function() {
             updateSliderFill(this);
         });
-        if (new URLSearchParams(location.search).has('openCatalog')) {
+        if (urlParams.has('openCatalog')) {
             openCatalog();
-            const stepParam = new URLSearchParams(location.search).get('step');
+            const stepParam = urlParams.get('step');
             if (stepParam) setTimeout(() => openCatalogStep(Number(stepParam)), 50);
-            if (new URLSearchParams(location.search).has('testSampleFace')) setTimeout(loadSampleFace, 150);
-            if (new URLSearchParams(location.search).has('expandReport')) setTimeout(toggleAiReport, 200);
+            if (urlParams.has('testSampleFace')) setTimeout(loadSampleFace, 150);
+            if (urlParams.has('expandReport')) setTimeout(toggleAiReport, 200);
         }
-        if (new URLSearchParams(location.search).has('openDate')) {
-            drop_date('2026-10-30', '금');
+        if (urlParams.has('openDate')) {
+            const targetDate = urlParams.get('openDate') || '2026-10-30';
+            const [y, m, d] = targetDate.split('-').map(Number);
+            const targetYoil = getYoil(y, m, d);
+            drop_date(targetDate, targetYoil);
             $('#dateBackdropDim').show();
             $('#dateBackdrop').show();
         }
