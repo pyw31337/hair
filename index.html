@@ -41,6 +41,7 @@
     <link href="css/infinite-carousel-css-only.webflow.182ee2047.css" rel="stylesheet" type="text/css"/>
 
     <style>
+        html, body { max-width: 100vw; overflow-x: hidden; }
         /* Service Header */
         .tenant-bar {
             color: #fff;
@@ -343,94 +344,220 @@
         .aside .btn-new-shop.side-action:hover { background: var(--lh-pink-hover) !important; box-shadow: 0 6px 18px rgba(243, 83, 129, 0.45) !important; }
         .aside .admin.side-action { border: 0; color: #fff; backdrop-filter: none; }
 
-        /* The catalogue is a foreground consultation studio, not a competing form. */
-        .catalog-panel { display: none; position: fixed; inset: 0; z-index: 40; padding: 20px; overflow: auto; background: rgba(7, 9, 21, 0.82); backdrop-filter: blur(14px) saturate(120%); -webkit-backdrop-filter: blur(14px) saturate(120%); place-items: center; box-sizing: border-box; }
-        .catalog-card { width: min(1120px, 100%); max-height: calc(100dvh - 40px); margin: 0 auto; padding: 26px; overflow: auto; border: 1px solid rgba(255,255,255,0.72); border-radius: 24px; background: linear-gradient(145deg, #fff 0%, #fbf9fa 62%, #f8f5f8 100%); box-shadow: 0 22px 60px rgba(6, 8, 20, 0.28); box-sizing: border-box; }
-        .catalog-heading { display: flex; align-items: start; justify-content: space-between; gap: 16px; padding-bottom: 16px; border-bottom: 1px solid #ebe5e8; }
-        .catalog-kicker { display: block; margin-bottom: 6px; color: #e3376b; font-size: 0.64rem; font-weight: 900; letter-spacing: 0.16em; }
-        .catalog-heading h2 { margin: 0; color: #171827; font-size: 1.45rem; }
-        .catalog-heading p { margin: 5px 0 0; color: #6b7280; font-size: 0.86rem; }
-        .catalog-edition { display: grid; min-width: 74px; gap: 2px; padding: 7px 9px; border-left: 1px solid #e6dce2; color: #9a8c94; font-size: 0.6rem; font-weight: 900; letter-spacing: 0.12em; text-align: right; }
+        /* The LookBook: Interactive 360 Studio & Step-by-Step Consultation Journey */
+        .catalog-panel { display: none; position: fixed; inset: 0; width: 100%; height: 100%; z-index: 40; padding: 20px; overflow-y: auto; overflow-x: hidden; background: rgba(9, 8, 18, 0.82); backdrop-filter: blur(14px) saturate(120%); -webkit-backdrop-filter: blur(14px) saturate(120%); place-items: center; box-sizing: border-box; }
+        .catalog-card { position: relative; width: min(1140px, 100%); max-height: min(92vh, 920px); margin: 0 auto; padding: 26px 30px 30px; overflow-y: auto; overflow-x: hidden; border: 1px solid rgba(255, 255, 255, 0.85); border-radius: 28px; background: linear-gradient(155deg, #ffffff 0%, #faf8fa 55%, #f6f1f4 100%); box-shadow: 0 24px 64px rgba(10, 8, 20, 0.28), 0 0 0 1px rgba(243, 83, 129, 0.08); box-sizing: border-box; scrollbar-width: thin; scrollbar-color: rgba(243, 83, 129, 0.45) transparent; }
+        .catalog-card::-webkit-scrollbar { width: 7px; }
+        .catalog-card::-webkit-scrollbar-track { background: transparent; margin-top: 26px; margin-bottom: 26px; border-radius: 999px; }
+        .catalog-card::-webkit-scrollbar-thumb { background: linear-gradient(180deg, rgba(243, 83, 129, 0.45), rgba(227, 55, 107, 0.65)); border-radius: 999px; border: 1.5px solid rgba(255, 255, 255, 0.8); }
+        .catalog-card::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, rgba(243, 83, 129, 0.8), rgba(227, 55, 107, 0.95)); }
+
+        .catalog-heading { display: flex; align-items: start; justify-content: space-between; gap: 12px; padding-bottom: 15px; border-bottom: 1px solid #ede5ea; }
+        .catalog-heading > div:first-child { flex: 1; min-width: 0; }
+        .catalog-kicker { display: block; margin-bottom: 5px; color: #e3376b; font-size: 0.64rem; font-weight: 900; letter-spacing: 0.16em; }
+        .catalog-heading h2 { margin: 0; color: #171827; font-size: 1.42rem; font-weight: 800; letter-spacing: -0.02em; }
+        .catalog-heading p { margin: 4px 0 0; color: #6b7280; font-size: 0.84rem; }
+        .catalog-edition { display: grid; min-width: 74px; gap: 2px; padding: 6px 10px; border-left: 1px solid #e6dce2; color: #9a8c94; font-size: 0.6rem; font-weight: 900; letter-spacing: 0.12em; text-align: right; }
         .catalog-edition b { color: #24202a; font-family: Georgia, serif; font-size: 1rem; font-weight: 400; letter-spacing: 0; }
-        .catalog-close { border: 0; background: #f3f4f6; color: #4b5563; width: 34px; height: 34px; border-radius: 50%; font-size: 1.15rem; cursor: pointer; flex-shrink: 0; }
-        .catalog-gender { display: flex; gap: 8px; margin: 20px 0 10px; }
-        .catalog-gender button { flex: 1; padding: 10px; border: 1px solid #e5e7eb; border-radius: 10px; background: #fff; color: #6b7280; font: inherit; font-weight: 800; cursor: pointer; }
-        .catalog-gender button.is-active { border-color: #f35381; background: #fff0f5; color: #e3376b; }
-        .catalog-service-filter { display: flex; align-items: center; gap: 7px; margin: 0 0 14px; overflow-x: auto; scrollbar-width: none; }
-        .catalog-service-filter::-webkit-scrollbar { display: none; }
-        .catalog-service-filter button { flex: 0 0 auto; min-width: 54px; padding: 7px 10px; border: 1px solid #ece7ec; border-radius: 999px; background: #fff; color: #6b7280; font: inherit; font-size: 0.72rem; font-weight: 800; cursor: pointer; }
-        .catalog-service-filter button.is-active { border-color: #f35381; background: #f35381; color: #fff; box-shadow: 0 5px 12px rgba(243, 83, 129, 0.22); }
-        .catalog-style-count { margin-left: auto; padding-left: 6px; color: #9ca3af; font-size: 0.72rem; font-weight: 800; white-space: nowrap; }
-        .catalog-content { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(320px, 0.88fr); gap: 28px; align-items: start; }
-        .catalog-style-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-content: start; }
-        .catalog-style-card { position: relative; padding: 0; overflow: hidden; border: 2px solid transparent; border-radius: 14px; background: #f8f8fa; text-align: left; cursor: pointer; transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease; }
-        .catalog-style-card:hover, .catalog-style-card.is-selected { border-color: #f35381; box-shadow: 0 5px 16px rgba(243, 83, 129, 0.22); }
-        .catalog-style-card img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: contain; background: #eeeaf0; }
-        .catalog-style-card::after { content: attr(data-service); position: absolute; top: 7px; left: 7px; padding: 4px 6px; border-radius: 999px; background: rgba(24, 22, 31, 0.66); color: #fff; font-size: 0.56rem; font-weight: 900; letter-spacing: 0.05em; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
-        .catalog-style-card span { display: block; padding: 8px 9px 2px; color: #1f2937; font-size: 0.78rem; font-weight: 800; }
-        .catalog-style-card small { display: block; padding: 0 9px 9px; color: #9ca3af; font-size: 0.7rem; }
-        .catalog-preview { position: sticky; top: 0; overflow: hidden; border: 1px solid #f0e7eb; border-radius: 18px; background: linear-gradient(155deg, #fff5f8, #f5f7ff); }
-        .catalog-preview-topline { display: flex; justify-content: space-between; padding: 10px 14px 9px; border-bottom: 1px solid rgba(219, 205, 213, 0.7); color: #7b6873; font-size: 0.61rem; font-weight: 900; letter-spacing: 0.1em; }
+        .catalog-close { border: 0; background: #f3f4f6; color: #4b5563; width: 34px; height: 34px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; flex-shrink: 0; transition: all 0.16s ease; }
+        .catalog-close:hover { background: #e5e7eb; color: #111; transform: scale(1.05); }
+
+        /* 2-Column Consultation Studio */
+        .catalog-content { display: grid; grid-template-columns: minmax(320px, 360px) minmax(0, 1fr); gap: 26px; align-items: start; margin-top: 18px; }
+        
+        /* Left Column: Sticky 360 Model Stage */
+        .catalog-sticky-col { position: sticky; top: 0; display: flex; flex-direction: column; gap: 12px; }
+        .catalog-stage-frame { position: relative; overflow: hidden; border: 1px solid rgba(235, 222, 228, 0.9); border-radius: 20px; background: #beb8bc; box-shadow: 0 10px 28px rgba(24, 18, 28, 0.10); }
+        .catalog-preview-topline { display: flex; justify-content: space-between; padding: 10px 14px 9px; border-bottom: 1px solid rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: #7b6873; font-size: 0.61rem; font-weight: 900; letter-spacing: 0.1em; }
         .catalog-preview-topline span:last-child { color: #e3376b; }
-        .catalog-360-stage { position: relative; height: 336px; overflow: hidden; background: radial-gradient(circle at center, #f7eff1, #d9dbe3); touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab; --catalog-angle: 0deg; }
+        
+        .catalog-360-stage { position: relative; width: 100%; aspect-ratio: 3 / 4; max-height: 420px; overflow: hidden; background: #beb8bc; touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab; --catalog-angle: 0deg; }
         .catalog-360-stage.is-rotating, .catalog-360-stage:active { cursor: grabbing; }
-        .catalog-360-stage::after { content: ''; position: absolute; inset: auto 0 0; height: 32%; pointer-events: none; background: linear-gradient(transparent, rgba(18, 21, 36, 0.22)); }
         .catalog-preview-image { position: relative; width: 100%; height: 100%; }
-        .catalog-preview-image img { width: 100%; height: 100%; object-fit: contain; object-position: center; user-select: none; -webkit-user-select: none; -webkit-user-drag: none; pointer-events: none; transition: opacity 0.12s ease, transform 0.12s ease; }
-        .catalog-preview-image.is-frame-changing img { opacity: 0.72; transform: scale(0.992); }
-        .catalog-color-wash { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: transparent; mix-blend-mode: color; -webkit-mask-image: radial-gradient(ellipse 55% 49% at 50% 35%, #000 42%, rgba(0,0,0,0.8) 62%, transparent 100%); mask-image: radial-gradient(ellipse 55% 49% at 50% 35%, #000 42%, rgba(0,0,0,0.8) 62%, transparent 100%); transition: background 0.2s ease, opacity 0.2s ease; }
-        .catalog-rotation-badge { position: absolute; z-index: 1; top: 12px; left: 12px; padding: 6px 9px; border-radius: 999px; background: rgba(17, 18, 29, 0.62); color: #fff; font-size: 0.7rem; font-weight: 800; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-        .catalog-drag-hint { position: absolute; z-index: 1; right: 12px; bottom: 12px; color: #fff; font-size: 0.68rem; font-weight: 700; text-shadow: 0 1px 5px rgba(0,0,0,0.65); }
-        .catalog-rotation-dial { position: absolute; z-index: 1; right: 12px; top: 11px; width: 42px; height: 42px; border: 1px solid rgba(255,255,255,0.7); border-radius: 50%; background: rgba(18, 18, 31, 0.36); box-shadow: inset 0 0 0 5px rgba(255,255,255,0.14); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-        .catalog-rotation-dial::before { content: '360°'; position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: 0.58rem; font-weight: 900; }
-        .catalog-rotation-dial::after { content: ''; position: absolute; top: -3px; left: 50%; width: 7px; height: 7px; border: 2px solid #fff; border-radius: 50%; background: #f35381; box-shadow: 0 1px 5px rgba(0,0,0,0.3); transform: translateX(-50%) rotate(var(--catalog-angle)); transform-origin: 50% 24px; transition: transform 0.12s linear; }
-        .catalog-preview-copy { padding: 15px; }
-        .catalog-preview-copy p { margin: 0; color: #6b7280; font-size: 0.78rem; }
-        .catalog-preview-copy strong { display: block; margin: 5px 0 12px; color: #1f2937; font-size: 1rem; }
-        .catalog-live-style { display: grid; grid-template-columns: 64px 1fr; gap: 10px; align-items: center; margin: 0 0 13px; padding: 8px; border: 1px solid rgba(243,83,129,0.16); border-radius: 12px; background: rgba(255,255,255,0.68); }
-        .catalog-live-style-cover { position: relative; width: 64px; height: 76px; overflow: hidden; border-radius: 8px; background: #ebe5e8; }
-        .catalog-live-style-cover img { width: 100%; height: 100%; object-fit: contain; object-position: center; user-select: none; -webkit-user-drag: none; }
-        .catalog-live-style-cover span { position: absolute; inset: 0; pointer-events: none; opacity: 0; mix-blend-mode: color; transition: opacity 0.2s ease, background 0.2s ease; }
-        .catalog-live-style em { display: block; margin-bottom: 3px; color: #e3376b; font-size: 0.56rem; font-style: normal; font-weight: 900; letter-spacing: 0.11em; }
-        .catalog-live-style b, .catalog-live-style small { display: block; color: #31303b; font-size: 0.73rem; line-height: 1.35; }
-        .catalog-live-style small { margin-top: 2px; color: #8b8590; font-size: 0.65rem; }
-        .catalog-rotation-reference { display: inline-flex; align-items: center; gap: 5px; margin: -4px 0 10px; color: #7f7782; font-size: 0.63rem; font-weight: 700; }
-        .catalog-rotation-reference::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #f35381; box-shadow: 0 0 0 3px rgba(243,83,129,0.13); }
-        .catalog-style-dna { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 0 0 12px; }
-        .catalog-style-dna div { min-width: 0; padding: 8px; border: 1px solid rgba(72,63,76,0.09); border-radius: 9px; background: rgba(255,255,255,0.62); }
-        .catalog-style-dna dt { margin-bottom: 3px; color: #96909a; font-size: 0.57rem; font-weight: 900; letter-spacing: 0.04em; }
-        .catalog-style-dna dd { overflow: hidden; margin: 0; color: #38333d; font-size: 0.66rem; font-weight: 800; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; }
-        .catalog-range { margin-top: 12px; }
-        .catalog-range label { display: flex; justify-content: space-between; color: #4b5563; font-size: 0.77rem; font-weight: 800; }
-        .catalog-range output { color: #e3376b; }
-        .catalog-range input { width: 100%; margin: 7px 0 0; accent-color: #f35381; }
-        .catalog-color-picker { margin-top: 13px; }
-        .catalog-color-picker > label { display: flex; justify-content: space-between; color: #4b5563; font-size: 0.77rem; font-weight: 800; }
-        .catalog-color-picker output { color: #e3376b; }
-        .catalog-color-swatches { display: flex; gap: 7px; margin-top: 8px; }
-        .catalog-color-swatch { width: 28px; height: 28px; padding: 3px; border: 1px solid #e5e7eb; border-radius: 50%; background: #fff; cursor: pointer; }
-        .catalog-color-swatch span { display: block; width: 100%; height: 100%; border-radius: 50%; background: var(--swatch); }
-        .catalog-color-swatch.is-active { border-color: #f35381; box-shadow: 0 0 0 2px rgba(243,83,129,0.18); }
-        .catalog-detail-divider { display: flex; align-items: center; gap: 8px; margin-top: 15px; color: #e3376b; font-size: 0.62rem; font-weight: 900; letter-spacing: 0.1em; }
-        .catalog-detail-divider::after { content: ''; flex: 1; height: 1px; background: rgba(227,55,107,0.16); }
-        .catalog-choice { margin-top: 12px; }
-        .catalog-choice > span { display: block; margin-bottom: 7px; color: #4b5563; font-size: 0.77rem; font-weight: 800; }
-        .catalog-choice-group { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
-        .catalog-choice-group button { min-height: 31px; padding: 5px 4px; border: 1px solid #e5e7eb; border-radius: 8px; background: rgba(255,255,255,0.76); color: #74717a; font: inherit; font-size: 0.63rem; font-weight: 800; cursor: pointer; }
-        .catalog-choice-group button.is-active { border-color: #f35381; background: #fff0f5; color: #df2e66; }
-        .catalog-recipe { margin-top: 12px; padding: 9px 10px; border-radius: 10px; background: linear-gradient(90deg, rgba(243,83,129,0.10), rgba(255,255,255,0.5)); color: #6e6570; font-size: 0.66rem; font-weight: 700; line-height: 1.5; }
-        .catalog-recipe b { color: #e3376b; }
-        .catalog-rotation-scrubber { margin-top: 13px; padding: 10px; border: 1px solid rgba(243,83,129,0.16); border-radius: 11px; background: rgba(255,255,255,0.7); }
-        .catalog-rotation-scrubber label { display: flex; justify-content: space-between; color: #4b5563; font-size: 0.73rem; font-weight: 900; }
-        .catalog-rotation-scrubber output { color: #e3376b; }
-        .catalog-rotation-scrubber input { width: 100%; margin: 7px 0 4px; accent-color: #f35381; }
-        .catalog-rotation-ticks { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; }
-        .catalog-rotation-ticks i { height: 3px; border-radius: 999px; background: #d9dbe4; }
+        .catalog-preview-image img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; user-select: none; -webkit-user-select: none; -webkit-user-drag: none; pointer-events: none; transition: opacity 0.12s ease; }
+        .catalog-preview-image.is-frame-changing img { opacity: 0.75; }
+        .catalog-color-wash { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: transparent; mix-blend-mode: color; -webkit-mask-image: radial-gradient(ellipse 55% 52% at 50% 36%, #000 44%, rgba(0,0,0,0.85) 64%, transparent 100%); mask-image: radial-gradient(ellipse 55% 52% at 50% 36%, #000 44%, rgba(0,0,0,0.85) 64%, transparent 100%); transition: background 0.2s ease, opacity 0.2s ease; z-index: 1; }
+        
+        /* Dynamic Bangs & Silhouette SVG Layer */
+        .catalog-bangs-layer { position: absolute; inset: 0; pointer-events: none; z-index: 2; transition: opacity 0.2s ease; }
+        .catalog-bangs-layer svg { width: 100%; height: 100%; display: block; }
+        .catalog-bangs-badge { position: absolute; bottom: 38px; left: 10px; right: 10px; padding: 6px 10px; border-radius: 999px; background: rgba(18, 16, 26, 0.78); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: #fff; font-size: 0.65rem; font-weight: 800; text-align: center; pointer-events: none; opacity: 0; transform: translateY(4px); transition: opacity 0.25s ease, transform 0.25s ease; z-index: 3; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .catalog-bangs-badge.is-visible { opacity: 1; transform: translateY(0); }
+
+        .catalog-rotation-badge { position: absolute; z-index: 3; top: 10px; left: 10px; padding: 5px 9px; border-radius: 999px; background: rgba(17, 18, 29, 0.64); color: #fff; font-size: 0.68rem; font-weight: 800; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .catalog-drag-hint { position: absolute; z-index: 3; right: 10px; bottom: 10px; color: #fff; font-size: 0.65rem; font-weight: 700; text-shadow: 0 1px 4px rgba(0,0,0,0.7); }
+        .catalog-rotation-dial { position: absolute; z-index: 3; right: 10px; top: 10px; width: 38px; height: 38px; border: 1.5px solid rgba(255,255,255,0.7); border-radius: 50%; background: rgba(18, 18, 31, 0.38); box-shadow: inset 0 0 0 4px rgba(255,255,255,0.12); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .catalog-rotation-dial::before { content: '360°'; position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: 0.54rem; font-weight: 900; }
+        .catalog-rotation-dial::after { content: ''; position: absolute; top: -3px; left: 50%; width: 7px; height: 7px; border: 2px solid #fff; border-radius: 50%; background: #f35381; box-shadow: 0 1px 4px rgba(0,0,0,0.3); transform: translateX(-50%) rotate(var(--catalog-angle)); transform-origin: 50% 22px; transition: transform 0.12s linear; }
+
+        .catalog-rotation-scrubber { padding: 10px 12px; border: 1px solid rgba(243,83,129,0.16); border-radius: 12px; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+        .catalog-rotation-scrubber label { display: flex; justify-content: space-between; align-items: center; color: #4b5563; font-size: 0.73rem; font-weight: 800; }
+        .catalog-rotation-scrubber output { color: #e3376b; font-weight: 800; }
+        .catalog-rotation-ticks { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; margin-top: 4px; }
+        .catalog-rotation-ticks i { height: 3px; border-radius: 999px; background: #e5e7eb; }
         .catalog-rotation-ticks i:nth-child(3n + 1) { background: #f6a3bf; }
-        .catalog-view-controls { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 12px; }
-        .catalog-view-controls button { min-height: 32px; border: 1px solid #e5e7eb; border-radius: 8px; background: rgba(255,255,255,0.74); color: #6b7280; font: inherit; font-size: 0.7rem; font-weight: 800; cursor: pointer; }
-        .catalog-view-controls button.is-active { border-color: #f35381; background: #fff0f5; color: #df2e66; }
-        .catalog-footnote { margin: 13px 0 0; color: #7c8492; font-size: 0.68rem; line-height: 1.45; }
+
+        .catalog-view-controls { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+        .catalog-view-controls button { min-height: 31px; border: 1px solid #e5e7eb; border-radius: 8px; background: #ffffff; color: #6b7280; font: inherit; font-size: 0.68rem; font-weight: 800; cursor: pointer; transition: all 0.16s ease; }
+        .catalog-view-controls button:hover, .catalog-view-controls button.is-active { border-color: #f35381; background: #fff0f5; color: #df2e66; box-shadow: 0 2px 6px rgba(243,83,129,0.16); }
+
+        .catalog-recipe { padding: 10px 12px; border-radius: 12px; background: linear-gradient(135deg, rgba(243,83,129,0.10), rgba(255,255,255,0.7)); border: 1px solid rgba(243,83,129,0.2); color: #524755; font-size: 0.68rem; font-weight: 700; line-height: 1.5; }
+        .catalog-recipe b { color: #e3376b; font-weight: 900; }
+
+        /* Custom Elegant Range Sliders */
+        .lh-range-wrap { margin-top: 10px; }
+        .lh-range-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; color: #4b5563; font-size: 0.77rem; font-weight: 800; }
+        .lh-range-header output { color: #e3376b; font-size: 0.72rem; font-weight: 800; background: #fff0f5; padding: 2px 8px; border-radius: 999px; border: 1px solid rgba(243, 83, 129, 0.2); }
+        
+        input[type="range"].lh-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 999px;
+            background: #ede6eb;
+            outline: none;
+            margin: 7px 0 3px;
+            cursor: pointer;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+            --slider-pct: 50%;
+        }
+        input[type="range"].lh-slider::-webkit-slider-runnable-track {
+            height: 8px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #f35381 var(--slider-pct, 50%), #ede6eb var(--slider-pct, 50%));
+        }
+        input[type="range"].lh-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 3.5px solid #f35381;
+            box-shadow: 0 2px 8px rgba(243, 83, 129, 0.4), 0 0 0 1px rgba(0,0,0,0.05);
+            margin-top: -6px;
+            cursor: grab;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        input[type="range"].lh-slider:active::-webkit-slider-thumb {
+            cursor: grabbing;
+            transform: scale(1.18);
+            box-shadow: 0 4px 14px rgba(243, 83, 129, 0.6), 0 0 0 4px rgba(243, 83, 129, 0.16);
+        }
+        input[type="range"].lh-slider::-moz-range-track { height: 8px; border-radius: 999px; background: #ede6eb; }
+        input[type="range"].lh-slider::-moz-range-progress { height: 8px; border-radius: 999px; background: #f35381; }
+        input[type="range"].lh-slider::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: #ffffff; border: 3.5px solid #f35381; box-shadow: 0 2px 8px rgba(243, 83, 129, 0.4); cursor: grab; }
+
+        /* Right Column: Sequential Step Journey */
+        .catalog-steps-col { display: flex; flex-direction: column; gap: 14px; }
+        .catalog-step-card { border: 1.5px solid #eee5ea; border-radius: 18px; background: #ffffff; box-shadow: 0 4px 14px rgba(22, 16, 26, 0.03); overflow: hidden; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+        .catalog-step-card.is-open { border-color: rgba(243, 83, 129, 0.35); box-shadow: 0 8px 24px rgba(243, 83, 129, 0.08); }
+        .catalog-step-header { display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; background: #ffffff; cursor: pointer; user-select: none; border-bottom: 1px solid transparent; }
+        .catalog-step-card.is-open .catalog-step-header { border-bottom-color: #f5edf1; background: linear-gradient(90deg, #fffafc, #ffffff); }
+        .catalog-step-title-wrap { display: flex; align-items: center; gap: 10px; }
+        .catalog-step-num { padding: 3px 8px; border-radius: 999px; background: #fbebf1; color: #e3376b; font-size: 0.64rem; font-weight: 900; letter-spacing: 0.06em; }
+        .catalog-step-card.is-open .catalog-step-num { background: #f35381; color: #ffffff; }
+        .catalog-step-header h3 { margin: 0; font-size: 0.88rem; font-weight: 800; color: #1f2937; }
+        .catalog-step-toggle-btn { font-size: 0.72rem; color: #e3376b; font-weight: 800; background: #fff0f5; padding: 4px 10px; border-radius: 999px; }
+        
+        .catalog-step-summary { display: flex; align-items: center; justify-content: space-between; padding: 11px 16px; background: #fdfafc; border-top: 1px solid #f6edf2; cursor: pointer; gap: 12px; }
+        .catalog-step-summary:hover { background: #fff0f5; }
+        .step-summary-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+        .step-summary-thumb { width: 42px; height: 50px; border-radius: 8px; object-fit: cover; background: #eee; flex-shrink: 0; border: 1px solid rgba(243, 83, 129, 0.25); }
+        .step-summary-text { min-width: 0; }
+        .step-summary-text strong { display: block; font-size: 0.82rem; color: #1f2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 800; }
+        .step-summary-text span { display: block; font-size: 0.7rem; color: #8b8590; margin-top: 2px; }
+        .btn-step-edit { border: 1px solid rgba(243, 83, 129, 0.4); background: #ffffff; color: #e3376b; padding: 5px 12px; border-radius: 999px; font-size: 0.72rem; font-weight: 800; cursor: pointer; white-space: nowrap; transition: all 0.16s ease; }
+        .btn-step-edit:hover { background: #f35381; color: #ffffff; box-shadow: 0 3px 10px rgba(243, 83, 129, 0.25); }
+        .btn-step-next { display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 14px; height: 38px; border: 0; border-radius: 10px; background: #fdf2f6; color: #e3376b; font-size: 0.78rem; font-weight: 800; cursor: pointer; transition: all 0.16s ease; }
+        .btn-step-next:hover { background: #f35381; color: #ffffff; box-shadow: 0 4px 12px rgba(243, 83, 129, 0.28); }
+
+        .catalog-step-body { padding: 15px 18px 18px; }
+
+        /* Step 01: Style Filters & Grid */
+        .catalog-gender { display: flex; gap: 8px; margin: 0 0 10px; }
+        .catalog-gender button { flex: 1; padding: 9px; border: 1px solid #e5e7eb; border-radius: 10px; background: #fff; color: #6b7280; font: inherit; font-size: 0.78rem; font-weight: 800; cursor: pointer; transition: all 0.16s ease; }
+        .catalog-gender button.is-active { border-color: #f35381; background: #fff0f5; color: #e3376b; }
+        .catalog-service-filter { display: flex; align-items: center; gap: 6px; margin: 0 0 14px; overflow-x: auto; scrollbar-width: none; }
+        .catalog-service-filter::-webkit-scrollbar { display: none; }
+        .catalog-service-filter button { flex: 0 0 auto; min-width: 52px; padding: 6px 11px; border: 1px solid #ece7ec; border-radius: 999px; background: #fff; color: #6b7280; font: inherit; font-size: 0.72rem; font-weight: 800; cursor: pointer; transition: all 0.16s ease; }
+        .catalog-service-filter button.is-active { border-color: #f35381; background: #f35381; color: #fff; box-shadow: 0 4px 10px rgba(243, 83, 129, 0.22); }
+        .catalog-style-count { margin-left: auto; padding-left: 6px; color: #9ca3af; font-size: 0.72rem; font-weight: 800; white-space: nowrap; }
+        .catalog-style-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; align-content: start; max-height: 480px; overflow-y: auto; padding-right: 2px; }
+        .catalog-style-grid::-webkit-scrollbar { width: 5px; }
+        .catalog-style-grid::-webkit-scrollbar-thumb { background: rgba(243, 83, 129, 0.3); border-radius: 999px; }
+        .catalog-style-card { position: relative; padding: 0; overflow: hidden; border: 2px solid transparent; border-radius: 12px; background: #f8f8fa; text-align: left; cursor: pointer; transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease; }
+        .catalog-style-card:hover, .catalog-style-card.is-selected { border-color: #f35381; box-shadow: 0 4px 14px rgba(243, 83, 129, 0.22); transform: translateY(-2px); }
+        .catalog-style-card img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: contain; background: #eeeaf0; }
+        .catalog-style-card::after { content: attr(data-service); position: absolute; top: 6px; left: 6px; padding: 3px 6px; border-radius: 999px; background: rgba(24, 22, 31, 0.68); color: #fff; font-size: 0.54rem; font-weight: 900; letter-spacing: 0.05em; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
+        .catalog-style-card span { display: block; padding: 7px 8px 2px; color: #1f2937; font-size: 0.75rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .catalog-style-card small { display: block; padding: 0 8px 7px; color: #9ca3af; font-size: 0.68rem; }
+
+        /* Step 02: Style DNA Pills */
+        .catalog-style-dna { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 12px 0 6px; }
+        .catalog-style-dna div { min-width: 0; padding: 8px 10px; border: 1px solid rgba(72,63,76,0.09); border-radius: 9px; background: #faf7f9; }
+        .catalog-style-dna dt { margin-bottom: 2px; color: #96909a; font-size: 0.58rem; font-weight: 900; letter-spacing: 0.04em; }
+        .catalog-style-dna dd { overflow: hidden; margin: 0; color: #38333d; font-size: 0.68rem; font-weight: 800; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; }
+
+        /* Step 03: Bangs & Detail Choice */
+        .catalog-choice { margin-top: 6px; }
+        .catalog-choice > span { display: block; margin-bottom: 7px; color: #4b5563; font-size: 0.77rem; font-weight: 800; }
+        .catalog-choice-group { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+        .catalog-choice-group button { min-height: 32px; padding: 5px 6px; border: 1px solid #e5e7eb; border-radius: 8px; background: #ffffff; color: #74717a; font: inherit; font-size: 0.68rem; font-weight: 800; cursor: pointer; transition: all 0.16s ease; }
+        .catalog-choice-group button:hover, .catalog-choice-group button.is-active { border-color: #f35381; background: #fff0f5; color: #df2e66; box-shadow: 0 2px 6px rgba(243, 83, 129, 0.16); }
+
+        /* Step 04: Color Studio */
+        .catalog-color-picker { margin-top: 4px; }
+        .catalog-color-swatches { display: flex; gap: 8px; margin-top: 8px; }
+        .catalog-color-swatch { width: 30px; height: 30px; padding: 3px; border: 1.5px solid #e5e7eb; border-radius: 50%; background: #fff; cursor: pointer; transition: all 0.16s ease; }
+        .catalog-color-swatch span { display: block; width: 100%; height: 100%; border-radius: 50%; background: var(--swatch); }
+        .catalog-color-swatch:hover, .catalog-color-swatch.is-active { border-color: #f35381; box-shadow: 0 0 0 3px rgba(243,83,129,0.22); transform: scale(1.08); }
+
+        /* Step 05: AI Try-On Studio & Booking */
+        .ai-tryon-container { display: flex; flex-direction: column; gap: 14px; }
+        .ai-tryon-header { padding: 12px 14px; border-radius: 12px; background: linear-gradient(135deg, #fff5f8 0%, #f6f8ff 100%); border: 1px solid rgba(243, 83, 129, 0.18); }
+        .ai-sparkle-pill { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #f35381; color: #fff; font-size: 0.58rem; font-weight: 900; letter-spacing: 0.08em; margin-bottom: 4px; }
+        .ai-tryon-header h4 { margin: 0 0 4px; font-size: 0.86rem; font-weight: 800; color: #1f2937; }
+        .ai-tryon-header p { margin: 0; font-size: 0.72rem; color: #6b7280; line-height: 1.4; }
+
+        .ai-upload-row { display: flex; gap: 8px; }
+        .ai-upload-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; height: 42px; border-radius: 10px; background: linear-gradient(90deg, #f35381, #e3376b); color: #fff; font-size: 0.78rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(243, 83, 129, 0.28); transition: all 0.16s ease; }
+        .ai-upload-btn:hover { background: linear-gradient(90deg, #df2e66, #cf2256); transform: translateY(-1px); }
+        .ai-sample-btn { padding: 0 14px; height: 42px; border-radius: 10px; border: 1px solid #e5e7eb; background: #fff; color: #4b5563; font: inherit; font-size: 0.74rem; font-weight: 800; cursor: pointer; transition: all 0.16s ease; }
+        .ai-sample-btn:hover { background: #f9fafb; border-color: #d1d5db; }
+
+        .ai-stage-wrapper { padding: 14px; border-radius: 14px; background: #f9f7fa; border: 1px solid #eee5ea; display: flex; flex-direction: column; gap: 12px; }
+        .ai-canvas-box { position: relative; width: 100%; max-width: 320px; aspect-ratio: 3 / 4; margin: 0 auto; border-radius: 14px; overflow: hidden; background: #beb8bc; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+        .ai-canvas-box canvas { width: 100%; height: 100%; display: block; object-fit: cover; }
+        .ai-badge-live { position: absolute; top: 10px; left: 10px; padding: 4px 8px; border-radius: 999px; background: rgba(18, 16, 26, 0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: #fff; font-size: 0.6rem; font-weight: 900; letter-spacing: 0.08em; }
+
+        .ai-compare-row { display: flex; margin-top: 6px; }
+        .btn-compare { width: 100%; height: 34px; border: 1px dashed rgba(243, 83, 129, 0.5); border-radius: 8px; background: #fff0f5; color: #e3376b; font: inherit; font-size: 0.72rem; font-weight: 800; cursor: pointer; user-select: none; -webkit-user-select: none; }
+
+        /* AI Report Collapsible Sheet */
+        .ai-report-accordion { border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background: #ffffff; }
+        .ai-report-toggle { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border: 0; background: #fafafa; font: inherit; cursor: pointer; text-align: left; }
+        .ai-report-toggle:hover { background: #f3f4f6; }
+        .ai-report-icon { font-size: 1rem; margin-right: 8px; }
+        .ai-report-title { flex: 1; font-size: 0.73rem; font-weight: 800; color: #374151; }
+        .ai-report-arrow { font-size: 0.65rem; color: #9ca3af; transition: transform 0.2s ease; }
+        .ai-report-sheet { padding: 14px 16px; border-top: 1px solid #f0f0f0; background: #ffffff; font-size: 0.73rem; color: #4b5563; line-height: 1.55; }
+        .ai-report-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.7rem; }
+        .ai-report-table th, .ai-report-table td { padding: 8px 10px; border: 1px solid #ebebeb; text-align: left; }
+        .ai-report-table th { background: #f9fafb; font-weight: 800; color: #1f2937; }
+        .ai-report-badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.62rem; font-weight: 800; }
+        .ai-badge-saas { background: #fee2e2; color: #b91c1c; }
+        .ai-badge-gpu { background: #dbeafe; color: #1d4ed8; }
+        .ai-badge-edge { background: #dcfce7; color: #15803d; }
+
+        .btn-catalog-book { width: 100%; padding: 14px 16px; border: 0; border-radius: 12px; background: linear-gradient(90deg, #f35381 0%, #e3376b 100%); color: #ffffff; font: inherit; cursor: pointer; box-shadow: 0 6px 20px rgba(243, 83, 129, 0.35); transition: all 0.16s ease; text-align: center; }
+        .btn-catalog-book:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(243, 83, 129, 0.45); }
+        .btn-catalog-book span { display: block; font-size: 0.88rem; font-weight: 900; }
+        .btn-catalog-book small { display: block; margin-top: 3px; font-size: 0.7rem; color: rgba(255,255,255,0.9); }
+
+        .catalog-footnote { margin: 12px 0 0; color: #8b8590; font-size: 0.67rem; line-height: 1.45; }
+        .admin-service-editor { margin: 14px 16px; padding: 16px; border-radius: 16px; background: rgba(255,255,255,0.95); border: 1px solid rgba(243,83,129,0.18); box-shadow: 0 4px 16px rgba(0,0,0,0.04); box-sizing: border-box; }
         .admin-service-editor { margin: 14px 16px; padding: 16px; border-radius: 16px; background: rgba(255,255,255,0.95); border: 1px solid rgba(243,83,129,0.18); box-shadow: 0 4px 16px rgba(0,0,0,0.04); box-sizing: border-box; }
         .admin-service-editor h3 { margin: 0 0 4px; color: #1f2937; font-size: 0.95rem; font-weight: 800; }
         .admin-service-editor p { margin: 0 0 12px; color: #6b7280; font-size: 0.74rem; line-height: 1.4; }
@@ -554,15 +681,17 @@
             .calendar-grid-scroll-hint { display: block; margin: 0 0 8px; color: var(--lh-muted); font-size: 0.6875rem; font-weight: 700; text-align: center; }
             .holiday-date-entry { grid-template-columns: 1fr; }
             .holiday-date-entry .lh-button { grid-column: auto; }
-            .catalog-panel { padding: 0; place-items: start stretch; }
-            .catalog-card { width: 100%; min-height: 100dvh; max-height: none; padding: max(20px, calc(var(--lh-safe-top) + 14px)) 14px max(28px, calc(var(--lh-safe-bottom) + 20px)); border-radius: 0; }
-            .catalog-heading { position: sticky; z-index: 2; top: 0; margin: 0 -14px; padding: 14px 14px 13px; background: rgba(255,255,255,0.96); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-            .catalog-content { grid-template-columns: 1fr; }
-            .catalog-preview { position: static; order: -1; }
+            .catalog-panel { padding: 0; place-items: start stretch; overflow-x: hidden; }
+            .catalog-card { width: 100%; max-width: 100vw; min-height: 100dvh; max-height: none; padding: max(16px, calc(var(--lh-safe-top) + 12px)) 16px max(28px, calc(var(--lh-safe-bottom) + 20px)); border-radius: 0; box-sizing: border-box; overflow-x: hidden; }
+            .catalog-heading { position: sticky; z-index: 10; top: 0; margin: 0; padding: 10px 0 12px; background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); width: 100%; box-sizing: border-box; }
+            .catalog-edition { display: none; }
+            .catalog-content { grid-template-columns: 100%; gap: 16px; margin-top: 12px; width: 100%; min-width: 0; box-sizing: border-box; }
+            .catalog-sticky-col { position: static; order: -1; width: 100%; min-width: 0; }
+            .catalog-steps-col { width: 100%; min-width: 0; }
             .catalog-style-count { display: none; }
             .catalog-style-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .catalog-style-card img { height: auto; }
-            .catalog-360-stage { height: min(62vw, 292px); }
+            .catalog-360-stage { aspect-ratio: 3 / 4; max-height: 360px; }
         }
     </style>
 </head>
@@ -668,181 +797,416 @@
                     <span class="catalog-edition" aria-hidden="true">STYLE EDIT <b>01</b></span>
                     <button type="button" class="catalog-close" onclick="closeCatalog()" aria-label="카탈로그 닫기">×</button>
                 </div>
-                <div class="catalog-gender" role="tablist" aria-label="스타일 분류">
-                    <button type="button" class="is-active" id="catalogFemaleTab" onclick="setCatalogGender('female')" role="tab" aria-selected="true">여성 스타일</button>
-                    <button type="button" id="catalogMaleTab" onclick="setCatalogGender('male')" role="tab" aria-selected="false">남성 스타일</button>
-                </div>
-                <div class="catalog-service-filter" role="tablist" aria-label="카탈로그 메뉴 필터">
-                    <button type="button" class="is-active" data-catalog-category="all" onclick="setCatalogCategory('all')" aria-selected="true">전체</button>
-                    <button type="button" data-catalog-category="cut" onclick="setCatalogCategory('cut')" aria-selected="false">커트</button>
-                    <button type="button" data-catalog-category="perm" onclick="setCatalogCategory('perm')" aria-selected="false">펌</button>
-                    <button type="button" data-catalog-category="color" onclick="setCatalogCategory('color')" aria-selected="false">컬러</button>
-                    <span class="catalog-style-count" id="catalogStyleCount" aria-live="polite">14 styles</span>
-                </div>
                 <div class="catalog-content">
-                    <div class="catalog-style-grid" id="catalogStyleGrid" aria-label="기장별 스타일 목록">
-                        <button type="button" class="catalog-style-card is-selected" data-gender="female" data-category="cut" data-service="CUT" data-name="소프트 레이어드" data-length="3" data-length-label="미디엄" onclick="selectCatalogStyle(this)">
-                            <img src="image/generated-female-layered.jpg" alt="소프트 레이어드 스타일 참고 이미지"><span>소프트 레이어드</span><small>미디엄</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="female" data-category="cut" data-service="CUT" data-name="프렌치 보브" data-length="1" data-length-label="숏" onclick="selectCatalogStyle(this)">
-                            <img src="image/generated-female-bob.jpg" alt="프렌치 보브 스타일 참고 이미지"><span>프렌치 보브</span><small>숏</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="female" data-category="cut" data-service="CUT" data-name="허쉬컷" data-length="4" data-length-label="미디엄 롱" onclick="selectCatalogStyle(this)">
-                            <img src="image/generated-female-hush.jpg" alt="허쉬컷 스타일 참고 이미지"><span>허쉬컷</span><small>미디엄 롱</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="female" data-category="cut" data-service="CUT" data-name="C컬 보브" data-length="2" data-length-label="보브" onclick="selectCatalogStyle(this)">
-                            <img src="image/generated-female-lob.jpg" alt="C컬 보브 스타일 참고 이미지"><span>C컬 보브</span><small>보브</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="female" data-category="cut" data-service="CUT" data-name="시스루 뱅 롱" data-length="5" data-length-label="롱" onclick="selectCatalogStyle(this)">
-                            <img src="image/generated-female-bangs.jpg" alt="시스루 뱅 롱 스타일 참고 이미지"><span>시스루 뱅 롱</span><small>롱</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="female" data-category="cut" data-service="CUT" data-name="롱 레이어드 컷" data-length="5" data-length-label="롱" onclick="selectCatalogStyle(this)">
-                            <img src="image/hero-korean-ribbon-wave.jpg" alt="롱 레이어드 컷 스타일 참고 이미지"><span>롱 레이어드 컷</span><small>롱</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="female" data-category="perm" data-service="PERM" data-name="빌드펌 롱웨이브" data-length="5" data-length-label="롱" onclick="selectCatalogStyle(this)">
-                            <img src="image/generated-female-wave.jpg" alt="빌드펌 롱웨이브 스타일 참고 이미지"><span>빌드펌 롱웨이브</span><small>롱</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="female" data-category="perm" data-service="PERM" data-name="레이어드 S펌" data-length="5" data-length-label="롱" onclick="selectCatalogStyle(this)">
-                            <img src="image/hero-korean-ribbon-wave.jpg" alt="레이어드 S펌 스타일 참고 이미지"><span>레이어드 S펌</span><small>롱</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="female" data-category="perm" data-service="PERM" data-name="소프트 히피펌" data-length="4" data-length-label="미디엄 롱" onclick="selectCatalogStyle(this)">
-                            <img src="image/hero-glam-wave.jpg" alt="소프트 히피펌 스타일 참고 이미지"><span>소프트 히피펌</span><small>미디엄 롱</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="female" data-category="perm" data-service="PERM" data-name="볼륨 C컬펌" data-length="3" data-length-label="미디엄" onclick="selectCatalogStyle(this)">
-                            <img src="image/generated-female-layered.jpg" alt="볼륨 C컬펌 스타일 참고 이미지"><span>볼륨 C컬펌</span><small>미디엄</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="female" data-category="perm" data-service="PERM" data-name="로우 번 업스타일" data-length="4" data-length-label="미디엄 롱" onclick="selectCatalogStyle(this)">
-                            <img src="image/hero-korean-curly-updo.jpg" alt="로우 번 업스타일 참고 이미지"><span>로우 번 업스타일</span><small>미디엄 롱</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="female" data-category="color" data-service="COLOR" data-name="코코아 브라운" data-length="3" data-length-label="미디엄" data-tone="코코아 브라운" data-wash="rgba(103,65,44,0.24)" onclick="selectCatalogStyle(this)">
-                            <img src="image/generated-female-layered.jpg" alt="코코아 브라운 컬러 참고 이미지"><span>코코아 브라운</span><small>컬러 · 미디엄</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="female" data-category="color" data-service="COLOR" data-name="애쉬 베이지" data-length="5" data-length-label="롱" data-tone="애쉬 베이지" data-wash="rgba(192,176,150,0.22)" onclick="selectCatalogStyle(this)">
-                            <img src="image/generated-female-wave.jpg" alt="애쉬 베이지 컬러 참고 이미지"><span>애쉬 베이지</span><small>컬러 · 롱</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="female" data-category="color" data-service="COLOR" data-name="코퍼 오렌지" data-length="3" data-length-label="미디엄" data-tone="코퍼 오렌지" data-wash="rgba(182,72,32,0.28)" onclick="selectCatalogStyle(this)">
-                            <img src="image/hero-korean-copper-wolf.jpg" alt="코퍼 오렌지 컬러 참고 이미지"><span>코퍼 오렌지</span><small>컬러 · 미디엄</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="female" data-category="color" data-service="COLOR" data-name="로즈 브라운" data-length="2" data-length-label="보브" data-tone="로즈 브라운" data-wash="rgba(154,74,92,0.23)" onclick="selectCatalogStyle(this)">
-                            <img src="image/hero-cute-bob.jpg" alt="로즈 브라운 컬러 참고 이미지"><span>로즈 브라운</span><small>컬러 · 보브</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="male" data-category="cut" data-service="CUT" data-name="텍스처 투블럭" data-length="1" data-length-label="숏" onclick="selectCatalogStyle(this)" style="display:none;">
-                            <img src="image/generated-male-twoblock.jpg" alt="텍스처 투블럭 스타일 참고 이미지"><span>텍스처 투블럭</span><small>숏</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="male" data-category="cut" data-service="CUT" data-name="댄디 크롭" data-length="1" data-length-label="숏" onclick="selectCatalogStyle(this)" style="display:none;">
-                            <img src="image/generated-male-crop.jpg" alt="댄디 크롭 스타일 참고 이미지"><span>댄디 크롭</span><small>숏</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="male" data-category="cut" data-service="CUT" data-name="리프컷" data-length="4" data-length-label="미디엄 롱" onclick="selectCatalogStyle(this)" style="display:none;">
-                            <img src="image/generated-male-leaf.jpg" alt="리프컷 스타일 참고 이미지"><span>리프컷</span><small>미디엄 롱</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="male" data-category="cut" data-service="CUT" data-name="소프트 울프컷" data-length="3" data-length-label="미디엄" onclick="selectCatalogStyle(this)" style="display:none;">
-                            <img src="image/hero-wolf-cut.jpg" alt="소프트 울프컷 스타일 참고 이미지"><span>소프트 울프컷</span><small>미디엄</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="male" data-category="cut" data-service="CUT" data-name="쉐도우 다운컷" data-length="2" data-length-label="숏" onclick="selectCatalogStyle(this)" style="display:none;">
-                            <img src="image/hero-korean-dandy-perm.jpg" alt="쉐도우 다운컷 스타일 참고 이미지"><span>쉐도우 다운컷</span><small>숏</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="male" data-category="perm" data-service="PERM" data-name="가르마 펌" data-length="3" data-length-label="미디엄" onclick="selectCatalogStyle(this)" style="display:none;">
-                            <img src="image/generated-male-part.jpg" alt="가르마 펌 스타일 참고 이미지"><span>가르마 펌</span><small>미디엄</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="male" data-category="perm" data-service="PERM" data-name="애즈 펌" data-length="3" data-length-label="미디엄" onclick="selectCatalogStyle(this)" style="display:none;">
-                            <img src="image/catalog-spin-male-00.jpg" alt="애즈 펌 스타일 참고 이미지"><span>애즈 펌</span><small>미디엄</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="male" data-category="perm" data-service="PERM" data-name="쉐도우 펌" data-length="2" data-length-label="숏" onclick="selectCatalogStyle(this)" style="display:none;">
-                            <img src="image/hero-korean-dandy-perm.jpg" alt="쉐도우 펌 스타일 참고 이미지"><span>쉐도우 펌</span><small>숏</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="male" data-category="perm" data-service="PERM" data-name="볼륨 다운펌" data-length="1" data-length-label="숏" onclick="selectCatalogStyle(this)" style="display:none;">
-                            <img src="image/generated-male-twoblock.jpg" alt="볼륨 다운펌 스타일 참고 이미지"><span>볼륨 다운펌</span><small>숏</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="male" data-category="color" data-service="COLOR" data-name="블루 블랙" data-length="2" data-length-label="숏" data-tone="블루 블랙" data-wash="rgba(25,48,85,0.26)" onclick="selectCatalogStyle(this)" style="display:none;">
-                            <img src="image/hero-korean-dandy-perm.jpg" alt="블루 블랙 컬러 참고 이미지"><span>블루 블랙</span><small>컬러 · 숏</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="male" data-category="color" data-service="COLOR" data-name="애쉬 브라운" data-length="3" data-length-label="미디엄" data-tone="애쉬 브라운" data-wash="rgba(125,100,84,0.23)" onclick="selectCatalogStyle(this)" style="display:none;">
-                            <img src="image/hero-wolf-cut.jpg" alt="애쉬 브라운 컬러 참고 이미지"><span>애쉬 브라운</span><small>컬러 · 미디엄</small>
-                        </button>
-                        <button type="button" class="catalog-style-card" data-gender="male" data-category="color" data-service="COLOR" data-name="스모키 그레이" data-length="1" data-length-label="숏" data-tone="스모키 그레이" data-wash="rgba(109,116,129,0.28)" onclick="selectCatalogStyle(this)" style="display:none;">
-                            <img src="image/generated-male-crop.jpg" alt="스모키 그레이 컬러 참고 이미지"><span>스모키 그레이</span><small>컬러 · 숏</small>
-                        </button>
+                    <!-- Left Sticky Column: 360 Turntable Studio Stage -->
+                    <div class="catalog-sticky-col">
+                        <div class="catalog-stage-frame">
+                            <div class="catalog-preview-topline">
+                                <span>THE LOOKBOOK · 360 MOTION</span>
+                                <span>LIVE CONSULT</span>
+                            </div>
+                            <div class="catalog-360-stage" id="catalog360Stage" role="slider" aria-label="모델 360도 회전 미리보기" aria-valuemin="0" aria-valuemax="330" aria-valuenow="0" tabindex="0" draggable="false" ondragstart="return false" onpointerdown="startCatalogRotation(event)" onpointermove="moveCatalogRotation(event)" onpointerup="endCatalogRotation(event)" onpointercancel="endCatalogRotation(event)" onkeydown="handleCatalogRotationKey(event)">
+                                <div class="catalog-preview-image">
+                                    <img id="catalogModelImage" src="image/catalog-turntable/female-medium-00.jpg" alt="소프트 레이어드 여성 스타일 12컷 회전 프리뷰 정면" draggable="false">
+                                    <span class="catalog-color-wash" id="catalogColorWash"></span>
+                                    <div class="catalog-bangs-layer" id="catalogBangsLayer">
+                                        <svg viewBox="0 0 360 480" preserveAspectRatio="xMidYMid meet" id="catalogBangsSvg"></svg>
+                                    </div>
+                                </div>
+                                <span class="catalog-rotation-badge" id="catalogRotationOutput">정면 · 0° · 1/12</span>
+                                <span class="catalog-rotation-dial" aria-hidden="true"></span>
+                                <div class="catalog-bangs-badge" id="catalogBangsBadge">디테일 옵션 적용됨</div>
+                                <span class="catalog-drag-hint">좌우로 드래그 · 스와이프</span>
+                            </div>
+                        </div>
+
+                        <div class="catalog-rotation-scrubber">
+                            <label for="catalogRotationScrubber">
+                                <span>360° 회전 앵글 슬라이드</span>
+                                <output id="catalogFrameOutput">1 / 12</output>
+                            </label>
+                            <input id="catalogRotationScrubber" class="lh-slider" type="range" min="0" max="11" step="1" value="0" oninput="setCatalogFrame(this.value)" aria-label="360도 회전 프레임">
+                            <div class="catalog-rotation-ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                        </div>
+
+                        <div class="catalog-view-controls" aria-label="모델 방향 바로보기">
+                            <button type="button" class="is-active" data-catalog-angle="0" onclick="setCatalogAngle(0)">정면</button>
+                            <button type="button" data-catalog-angle="90" onclick="setCatalogAngle(90)">우측면</button>
+                            <button type="button" data-catalog-angle="180" onclick="setCatalogAngle(180)">후면</button>
+                            <button type="button" data-catalog-angle="270" onclick="setCatalogAngle(270)">좌측면</button>
+                        </div>
+
+                        <div class="catalog-recipe" id="catalogRecipe" aria-live="polite">
+                            <b>CONSULT RECIPE</b> · 소프트 레이어드 · 미디엄 · 레이어 밸런스 · 내추럴 오픈 · 내추럴 브라운 50%
+                        </div>
                     </div>
-                    <aside class="catalog-preview" aria-live="polite">
-                        <div class="catalog-preview-topline"><span>THE LOOKBOOK · 360 MOTION</span><span>LIVE CONSULT</span></div>
-                        <div class="catalog-360-stage" id="catalog360Stage" role="slider" aria-label="모델 360도 회전 미리보기" aria-valuemin="0" aria-valuemax="330" aria-valuenow="0" tabindex="0" draggable="false" ondragstart="return false" onpointerdown="startCatalogRotation(event)" onpointermove="moveCatalogRotation(event)" onpointerup="endCatalogRotation(event)" onpointercancel="endCatalogRotation(event)" onkeydown="handleCatalogRotationKey(event)">
-                            <div class="catalog-preview-image"><img id="catalogModelImage" src="image/catalog-turntable/female-medium-00.jpg" alt="소프트 레이어드 여성 스타일 12컷 회전 프리뷰 정면" draggable="false"><span class="catalog-color-wash" id="catalogColorWash"></span></div>
-                            <span class="catalog-rotation-badge" id="catalogRotationOutput">정면 · 0° · 1/12</span>
-                            <span class="catalog-rotation-dial" aria-hidden="true"></span>
-                            <span class="catalog-drag-hint">좌우로 드래그 · 스와이프</span>
-                        </div>
-                        <div class="catalog-preview-copy">
-                            <p>STYLE STUDY · 실시간 스타일 매치</p>
-                            <strong id="catalogChosenStyle">소프트 레이어드</strong>
-                            <span class="catalog-rotation-reference" id="catalogRotationReference">미디엄 레이어드 · 12컷 연속 턴테이블</span>
-                            <div class="catalog-live-style" aria-live="polite">
-                                <div class="catalog-live-style-cover"><img id="catalogLiveThumbnail" src="image/generated-female-layered.jpg" alt="현재 선택한 스타일 썸네일" draggable="false"><span id="catalogLiveColorWash"></span></div>
-                                <div><em>LIVE STYLE MATCH</em><b id="catalogLiveMeta">커트 · 미디엄</b><small id="catalogLiveHint">기장 슬라이더로 비슷한 길이의 스타일을 바로 찾아보세요.</small></div>
+
+                    <!-- Right Column: Interactive Sequential Step Journey -->
+                    <div class="catalog-steps-col">
+                        <!-- STEP 01: Base Style Selection -->
+                        <div class="catalog-step-card is-open" id="catalogStep1">
+                            <div class="catalog-step-header" onclick="toggleCatalogStep(1)">
+                                <div class="catalog-step-title-wrap">
+                                    <span class="catalog-step-num">STEP 01</span>
+                                    <h3>베이스 헤어스타일 선택</h3>
+                                </div>
+                                <span class="catalog-step-toggle-btn" id="step1ToggleLabel">선택 완료</span>
                             </div>
-                            <dl class="catalog-style-dna" aria-label="선택 스타일 세부 정보">
-                                <div><dt>실루엣</dt><dd id="catalogSilhouette">내추럴 레이어</dd></div>
-                                <div><dt>텍스처</dt><dd id="catalogTexture">소프트 C컬</dd></div>
-                                <div><dt>손질 시간</dt><dd id="catalogMaintenance">5–7분</dd></div>
-                            </dl>
-                            <div class="catalog-range">
-                                <label for="catalogLength">희망 기장 <output id="catalogLengthOutput">미디엄</output></label>
-                                <input id="catalogLength" type="range" min="1" max="5" step="1" value="3" oninput="handleCatalogLengthChange(this.value)">
+                            <!-- Collapsed Summary -->
+                            <div class="catalog-step-summary" id="catalogStep1Summary" onclick="toggleCatalogStep(1)" style="display:none;">
+                                <div class="step-summary-left">
+                                    <img class="step-summary-thumb" id="step1Thumb" src="image/generated-female-layered.jpg" alt="선택한 헤어스타일 썸네일">
+                                    <div class="step-summary-text">
+                                        <strong id="step1ChosenName">소프트 레이어드</strong>
+                                        <span id="step1ChosenMeta">여성 · 커트 · 미디엄</span>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-step-edit">스타일 변경</button>
                             </div>
-                            <div class="catalog-range">
-                                <label for="catalogStyleVariant">스타일 변형 <output id="catalogStyleOutput">소프트 레이어드</output></label>
-                                <input id="catalogStyleVariant" type="range" min="1" max="6" step="1" value="1" oninput="handleCatalogStyleChange(this.value)">
-                            </div>
-                            <div class="catalog-detail-divider">STYLE DETAIL</div>
-                            <div class="catalog-range">
-                                <label for="catalogTextureDetail"><span id="catalogTextureLabel">레이어 위치</span> <output id="catalogTextureDetailOutput">중간</output></label>
-                                <input id="catalogTextureDetail" type="range" min="0" max="100" step="5" value="55" oninput="updateCatalogDetail('texture', this.value)">
-                            </div>
-                            <div class="catalog-range">
-                                <label for="catalogVolumeDetail">뿌리 볼륨 <output id="catalogVolumeDetailOutput">밸런스</output></label>
-                                <input id="catalogVolumeDetail" type="range" min="0" max="100" step="5" value="50" oninput="updateCatalogDetail('volume', this.value)">
-                            </div>
-                            <div class="catalog-choice">
-                                <span id="catalogFaceLineLabel">앞머리 · 페이스라인</span>
-                                <div class="catalog-choice-group" role="group" aria-label="앞머리와 페이스라인 선택">
-                                    <button type="button" class="is-active" data-catalog-choice="내추럴 오픈" onclick="setCatalogChoice(this)">내추럴 오픈</button>
-                                    <button type="button" data-catalog-choice="사이드 뱅" onclick="setCatalogChoice(this)">사이드 뱅</button>
-                                    <button type="button" data-catalog-choice="페이스 레이어" onclick="setCatalogChoice(this)">페이스 레이어</button>
+                            <!-- Expanded Body -->
+                            <div class="catalog-step-body" id="catalogStep1Body">
+                                <div class="catalog-gender" role="tablist" aria-label="스타일 성별 분류">
+                                    <button type="button" class="is-active" id="catalogFemaleTab" onclick="setCatalogGender('female')" role="tab" aria-selected="true">여성 스타일</button>
+                                    <button type="button" id="catalogMaleTab" onclick="setCatalogGender('male')" role="tab" aria-selected="false">남성 스타일</button>
+                                </div>
+                                <div class="catalog-service-filter" role="tablist" aria-label="카탈로그 메뉴 필터">
+                                    <button type="button" class="is-active" data-catalog-category="all" onclick="setCatalogCategory('all')" aria-selected="true">전체</button>
+                                    <button type="button" data-catalog-category="cut" onclick="setCatalogCategory('cut')" aria-selected="false">커트</button>
+                                    <button type="button" data-catalog-category="perm" onclick="setCatalogCategory('perm')" aria-selected="false">펌</button>
+                                    <button type="button" data-catalog-category="color" onclick="setCatalogCategory('color')" aria-selected="false">컬러</button>
+                                    <span class="catalog-style-count" id="catalogStyleCount" aria-live="polite">15 styles</span>
+                                </div>
+                                <div class="catalog-style-grid" id="catalogStyleGrid" aria-label="스타일 목록">
+                                    <button type="button" class="catalog-style-card is-selected" data-gender="female" data-category="cut" data-service="CUT" data-name="소프트 레이어드" data-length="3" data-length-label="미디엄" onclick="selectCatalogStyle(this)">
+                                        <img src="image/generated-female-layered.jpg" alt="소프트 레이어드 스타일 참고 이미지"><span>소프트 레이어드</span><small>미디엄</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="female" data-category="cut" data-service="CUT" data-name="프렌치 보브" data-length="1" data-length-label="숏" onclick="selectCatalogStyle(this)">
+                                        <img src="image/generated-female-bob.jpg" alt="프렌치 보브 스타일 참고 이미지"><span>프렌치 보브</span><small>숏</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="female" data-category="cut" data-service="CUT" data-name="허쉬컷" data-length="4" data-length-label="미디엄 롱" onclick="selectCatalogStyle(this)">
+                                        <img src="image/generated-female-hush.jpg" alt="허쉬컷 스타일 참고 이미지"><span>허쉬컷</span><small>미디엄 롱</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="female" data-category="cut" data-service="CUT" data-name="C컬 보브" data-length="2" data-length-label="보브" onclick="selectCatalogStyle(this)">
+                                        <img src="image/generated-female-lob.jpg" alt="C컬 보브 스타일 참고 이미지"><span>C컬 보브</span><small>보브</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="female" data-category="cut" data-service="CUT" data-name="시스루 뱅 롱" data-length="5" data-length-label="롱" onclick="selectCatalogStyle(this)">
+                                        <img src="image/generated-female-bangs.jpg" alt="시스루 뱅 롱 스타일 참고 이미지"><span>시스루 뱅 롱</span><small>롱</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="female" data-category="cut" data-service="CUT" data-name="롱 레이어드 컷" data-length="5" data-length-label="롱" onclick="selectCatalogStyle(this)">
+                                        <img src="image/hero-korean-ribbon-wave.jpg" alt="롱 레이어드 컷 스타일 참고 이미지"><span>롱 레이어드 컷</span><small>롱</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="female" data-category="perm" data-service="PERM" data-name="빌드펌 롱웨이브" data-length="5" data-length-label="롱" onclick="selectCatalogStyle(this)">
+                                        <img src="image/generated-female-wave.jpg" alt="빌드펌 롱웨이브 스타일 참고 이미지"><span>빌드펌 롱웨이브</span><small>롱</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="female" data-category="perm" data-service="PERM" data-name="레이어드 S펌" data-length="5" data-length-label="롱" onclick="selectCatalogStyle(this)">
+                                        <img src="image/hero-korean-ribbon-wave.jpg" alt="레이어드 S펌 스타일 참고 이미지"><span>레이어드 S펌</span><small>롱</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="female" data-category="perm" data-service="PERM" data-name="소프트 히피펌" data-length="4" data-length-label="미디엄 롱" onclick="selectCatalogStyle(this)">
+                                        <img src="image/hero-glam-wave.jpg" alt="소프트 히피펌 스타일 참고 이미지"><span>소프트 히피펌</span><small>미디엄 롱</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="female" data-category="perm" data-service="PERM" data-name="볼륨 C컬펌" data-length="3" data-length-label="미디엄" onclick="selectCatalogStyle(this)">
+                                        <img src="image/generated-female-layered.jpg" alt="볼륨 C컬펌 스타일 참고 이미지"><span>볼륨 C컬펌</span><small>미디엄</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="female" data-category="perm" data-service="PERM" data-name="로우 번 업스타일" data-length="4" data-length-label="미디엄 롱" onclick="selectCatalogStyle(this)">
+                                        <img src="image/hero-korean-curly-updo.jpg" alt="로우 번 업스타일 참고 이미지"><span>로우 번 업스타일</span><small>미디엄 롱</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="female" data-category="color" data-service="COLOR" data-name="코코아 브라운" data-length="3" data-length-label="미디엄" data-tone="코코아 브라운" data-wash="rgba(103,65,44,0.24)" onclick="selectCatalogStyle(this)">
+                                        <img src="image/generated-female-layered.jpg" alt="코코아 브라운 컬러 참고 이미지"><span>코코아 브라운</span><small>컬러 · 미디엄</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="female" data-category="color" data-service="COLOR" data-name="애쉬 베이지" data-length="5" data-length-label="롱" data-tone="애쉬 베이지" data-wash="rgba(192,176,150,0.22)" onclick="selectCatalogStyle(this)">
+                                        <img src="image/generated-female-wave.jpg" alt="애쉬 베이지 컬러 참고 이미지"><span>애쉬 베이지</span><small>컬러 · 롱</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="female" data-category="color" data-service="COLOR" data-name="코퍼 오렌지" data-length="3" data-length-label="미디엄" data-tone="코퍼 오렌지" data-wash="rgba(182,72,32,0.28)" onclick="selectCatalogStyle(this)">
+                                        <img src="image/hero-korean-copper-wolf.jpg" alt="코퍼 오렌지 컬러 참고 이미지"><span>코퍼 오렌지</span><small>컬러 · 미디엄</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="female" data-category="color" data-service="COLOR" data-name="로즈 브라운" data-length="2" data-length-label="보브" data-tone="로즈 브라운" data-wash="rgba(154,74,92,0.23)" onclick="selectCatalogStyle(this)">
+                                        <img src="image/hero-cute-bob.jpg" alt="로즈 브라운 컬러 참고 이미지"><span>로즈 브라운</span><small>컬러 · 보브</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="male" data-category="cut" data-service="CUT" data-name="텍스처 투블럭" data-length="1" data-length-label="숏" onclick="selectCatalogStyle(this)" style="display:none;">
+                                        <img src="image/generated-male-twoblock.jpg" alt="텍스처 투블럭 스타일 참고 이미지"><span>텍스처 투블럭</span><small>숏</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="male" data-category="cut" data-service="CUT" data-name="댄디 크롭" data-length="1" data-length-label="숏" onclick="selectCatalogStyle(this)" style="display:none;">
+                                        <img src="image/generated-male-crop.jpg" alt="댄디 크롭 스타일 참고 이미지"><span>댄디 크롭</span><small>숏</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="male" data-category="cut" data-service="CUT" data-name="리프컷" data-length="4" data-length-label="미디엄 롱" onclick="selectCatalogStyle(this)" style="display:none;">
+                                        <img src="image/generated-male-leaf.jpg" alt="리프컷 스타일 참고 이미지"><span>리프컷</span><small>미디엄 롱</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="male" data-category="cut" data-service="CUT" data-name="소프트 울프컷" data-length="3" data-length-label="미디엄" onclick="selectCatalogStyle(this)" style="display:none;">
+                                        <img src="image/hero-wolf-cut.jpg" alt="소프트 울프컷 스타일 참고 이미지"><span>소프트 울프컷</span><small>미디엄</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="male" data-category="cut" data-service="CUT" data-name="쉐도우 다운컷" data-length="2" data-length-label="숏" onclick="selectCatalogStyle(this)" style="display:none;">
+                                        <img src="image/hero-korean-dandy-perm.jpg" alt="쉐도우 다운컷 스타일 참고 이미지"><span>쉐도우 다운컷</span><small>숏</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="male" data-category="perm" data-service="PERM" data-name="가르마 펌" data-length="3" data-length-label="미디엄" onclick="selectCatalogStyle(this)" style="display:none;">
+                                        <img src="image/generated-male-part.jpg" alt="가르마 펌 스타일 참고 이미지"><span>가르마 펌</span><small>미디엄</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="male" data-category="perm" data-service="PERM" data-name="애즈 펌" data-length="3" data-length-label="미디엄" onclick="selectCatalogStyle(this)" style="display:none;">
+                                        <img src="image/catalog-spin-male-00.jpg" alt="애즈 펌 스타일 참고 이미지"><span>애즈 펌</span><small>미디엄</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="male" data-category="perm" data-service="PERM" data-name="쉐도우 펌" data-length="2" data-length-label="숏" onclick="selectCatalogStyle(this)" style="display:none;">
+                                        <img src="image/hero-korean-dandy-perm.jpg" alt="쉐도우 펌 스타일 참고 이미지"><span>쉐도우 펌</span><small>숏</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="male" data-category="perm" data-service="PERM" data-name="볼륨 다운펌" data-length="1" data-length-label="숏" onclick="selectCatalogStyle(this)" style="display:none;">
+                                        <img src="image/generated-male-twoblock.jpg" alt="볼륨 다운펌 스타일 참고 이미지"><span>볼륨 다운펌</span><small>숏</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="male" data-category="color" data-service="COLOR" data-name="블루 블랙" data-length="2" data-length-label="숏" data-tone="블루 블랙" data-wash="rgba(25,48,85,0.26)" onclick="selectCatalogStyle(this)" style="display:none;">
+                                        <img src="image/hero-korean-dandy-perm.jpg" alt="블루 블랙 컬러 참고 이미지"><span>블루 블랙</span><small>컬러 · 숏</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="male" data-category="color" data-service="COLOR" data-name="애쉬 브라운" data-length="3" data-length-label="미디엄" data-tone="애쉬 브라운" data-wash="rgba(125,100,84,0.23)" onclick="selectCatalogStyle(this)" style="display:none;">
+                                        <img src="image/hero-wolf-cut.jpg" alt="애쉬 브라운 컬러 참고 이미지"><span>애쉬 브라운</span><small>컬러 · 미디엄</small>
+                                    </button>
+                                    <button type="button" class="catalog-style-card" data-gender="male" data-category="color" data-service="COLOR" data-name="스모키 그레이" data-length="1" data-length-label="숏" data-tone="스모키 그레이" data-wash="rgba(109,116,129,0.28)" onclick="selectCatalogStyle(this)" style="display:none;">
+                                        <img src="image/generated-male-crop.jpg" alt="스모키 그레이 컬러 참고 이미지"><span>스모키 그레이</span><small>컬러 · 숏</small>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="catalog-range">
-                                <label for="catalogAge">추천 연령대 <output id="catalogAgeOutput">30대</output></label>
-                                <input id="catalogAge" type="range" min="10" max="70" step="10" value="30" oninput="updateCatalogPreview()">
+                        </div>
+
+                        <!-- STEP 02: Length & Silhouette Adjustment -->
+                        <div class="catalog-step-card" id="catalogStep2">
+                            <div class="catalog-step-header" onclick="toggleCatalogStep(2)">
+                                <div class="catalog-step-title-wrap">
+                                    <span class="catalog-step-num">STEP 02</span>
+                                    <h3>희망 기장 &amp; 실루엣 조절</h3>
+                                </div>
+                                <span class="catalog-step-toggle-btn" id="step2ToggleLabel">조절하기</span>
                             </div>
-                            <div class="catalog-color-picker">
-                                <label>컬러 시뮬레이션 <output id="catalogColorOutput">내추럴 브라운</output></label>
-                                <div class="catalog-color-swatches" role="group" aria-label="헤어 컬러 선택">
-                                    <button type="button" class="catalog-color-swatch is-active" style="--swatch:#5b3a2d" data-tone="내추럴 브라운" data-wash="rgba(91,58,45,0.24)" onclick="setCatalogColor(this)" aria-label="내추럴 브라운"></button>
-                                    <button type="button" class="catalog-color-swatch" style="--swatch:#a99d8b" data-tone="애쉬 베이지" data-wash="rgba(192,176,150,0.22)" onclick="setCatalogColor(this)" aria-label="애쉬 베이지"></button>
-                                    <button type="button" class="catalog-color-swatch" style="--swatch:#9d493d" data-tone="로즈 브라운" data-wash="rgba(154,74,92,0.23)" onclick="setCatalogColor(this)" aria-label="로즈 브라운"></button>
-                                    <button type="button" class="catalog-color-swatch" style="--swatch:#b85b2a" data-tone="코퍼 오렌지" data-wash="rgba(182,72,32,0.28)" onclick="setCatalogColor(this)" aria-label="코퍼 오렌지"></button>
-                                    <button type="button" class="catalog-color-swatch" style="--swatch:#263654" data-tone="블루 블랙" data-wash="rgba(25,48,85,0.26)" onclick="setCatalogColor(this)" aria-label="블루 블랙"></button>
-                                    <button type="button" class="catalog-color-swatch" style="--swatch:#714450" data-tone="모브 브라운" data-wash="rgba(113,68,80,0.26)" onclick="setCatalogColor(this)" aria-label="모브 브라운"></button>
+                            <!-- Collapsed Summary -->
+                            <div class="catalog-step-summary" id="catalogStep2Summary" onclick="toggleCatalogStep(2)" style="display:none;">
+                                <div class="step-summary-left">
+                                    <div class="step-summary-text">
+                                        <strong id="step2SummaryText">희망 기장: 미디엄 · 내추럴 실루엣</strong>
+                                        <span id="step2SummaryDna">손질 5–7분 · 자연스러운 볼륨 핏</span>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-step-edit">수정</button>
+                            </div>
+                            <!-- Expanded Body -->
+                            <div class="catalog-step-body" id="catalogStep2Body" style="display:none;">
+                                <div class="lh-range-wrap">
+                                    <div class="lh-range-header">
+                                        <label for="catalogLength">희망 기장 선택</label>
+                                        <output id="catalogLengthOutput">미디엄</output>
+                                    </div>
+                                    <input id="catalogLength" class="lh-slider" type="range" min="1" max="5" step="1" value="3" oninput="handleCatalogLengthChange(this.value)">
+                                </div>
+                                <div class="lh-range-wrap">
+                                    <div class="lh-range-header">
+                                        <label for="catalogStyleVariant">스타일 라인업 변형</label>
+                                        <output id="catalogStyleOutput">소프트 레이어드</output>
+                                    </div>
+                                    <input id="catalogStyleVariant" class="lh-slider" type="range" min="1" max="6" step="1" value="1" oninput="handleCatalogStyleChange(this.value)">
+                                </div>
+                                <dl class="catalog-style-dna" aria-label="선택 스타일 세부 특성">
+                                    <div><dt>실루엣</dt><dd id="catalogSilhouette">중간 레이어</dd></div>
+                                    <div><dt>텍스처</dt><dd id="catalogTexture">소프트 C컬</dd></div>
+                                    <div><dt>손질 시간</dt><dd id="catalogMaintenance">5–7분</dd></div>
+                                </dl>
+                                <button type="button" class="btn-step-next" onclick="goToCatalogStep(3)">다음: 앞머리 · 볼륨 디테일 설정 →</button>
+                            </div>
+                        </div>
+
+                        <!-- STEP 03: Bangs & Face Line Detail -->
+                        <div class="catalog-step-card" id="catalogStep3">
+                            <div class="catalog-step-header" onclick="toggleCatalogStep(3)">
+                                <div class="catalog-step-title-wrap">
+                                    <span class="catalog-step-num">STEP 03</span>
+                                    <h3>앞머리 &amp; 페이스라인 디테일</h3>
+                                </div>
+                                <span class="catalog-step-toggle-btn" id="step3ToggleLabel">디테일</span>
+                            </div>
+                            <!-- Collapsed Summary -->
+                            <div class="catalog-step-summary" id="catalogStep3Summary" onclick="toggleCatalogStep(3)" style="display:none;">
+                                <div class="step-summary-left">
+                                    <div class="step-summary-text">
+                                        <strong id="step3SummaryText">앞머리: 내추럴 오픈</strong>
+                                        <span id="step3SummaryDna">레이어 밸런스 · 뿌리 볼륨 밸런스</span>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-step-edit">수정</button>
+                            </div>
+                            <!-- Expanded Body -->
+                            <div class="catalog-step-body" id="catalogStep3Body" style="display:none;">
+                                <div class="catalog-choice">
+                                    <span id="catalogFaceLineLabel">앞머리 · 페이스라인 맞춤 연출</span>
+                                    <div class="catalog-choice-group" role="group" aria-label="앞머리와 페이스라인 선택">
+                                        <button type="button" class="is-active" data-catalog-choice="내추럴 오픈" onclick="setCatalogChoice(this)">내추럴 오픈</button>
+                                        <button type="button" data-catalog-choice="사이드 뱅" onclick="setCatalogChoice(this)">사이드 뱅</button>
+                                        <button type="button" data-catalog-choice="페이스 레이어" onclick="setCatalogChoice(this)">페이스 레이어</button>
+                                    </div>
+                                </div>
+                                <div class="lh-range-wrap">
+                                    <div class="lh-range-header">
+                                        <label for="catalogTextureDetail"><span id="catalogTextureLabel">레이어 높이</span></label>
+                                        <output id="catalogTextureDetailOutput">중간</output>
+                                    </div>
+                                    <input id="catalogTextureDetail" class="lh-slider" type="range" min="0" max="100" step="5" value="55" oninput="updateCatalogDetail('texture', this.value)">
+                                </div>
+                                <div class="lh-range-wrap">
+                                    <div class="lh-range-header">
+                                        <label for="catalogVolumeDetail">뿌리 볼륨감</label>
+                                        <output id="catalogVolumeDetailOutput">밸런스</output>
+                                    </div>
+                                    <input id="catalogVolumeDetail" class="lh-slider" type="range" min="0" max="100" step="5" value="50" oninput="updateCatalogDetail('volume', this.value)">
+                                </div>
+                                <button type="button" class="btn-step-next" onclick="goToCatalogStep(4)">다음: 퍼스널 컬러 시뮬레이션 →</button>
+                            </div>
+                        </div>
+
+                        <!-- STEP 04: Personal Color Simulation -->
+                        <div class="catalog-step-card" id="catalogStep4">
+                            <div class="catalog-step-header" onclick="toggleCatalogStep(4)">
+                                <div class="catalog-step-title-wrap">
+                                    <span class="catalog-step-num">STEP 04</span>
+                                    <h3>퍼스널 헤어 컬러 시뮬레이션</h3>
+                                </div>
+                                <span class="catalog-step-toggle-btn" id="step4ToggleLabel">컬러</span>
+                            </div>
+                            <!-- Collapsed Summary -->
+                            <div class="catalog-step-summary" id="catalogStep4Summary" onclick="toggleCatalogStep(4)" style="display:none;">
+                                <div class="step-summary-left">
+                                    <div class="step-summary-text">
+                                        <strong id="step4SummaryText">컬러: 내추럴 브라운</strong>
+                                        <span id="step4SummaryDna">발색 강도 50%</span>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-step-edit">수정</button>
+                            </div>
+                            <!-- Expanded Body -->
+                            <div class="catalog-step-body" id="catalogStep4Body" style="display:none;">
+                                <div class="catalog-color-picker">
+                                    <div class="lh-range-header">
+                                        <span>추천 퍼스널 컬러</span>
+                                        <output id="catalogColorOutput">내추럴 브라운</output>
+                                    </div>
+                                    <div class="catalog-color-swatches" role="group" aria-label="헤어 컬러 선택">
+                                        <button type="button" class="catalog-color-swatch is-active" style="--swatch:#5b3a2d" data-tone="내추럴 브라운" data-wash="rgba(91,58,45,0.24)" onclick="setCatalogColor(this)" aria-label="내추럴 브라운"></button>
+                                        <button type="button" class="catalog-color-swatch" style="--swatch:#a99d8b" data-tone="애쉬 베이지" data-wash="rgba(192,176,150,0.22)" onclick="setCatalogColor(this)" aria-label="애쉬 베이지"></button>
+                                        <button type="button" class="catalog-color-swatch" style="--swatch:#9d493d" data-tone="로즈 브라운" data-wash="rgba(154,74,92,0.23)" onclick="setCatalogColor(this)" aria-label="로즈 브라운"></button>
+                                        <button type="button" class="catalog-color-swatch" style="--swatch:#b85b2a" data-tone="코퍼 오렌지" data-wash="rgba(182,72,32,0.28)" onclick="setCatalogColor(this)" aria-label="코퍼 오렌지"></button>
+                                        <button type="button" class="catalog-color-swatch" style="--swatch:#263654" data-tone="블루 블랙" data-wash="rgba(25,48,85,0.26)" onclick="setCatalogColor(this)" aria-label="블루 블랙"></button>
+                                        <button type="button" class="catalog-color-swatch" style="--swatch:#714450" data-tone="모브 브라운" data-wash="rgba(113,68,80,0.26)" onclick="setCatalogColor(this)" aria-label="모브 브라운"></button>
+                                    </div>
+                                </div>
+                                <div class="lh-range-wrap">
+                                    <div class="lh-range-header">
+                                        <label for="catalogColorStrength">발색 강도</label>
+                                        <output id="catalogColorStrengthOutput">50%</output>
+                                    </div>
+                                    <input id="catalogColorStrength" class="lh-slider" type="range" min="0" max="100" step="5" value="50" oninput="setCatalogColorStrength(this.value)">
+                                </div>
+                                <button type="button" class="btn-step-next" onclick="goToCatalogStep(5)">다음: AI 내 얼굴 합성 &amp; 바로 예약 →</button>
+                            </div>
+                        </div>
+
+                        <!-- STEP 05: AI Virtual Try-On & Instant Reservation -->
+                        <div class="catalog-step-card" id="catalogStep5">
+                            <div class="catalog-step-header" onclick="toggleCatalogStep(5)">
+                                <div class="catalog-step-title-wrap">
+                                    <span class="catalog-step-num">STEP 05</span>
+                                    <h3>내 얼굴에 AI 가상 착용 &amp; 바로 예약</h3>
+                                </div>
+                                <span class="catalog-step-toggle-btn" id="step5ToggleLabel">완성하기</span>
+                            </div>
+                            <!-- Expanded Body -->
+                            <div class="catalog-step-body" id="catalogStep5Body" style="display:none;">
+                                <div class="ai-tryon-container">
+                                    <div class="ai-tryon-header">
+                                        <span class="ai-sparkle-pill">✨ AI VIRTUAL TRY-ON STUDIO</span>
+                                        <h4>내 얼굴 사진에 완성된 헤어스타일을 바로 착용해보세요</h4>
+                                        <p>모바일 셀카 촬영 또는 사진을 업로드하면, 선택하신 기장과 컬러, 앞머리 디테일을 얼굴형에 맞게 실시간 합성해 드립니다.</p>
+                                    </div>
+
+                                    <div class="ai-upload-row">
+                                        <label for="catalogSelfieUpload" class="ai-upload-btn">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                                            <span>내 얼굴 촬영 / 사진 업로드</span>
+                                        </label>
+                                        <input type="file" id="catalogSelfieUpload" accept="image/*" capture="user" onchange="handleSelfieUpload(event)" style="display:none;">
+                                        <button type="button" class="ai-sample-btn" onclick="loadSampleFace()">샘플 얼굴로 테스트</button>
+                                    </div>
+
+                                    <!-- Try-on Live Canvas Stage -->
+                                    <div class="ai-stage-wrapper" id="aiStageWrapper" style="display:none;">
+                                        <div class="ai-canvas-box">
+                                            <canvas id="aiCanvas" width="360" height="480"></canvas>
+                                            <span class="ai-badge-live">LIVE AI SYNTHESIS</span>
+                                        </div>
+                                        <div class="ai-controls">
+                                            <div class="lh-range-wrap">
+                                                <div class="lh-range-header">
+                                                    <span>스타일 합성 투명도 / 블렌딩</span>
+                                                    <output id="aiBlendOutput">85%</output>
+                                                </div>
+                                                <input type="range" class="lh-slider" id="aiBlendSlider" min="10" max="100" value="85" oninput="updateAiBlend(this.value)">
+                                            </div>
+                                            <div class="ai-compare-row">
+                                                <button type="button" class="btn-compare" onmousedown="showOriginalFace(true)" onmouseup="showOriginalFace(false)" ontouchstart="showOriginalFace(true)" ontouchend="showOriginalFace(false)">
+                                                    누르고 있는 동안 원본 얼굴 보기
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- AI Feasibility & Cost / Latency Report Collapsible -->
+                                    <div class="ai-report-accordion">
+                                        <button type="button" class="ai-report-toggle" onclick="toggleAiReport()">
+                                            <span class="ai-report-icon">📊</span>
+                                            <span class="ai-report-title">인공지능 이미지 합성 외부 서비스 및 비용 · 처리 시간 기술 분석 보고서</span>
+                                            <span class="ai-report-arrow" id="aiReportArrow">▼</span>
+                                        </button>
+                                        <div class="ai-report-sheet" id="aiReportSheet" style="display:none;">
+                                            <p><b>1. AI 얼굴 합성 구현 방식 및 기술 타당성 검토</b><br>
+                                            사용자의 고유한 눈, 코, 입 및 이목구비 윤곽을 100% 보존하면서 선택한 헤어스타일, 기장, 컬러를 정확하게 정합하는 3가지 아키텍처 대안을 비교 분석하였습니다.</p>
+                                            
+                                            <table class="ai-report-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>구분 / 아키텍처</th>
+                                                        <th>1회 처리 비용</th>
+                                                        <th>실시간 소요 시간</th>
+                                                        <th>장점 및 특징</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><span class="ai-report-badge ai-badge-saas">대안 1</span> 클라우드 SaaS API<br><small>(Replicate / Segmind)</small></td>
+                                                        <td><b>$0.015 ~ $0.035</b><br><small>(약 20원 ~ 48원)</small></td>
+                                                        <td><b>2.5초 ~ 4.2초</b></td>
+                                                        <td>서버 인프라 구축 없이 REST API 즉시 연동 가능, 자동 스케일아웃</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="ai-report-badge ai-badge-gpu">대안 2</span> 자체 서버리스 GPU<br><small>(RunPod / Modal + ComfyUI)</small></td>
+                                                        <td><b>$0.0006 ~ $0.002</b><br><small>(약 0.8원 ~ 2.8원)</small></td>
+                                                        <td><b>1.2초 ~ 2.0초</b><br><small>(Warm GPU 기준)</small></td>
+                                                        <td>대규모 트래픽 시 SaaS 대비 <b>비용 90% 이상 절감</b>, 한국인 헤어 LoRA 전용 모델 탑재 가능</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="ai-report-badge ai-badge-edge">대안 3</span> 온디바이스 엣지 AI<br><small>(MediaPipe + WebGL/Canvas)</small></td>
+                                                        <td><b>0원 ($0.00)</b><br><small>(서버 비용 제로)</small></td>
+                                                        <td><b>0.05초 (&lt;50ms)</b><br><small>(초당 30fps 실시간)</small></td>
+                                                        <td>사용자 얼굴 사진이 서버로 전송되지 않아 <b>개인정보 유출 0%</b>, 모바일 카메라 실시간 스트림 지원</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <p><b>💡 렛츠헤어 권장 최적화 전략 (하이브리드 파이프라인):</b><br>
+                                            • <b>1단계 (즉각 체감)</b>: 엣지 엔진으로 고객이 슬라이더를 조절할 때마다 <b>0.05초 만에 실시간 2.5D 헤어 가상 핏</b>을 제공합니다.<br>
+                                            • <b>2단계 (고화질 완성본)</b>: '예약 확정 및 고화질 포토 생성' 클릭 시 RunPod 서버리스 GPU(건당 2원)로 실사 디퓨전 인페인팅을 생성하여 고객 예약 카드에 저장합니다.</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Final Reserve Button -->
+                                    <div class="ai-reserve-cta">
+                                        <button type="button" class="btn-catalog-book" onclick="bookCurrentCatalogStyle()">
+                                            <span>✂️ 이 맞춤 스타일로 10% 결제 할인 예약하기</span>
+                                            <small id="catalogCtaSummary">소프트 레이어드 · 미디엄 · 사이드 뱅 · 로즈 브라운</small>
+                                        </button>
+                                    </div>
+                                    <p class="catalog-footnote">360° 뷰와 헤어 합성 및 컬러 시뮬레이션은 상담 참고용 가상 뷰이며, 실제 시술 결과는 고객님의 모발 컨디션 및 디자이너 맞춤 상담에 따라 최적화됩니다.</p>
                                 </div>
                             </div>
-                            <div class="catalog-range">
-                                <label for="catalogColorStrength">발색 강도 <output id="catalogColorStrengthOutput">50%</output></label>
-                                <input id="catalogColorStrength" type="range" min="0" max="100" step="5" value="50" oninput="setCatalogColorStrength(this.value)">
-                            </div>
-                            <div class="catalog-recipe" id="catalogRecipe" aria-live="polite"><b>CONSULT RECIPE</b> · 미디엄 레이어 · 소프트 C컬 · 밸런스 볼륨 · 내추럴 브라운 50%</div>
-                            <div class="catalog-rotation-scrubber">
-                                <label for="catalogRotationScrubber">360° 프레임 슬라이드 <output id="catalogFrameOutput">1 / 12</output></label>
-                                <input id="catalogRotationScrubber" type="range" min="0" max="11" step="1" value="0" oninput="setCatalogFrame(this.value)" aria-label="360도 회전 프레임">
-                                <div class="catalog-rotation-ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-                            </div>
-                            <div class="catalog-view-controls" aria-label="모델 방향 선택">
-                                <button type="button" class="is-active" data-catalog-angle="0" onclick="setCatalogAngle(0)">정면</button>
-                                <button type="button" data-catalog-angle="90" onclick="setCatalogAngle(90)">우측면</button>
-                                <button type="button" data-catalog-angle="180" onclick="setCatalogAngle(180)">후면</button>
-                                <button type="button" data-catalog-angle="270" onclick="setCatalogAngle(270)">좌측면</button>
-                            </div>
-                            <p class="catalog-footnote">스타일·펌·컬러 카드를 고르고, 모델을 좌우로 드래그하거나 12칸 슬라이드 핸들을 움직여 보세요. 360° 뷰와 컬러는 상담 참고용 시뮬레이션이며 실제 결과는 모발 상태와 시술 상담에 따라 달라질 수 있습니다.</p>
                         </div>
-                    </aside>
+                    </div>
                 </div>
             </div>
         </section>
@@ -2336,12 +2700,15 @@
         $('#catalogTextureLabel').text(profile.detailLabel);
         $('#catalogTextureDetail').val(profile.detail);
         $('#catalogVolumeDetail').val(profile.volume);
-        $('#catalogFaceLineLabel').text(profile.detailLabel.includes('컬러') || profile.detailLabel.includes('믹스') ? '피니시 · 포인트' : '앞머리 · 페이스라인');
+        $('#catalogFaceLineLabel').text(profile.detailLabel.includes('컬러') || profile.detailLabel.includes('믹스') ? '피니시 · 포인트' : '앞머리 · 페이스라인 맞춤 연출');
         $('.catalog-choice-group button').each(function(index) {
             const choice = profile.choices[index] || profile.choices[0];
             $(this).text(choice).attr('data-catalog-choice', choice).toggleClass('is-active', index === 0);
         });
+        renderBangsOverlay(catalogDetailState.choice);
         updateCatalogDetailOutputs();
+        updateStepSummaries();
+        syncAllSliders();
     }
 
     function updateCatalogDetailOutputs() {
@@ -2353,19 +2720,203 @@
         $('#catalogTextureDetailOutput').text(textureWord);
         $('#catalogVolumeDetailOutput').text(volumeWord);
         $('#catalogRecipe').text(`CONSULT RECIPE · ${selected.data('name')} · ${profile.detailLabel} ${textureWord} · 뿌리 볼륨 ${volumeWord} · ${catalogDetailState.choice} · ${catalogColorTone} ${catalogColorStrength}%`);
+        updateStepSummaries();
     }
 
     function updateCatalogDetail(type, value) {
         catalogDetailState[type] = Number(value);
         updateCatalogDetailOutputs();
+        syncAllSliders();
     }
 
     function setCatalogChoice(button) {
         if (!button) return;
         $('.catalog-choice-group button').removeClass('is-active');
         $(button).addClass('is-active');
-        catalogDetailState.choice = $(button).attr('data-catalog-choice');
+        const choice = $(button).attr('data-catalog-choice');
+        catalogDetailState.choice = choice;
+        renderBangsOverlay(choice);
+        
+        // Show visual feedback badge on turntable
+        const badge = $('#catalogBangsBadge');
+        badge.text(`✨ ${choice} 디테일 옵션 적용됨`).addClass('is-visible');
+        window.clearTimeout(badge.data('timer'));
+        badge.data('timer', setTimeout(() => badge.removeClass('is-visible'), 2400));
+        
         updateCatalogDetailOutputs();
+        updateStepSummaries();
+    }
+
+    function renderBangsOverlay(choice = catalogDetailState.choice) {
+        const svg = document.getElementById('catalogBangsSvg');
+        if (!svg) return;
+        // Fade out bangs if viewing model from behind
+        const frame = Math.round(catalogAngle / 30) % 12;
+        const normalizedAngle = frame * 30;
+        const isBack = (normalizedAngle >= 120 && normalizedAngle <= 240);
+        if (isBack) {
+            $('#catalogBangsLayer').css('opacity', '0');
+            return;
+        }
+        $('#catalogBangsLayer').css('opacity', '1');
+
+        // Color matching from active hair tone
+        const match = String(catalogColorWash).match(/rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)/);
+        const r = match ? Math.round(Number(match[1])) : 75;
+        const g = match ? Math.round(Number(match[2])) : 55;
+        const b = match ? Math.round(Number(match[3])) : 45;
+        const hairTone = `rgb(${r}, ${g}, ${b})`;
+
+        let svgContent = '';
+        if (choice.includes('사이드') || choice.includes('뱅') || choice.includes('프린지')) {
+            svgContent = `
+                <defs>
+                    <linearGradient id="bangGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="${hairTone}" stop-opacity="0.95"/>
+                        <stop offset="100%" stop-color="${hairTone}" stop-opacity="0.45"/>
+                    </linearGradient>
+                    <filter id="softStrands" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="1.2" result="blur"/>
+                        <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                    </filter>
+                </defs>
+                <g filter="url(#softStrands)">
+                    <!-- Left cheek side sweep -->
+                    <path d="M 168 138 C 154 150, 138 178, 134 212 C 131 236, 136 262, 146 278 C 142 262, 139 232, 143 208 C 148 176, 162 152, 168 138 Z" fill="url(#bangGrad)"/>
+                    <path d="M 172 142 C 160 156, 148 186, 144 220 C 142 242, 146 266, 154 282 C 149 266, 146 238, 150 214 C 154 184, 166 158, 172 142 Z" fill="url(#bangGrad)" opacity="0.8"/>
+                    <!-- Right cheek side sweep -->
+                    <path d="M 192 138 C 206 150, 222 178, 226 212 C 229 236, 224 262, 214 278 C 218 262, 221 232, 217 208 C 212 176, 198 152, 192 138 Z" fill="url(#bangGrad)"/>
+                    <path d="M 188 142 C 200 156, 212 186, 216 220 C 218 242, 214 266, 206 282 C 211 266, 214 238, 210 214 C 206 184, 194 158, 188 142 Z" fill="url(#bangGrad)" opacity="0.8"/>
+                    <!-- Delicate center wisps -->
+                    <path d="M 177 132 C 175 148, 171 168, 169 180 C 171 168, 175 148, 178 132 Z" fill="${hairTone}" opacity="0.6"/>
+                    <path d="M 183 132 C 185 148, 189 168, 191 180 C 189 168, 185 148, 182 132 Z" fill="${hairTone}" opacity="0.6"/>
+                </g>
+            `;
+        } else if (choice.includes('페이스 레이어') || choice.includes('리프') || choice.includes('질감') || choice.includes('포인트')) {
+            svgContent = `
+                <defs>
+                    <linearGradient id="layerGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="${hairTone}" stop-opacity="0.92"/>
+                        <stop offset="100%" stop-color="${hairTone}" stop-opacity="0.35"/>
+                    </linearGradient>
+                    <filter id="softStrands" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="1.5" result="blur"/>
+                        <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                    </filter>
+                </defs>
+                <g filter="url(#softStrands)">
+                    <!-- Jawline framing layers -->
+                    <path d="M 142 190 C 132 225, 126 265, 134 305 C 140 330, 150 350, 156 360 C 148 342, 138 315, 134 288 C 128 250, 134 218, 142 190 Z" fill="url(#layerGrad)"/>
+                    <path d="M 218 190 C 228 225, 234 265, 226 305 C 220 330, 210 350, 204 360 C 212 342, 222 315, 226 288 C 232 250, 226 218, 218 190 Z" fill="url(#layerGrad)"/>
+                </g>
+            `;
+        } else {
+            // Natural open hairline root lift
+            svgContent = `
+                <defs>
+                    <linearGradient id="openGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="${hairTone}" stop-opacity="0.75"/>
+                        <stop offset="100%" stop-color="${hairTone}" stop-opacity="0.2"/>
+                    </linearGradient>
+                </defs>
+                <g opacity="0.6">
+                    <path d="M 176 128 C 172 136, 168 146, 164 158 C 166 146, 171 135, 176 128 Z" fill="url(#openGrad)"/>
+                    <path d="M 184 128 C 188 136, 192 146, 196 158 C 194 146, 189 135, 184 128 Z" fill="url(#openGrad)"/>
+                </g>
+            `;
+        }
+        svg.innerHTML = svgContent;
+    }
+
+    /* Sequential Step Accordion Navigation */
+    let currentCatalogStep = 1;
+
+    function toggleCatalogStep(stepNum) {
+        const card = $(`#catalogStep${stepNum}`);
+        if (card.hasClass('is-open')) {
+            card.removeClass('is-open');
+            $(`#catalogStep${stepNum}Body`).slideUp(200);
+            $(`#catalogStep${stepNum}Summary`).slideDown(200);
+        } else {
+            openCatalogStep(stepNum);
+        }
+    }
+
+    function openCatalogStep(stepNum) {
+        currentCatalogStep = stepNum;
+        for (let i = 1; i <= 5; i++) {
+            const card = $(`#catalogStep${i}`);
+            const body = $(`#catalogStep${i}Body`);
+            const summary = $(`#catalogStep${i}Summary`);
+            if (i === stepNum) {
+                card.addClass('is-open');
+                summary.hide();
+                body.show();
+            } else {
+                card.removeClass('is-open');
+                body.hide();
+                if (summary.length) summary.show();
+            }
+        }
+        updateStepSummaries();
+        syncAllSliders();
+        if (stepNum > 2) {
+            const el = document.getElementById(`catalogStep${stepNum}`);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+    }
+
+    function goToCatalogStep(nextStep) {
+        openCatalogStep(nextStep);
+    }
+
+    function updateStepSummaries() {
+        const selected = $('.catalog-style-card.is-selected');
+        if (!selected.length) return;
+        const name = selected.data('name');
+        const lengthLabel = $('#catalogLengthOutput').text() || '미디엄';
+        const catName = selected.data('category') === 'perm' ? '펌' : (selected.data('category') === 'color' ? '컬러' : '커트');
+        const thumb = selected.find('img').attr('src');
+
+        // Step 1 Summary
+        $('#step1Thumb').attr('src', thumb);
+        $('#step1ChosenName').text(name);
+        $('#step1ChosenMeta').text(`${catalogGender === 'female' ? '여성' : '남성'} · ${catName} · ${lengthLabel}`);
+
+        // Step 2 Summary
+        $('#step2SummaryText').text(`희망 기장: ${lengthLabel} · ${$('#catalogSilhouette').text()}`);
+        $('#step2SummaryDna').text(`손질 ${$('#catalogMaintenance').text()} · ${$('#catalogTexture').text()}`);
+
+        // Step 3 Summary
+        const textureWord = catalogScaleWord(catalogDetailState.texture, '은은하게', '밸런스', '선명하게');
+        const volumeWord = catalogScaleWord(catalogDetailState.volume, '차분하게', '밸런스', '풍성하게');
+        $('#step3SummaryText').text(`앞머리: ${catalogDetailState.choice}`);
+        $('#step3SummaryDna').text(`레이어 ${textureWord} (${catalogDetailState.texture}%) · 볼륨 ${volumeWord} (${catalogDetailState.volume}%)`);
+
+        // Step 4 Summary
+        $('#step4SummaryText').text(`컬러: ${catalogColorTone}`);
+        $('#step4SummaryDna').text(`발색 강도 ${catalogColorStrength}%`);
+
+        // Step 5 CTA summary
+        $('#catalogCtaSummary').text(`${name} · ${lengthLabel} · ${catalogDetailState.choice} · ${catalogColorTone}`);
+    }
+
+    /* Custom Slider Visual Progress Fill */
+    function updateSliderFill(el) {
+        if (!el) return;
+        const min = Number(el.min) || 0;
+        const max = Number(el.max) || 100;
+        const val = Number(el.value) || 0;
+        const pct = ((val - min) / (max - min)) * 100;
+        el.style.setProperty('--slider-pct', `${pct}%`);
+    }
+
+    function syncAllSliders() {
+        $('input[type="range"].lh-slider').each(function() {
+            updateSliderFill(this);
+        });
     }
 
     function openCatalog() {
@@ -2377,6 +2928,7 @@
         $('.calcover, .calcovermini').css('filter', 'blur(2px) opacity(0.5)');
         setCatalogGender(catalogGender);
         applyCatalogColor(catalogColorTone, catalogColorWash);
+        syncAllSliders();
     }
 
     function closeCatalog() {
@@ -2430,9 +2982,15 @@
         updateCatalogStyleControls();
         updateCatalogPreview();
         updateCatalogView();
+
+        // Sequential folding: selecting a card collapses Step 1 into summary and advances to Step 2
+        if (!options.skipFold) {
+            openCatalogStep(2);
+        }
     }
 
     function handleCatalogLengthChange(value) {
+        syncAllSliders();
         const cards = getCatalogCards();
         const targetLength = Number(value);
         if (!cards.length) return;
@@ -2444,22 +3002,22 @@
             if (cardDistance === bestDistance && card === current) return card;
             return best;
         }, cards[0]);
-        selectCatalogStyle(nearest, { preserveLength: true });
+        selectCatalogStyle(nearest, { preserveLength: true, skipFold: true });
     }
 
     function handleCatalogStyleChange(value) {
+        syncAllSliders();
         const cards = getCatalogCards();
         const style = cards[Math.max(0, Math.min(cards.length - 1, Number(value) - 1))];
-        if (style) selectCatalogStyle(style);
+        if (style) selectCatalogStyle(style, { skipFold: true });
     }
 
     function updateCatalogPreview() {
         const lengthNames = { 1: '숏', 2: '보브', 3: '미디엄', 4: '미디엄 롱', 5: '롱' };
         const length = Number($('#catalogLength').val());
-        const age = Number($('#catalogAge').val());
         $('#catalogLengthOutput').text(lengthNames[length] || '미디엄');
-        $('#catalogAgeOutput').text(`${age}대`);
         updateCatalogLiveReference();
+        updateStepSummaries();
     }
 
     function updateCatalogLiveReference() {
@@ -2487,6 +3045,7 @@
         $('.catalog-color-swatch').each(function() {
             $(this).toggleClass('is-active', $(this).data('tone') === catalogColorTone);
         });
+        renderBangsOverlay(catalogDetailState.choice);
         updateCatalogDetailOutputs();
     }
 
@@ -2499,6 +3058,7 @@
     function setCatalogColorStrength(value) {
         catalogColorStrength = Number(value);
         applyCatalogColor(catalogColorTone, catalogColorWash);
+        syncAllSliders();
     }
 
     function updateCatalogView() {
@@ -2524,6 +3084,8 @@
         $('.catalog-view-controls button').each(function() {
             $(this).toggleClass('is-active', Number($(this).data('catalog-angle')) === normalizedAngle);
         });
+        renderBangsOverlay(catalogDetailState.choice);
+        syncAllSliders();
     }
 
     function setCatalogAngle(rawAngle) {
@@ -2568,6 +3130,178 @@
         if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
         event.preventDefault();
         setCatalogAngle(catalogAngle + (event.key === 'ArrowRight' ? 30 : -30));
+    }
+
+    /* AI Virtual Try-On Canvas Engine */
+    let userFaceImage = null;
+    let aiBlendAlpha = 0.85;
+
+    function handleSelfieUpload(event) {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                userFaceImage = img;
+                $('#aiStageWrapper').slideDown(250);
+                renderAiSynthesis();
+                showToast('✨ 얼굴 사진이 등록되어 맞춤 헤어 합성이 완성되었습니다!', 'success');
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function loadSampleFace() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 360;
+        canvas.height = 480;
+        const ctx = canvas.getContext('2d');
+        // Studio backdrop
+        ctx.fillStyle = '#c5b8b6';
+        ctx.fillRect(0, 0, 360, 480);
+        // Shoulders & neck
+        ctx.fillStyle = '#eed6c8';
+        ctx.beginPath();
+        ctx.moveTo(140, 280);
+        ctx.lineTo(80, 480);
+        ctx.lineTo(280, 480);
+        ctx.lineTo(220, 280);
+        ctx.fill();
+        // Face oval
+        ctx.fillStyle = '#fcebe1';
+        ctx.beginPath();
+        ctx.ellipse(180, 220, 52, 72, 0, 0, Math.PI * 2);
+        ctx.fill();
+        // Eyes
+        ctx.fillStyle = '#443229';
+        ctx.beginPath();
+        ctx.ellipse(162, 205, 5, 3.5, 0, 0, Math.PI * 2);
+        ctx.ellipse(198, 205, 5, 3.5, 0, 0, Math.PI * 2);
+        ctx.fill();
+        // Nose
+        ctx.strokeStyle = '#d4a896';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(180, 210);
+        ctx.lineTo(180, 230);
+        ctx.lineTo(176, 233);
+        ctx.stroke();
+        // Lips
+        ctx.fillStyle = '#d46f77';
+        ctx.beginPath();
+        ctx.ellipse(180, 252, 14, 6, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        const img = new Image();
+        img.onload = function() {
+            userFaceImage = img;
+            $('#aiStageWrapper').slideDown(250);
+            renderAiSynthesis();
+            showToast('✨ 테스트용 샘플 얼굴에 헤어가 합성되었습니다!', 'success');
+        };
+        img.src = canvas.toDataURL();
+    }
+
+    function renderAiSynthesis(onlyOriginal = false) {
+        const canvas = document.getElementById('aiCanvas');
+        if (!canvas || !userFaceImage) return;
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, 360, 480);
+
+        // 1. Draw user face (scaled & centered to 360x480)
+        const imgRatio = userFaceImage.width / userFaceImage.height;
+        const targetRatio = 360 / 480;
+        let sw, sh, sx, sy;
+        if (imgRatio > targetRatio) {
+            sh = userFaceImage.height;
+            sw = sh * targetRatio;
+            sx = (userFaceImage.width - sw) / 2;
+            sy = 0;
+        } else {
+            sw = userFaceImage.width;
+            sh = sw / targetRatio;
+            sx = 0;
+            sy = (userFaceImage.height - sh) / 2;
+        }
+        ctx.drawImage(userFaceImage, sx, sy, sw, sh, 0, 0, 360, 480);
+
+        if (onlyOriginal) return;
+
+        // 2. Overlay Hairstyle Silhouette
+        const selected = $('.catalog-style-card.is-selected');
+        const rotationProfile = selected.length ? getCatalogRotationProfile(selected) : 'female-medium';
+        const hairImg = new Image();
+        hairImg.crossOrigin = 'anonymous';
+        hairImg.onload = function() {
+            ctx.save();
+            ctx.globalAlpha = aiBlendAlpha;
+            ctx.drawImage(hairImg, 0, 0, 360, 480);
+            ctx.restore();
+
+            // 3. Hair Color Tint Wash
+            ctx.save();
+            ctx.globalAlpha = (catalogColorStrength / 100) * 0.45;
+            ctx.fillStyle = catalogColorTone === '블루 블랙' ? '#193055' :
+                            catalogColorTone === '코퍼 오렌지' ? '#b64820' :
+                            catalogColorTone === '로즈 브라운' ? '#9a4a5c' :
+                            catalogColorTone === '애쉬 베이지' ? '#c0b096' : '#5b3a2d';
+            ctx.globalCompositeOperation = 'color';
+            ctx.fillRect(0, 0, 360, 480);
+            ctx.restore();
+        };
+        hairImg.src = catalogRotationAssets[rotationProfile][0];
+    }
+
+    function updateAiBlend(val) {
+        aiBlendAlpha = Number(val) / 100;
+        $('#aiBlendOutput').text(`${val}%`);
+        renderAiSynthesis();
+        syncAllSliders();
+    }
+
+    function showOriginalFace(show) {
+        renderAiSynthesis(show);
+    }
+
+    function toggleAiReport() {
+        const sheet = $('#aiReportSheet');
+        const arrow = $('#aiReportArrow');
+        sheet.slideToggle(200);
+        arrow.text(sheet.is(':visible') ? '▲' : '▼');
+    }
+
+    function bookCurrentCatalogStyle() {
+        const selected = $('.catalog-style-card.is-selected');
+        const styleName = selected.data('name') || '소프트 레이어드';
+        const category = selected.data('category') || 'cut';
+        const lengthLabel = $('#catalogLengthOutput').text();
+        const choice = catalogDetailState.choice;
+        const recipe = `[카탈로그 맞춤] ${styleName} (${lengthLabel}, ${choice}, ${catalogColorTone} ${catalogColorStrength}%)`;
+
+        closeCatalog();
+
+        // Target tomorrow for reservation slot
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const y = tomorrow.getFullYear();
+        const m = tomorrow.getMonth() + 1;
+        const d = tomorrow.getDate();
+        const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+        const yoil = dayNames[tomorrow.getDay()];
+
+        popup_reserve(y, m, d, yoil, 14);
+
+        // Pre-check service checkbox
+        $('#cb1, #cb2, #cb3, #cb4').prop('checked', false);
+        if (category === 'cut') $('#cb1').prop('checked', true);
+        else if (category === 'perm') $('#cb3').prop('checked', true);
+        else if (category === 'color') $('#cb2').prop('checked', true);
+        else $('#cb1').prop('checked', true);
+
+        $('#cname').val(recipe);
+        showToast(`✨ ${styleName} 맞춤 레시피가 예약 상담 메모에 자동 등록되었습니다!`, 'success');
     }
 
     function menuopen() {
@@ -3000,6 +3734,16 @@
             currentShop = { ...DEFAULT_SHOP_DATA, id: currentShopId };
             updateShopUI();
             renderCalendars();
+        }
+        $(document).on('input change', 'input[type="range"].lh-slider', function() {
+            updateSliderFill(this);
+        });
+        if (new URLSearchParams(location.search).has('openCatalog')) {
+            openCatalog();
+            const stepParam = new URLSearchParams(location.search).get('step');
+            if (stepParam) setTimeout(() => openCatalogStep(Number(stepParam)), 50);
+            if (new URLSearchParams(location.search).has('testSampleFace')) setTimeout(loadSampleFace, 150);
+            if (new URLSearchParams(location.search).has('expandReport')) setTimeout(toggleAiReport, 200);
         }
         initShopSubscription();
     });
