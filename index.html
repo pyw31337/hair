@@ -339,8 +339,9 @@
         .catalog-360-stage.is-rotating, .catalog-360-stage:active { cursor: grabbing; }
         .catalog-360-stage::after { content: ''; position: absolute; inset: auto 0 0; height: 32%; pointer-events: none; background: linear-gradient(transparent, rgba(18, 21, 36, 0.22)); }
         .catalog-preview-image { position: relative; width: 100%; height: 100%; }
-        .catalog-preview-image img { width: 100%; height: 100%; object-fit: contain; object-position: center; user-select: none; -webkit-user-select: none; -webkit-user-drag: none; pointer-events: none; transition: opacity 0.16s ease, transform 0.16s ease; }
-        .catalog-color-wash { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: transparent; mix-blend-mode: color; transition: background 0.2s ease, opacity 0.2s ease; }
+        .catalog-preview-image img { width: 100%; height: 100%; object-fit: contain; object-position: center; user-select: none; -webkit-user-select: none; -webkit-user-drag: none; pointer-events: none; transition: opacity 0.12s ease, transform 0.12s ease; }
+        .catalog-preview-image.is-frame-changing img { opacity: 0.72; transform: scale(0.992); }
+        .catalog-color-wash { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: transparent; mix-blend-mode: color; -webkit-mask-image: radial-gradient(ellipse 55% 49% at 50% 35%, #000 42%, rgba(0,0,0,0.8) 62%, transparent 100%); mask-image: radial-gradient(ellipse 55% 49% at 50% 35%, #000 42%, rgba(0,0,0,0.8) 62%, transparent 100%); transition: background 0.2s ease, opacity 0.2s ease; }
         .catalog-rotation-badge { position: absolute; z-index: 1; top: 12px; left: 12px; padding: 6px 9px; border-radius: 999px; background: rgba(17, 18, 29, 0.62); color: #fff; font-size: 0.7rem; font-weight: 800; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
         .catalog-drag-hint { position: absolute; z-index: 1; right: 12px; bottom: 12px; color: #fff; font-size: 0.68rem; font-weight: 700; text-shadow: 0 1px 5px rgba(0,0,0,0.65); }
         .catalog-rotation-dial { position: absolute; z-index: 1; right: 12px; top: 11px; width: 42px; height: 42px; border: 1px solid rgba(255,255,255,0.7); border-radius: 50%; background: rgba(18, 18, 31, 0.36); box-shadow: inset 0 0 0 5px rgba(255,255,255,0.14); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
@@ -356,6 +357,12 @@
         .catalog-live-style em { display: block; margin-bottom: 3px; color: #e3376b; font-size: 0.56rem; font-style: normal; font-weight: 900; letter-spacing: 0.11em; }
         .catalog-live-style b, .catalog-live-style small { display: block; color: #31303b; font-size: 0.73rem; line-height: 1.35; }
         .catalog-live-style small { margin-top: 2px; color: #8b8590; font-size: 0.65rem; }
+        .catalog-rotation-reference { display: inline-flex; align-items: center; gap: 5px; margin: -4px 0 10px; color: #7f7782; font-size: 0.63rem; font-weight: 700; }
+        .catalog-rotation-reference::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #f35381; box-shadow: 0 0 0 3px rgba(243,83,129,0.13); }
+        .catalog-style-dna { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 0 0 12px; }
+        .catalog-style-dna div { min-width: 0; padding: 8px; border: 1px solid rgba(72,63,76,0.09); border-radius: 9px; background: rgba(255,255,255,0.62); }
+        .catalog-style-dna dt { margin-bottom: 3px; color: #96909a; font-size: 0.57rem; font-weight: 900; letter-spacing: 0.04em; }
+        .catalog-style-dna dd { overflow: hidden; margin: 0; color: #38333d; font-size: 0.66rem; font-weight: 800; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; }
         .catalog-range { margin-top: 12px; }
         .catalog-range label { display: flex; justify-content: space-between; color: #4b5563; font-size: 0.77rem; font-weight: 800; }
         .catalog-range output { color: #e3376b; }
@@ -367,6 +374,15 @@
         .catalog-color-swatch { width: 28px; height: 28px; padding: 3px; border: 1px solid #e5e7eb; border-radius: 50%; background: #fff; cursor: pointer; }
         .catalog-color-swatch span { display: block; width: 100%; height: 100%; border-radius: 50%; background: var(--swatch); }
         .catalog-color-swatch.is-active { border-color: #f35381; box-shadow: 0 0 0 2px rgba(243,83,129,0.18); }
+        .catalog-detail-divider { display: flex; align-items: center; gap: 8px; margin-top: 15px; color: #e3376b; font-size: 0.62rem; font-weight: 900; letter-spacing: 0.1em; }
+        .catalog-detail-divider::after { content: ''; flex: 1; height: 1px; background: rgba(227,55,107,0.16); }
+        .catalog-choice { margin-top: 12px; }
+        .catalog-choice > span { display: block; margin-bottom: 7px; color: #4b5563; font-size: 0.77rem; font-weight: 800; }
+        .catalog-choice-group { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+        .catalog-choice-group button { min-height: 31px; padding: 5px 4px; border: 1px solid #e5e7eb; border-radius: 8px; background: rgba(255,255,255,0.76); color: #74717a; font: inherit; font-size: 0.63rem; font-weight: 800; cursor: pointer; }
+        .catalog-choice-group button.is-active { border-color: #f35381; background: #fff0f5; color: #df2e66; }
+        .catalog-recipe { margin-top: 12px; padding: 9px 10px; border-radius: 10px; background: linear-gradient(90deg, rgba(243,83,129,0.10), rgba(255,255,255,0.5)); color: #6e6570; font-size: 0.66rem; font-weight: 700; line-height: 1.5; }
+        .catalog-recipe b { color: #e3376b; }
         .catalog-rotation-scrubber { margin-top: 13px; padding: 10px; border: 1px solid rgba(243,83,129,0.16); border-radius: 11px; background: rgba(255,255,255,0.7); }
         .catalog-rotation-scrubber label { display: flex; justify-content: space-between; color: #4b5563; font-size: 0.73rem; font-weight: 900; }
         .catalog-rotation-scrubber output { color: #e3376b; }
@@ -566,7 +582,7 @@
                     <aside class="catalog-preview" aria-live="polite">
                         <div class="catalog-preview-topline"><span>THE LOOKBOOK · 360 MOTION</span><span>LIVE CONSULT</span></div>
                         <div class="catalog-360-stage" id="catalog360Stage" role="slider" aria-label="모델 360도 회전 미리보기" aria-valuemin="0" aria-valuemax="330" aria-valuenow="0" tabindex="0" draggable="false" ondragstart="return false" onpointerdown="startCatalogRotation(event)" onpointermove="moveCatalogRotation(event)" onpointerup="endCatalogRotation(event)" onpointercancel="endCatalogRotation(event)" onkeydown="handleCatalogRotationKey(event)">
-                            <div class="catalog-preview-image"><img id="catalogModelImage" src="image/generated-female-layered.jpg" alt="소프트 레이어드 여성 스타일 참고 모델 정면 모습" draggable="false"><span class="catalog-color-wash" id="catalogColorWash"></span></div>
+                            <div class="catalog-preview-image"><img id="catalogModelImage" src="image/catalog-turntable/female-medium-00.jpg" alt="소프트 레이어드 여성 스타일 12컷 회전 프리뷰 정면" draggable="false"><span class="catalog-color-wash" id="catalogColorWash"></span></div>
                             <span class="catalog-rotation-badge" id="catalogRotationOutput">정면 · 0° · 1/12</span>
                             <span class="catalog-rotation-dial" aria-hidden="true"></span>
                             <span class="catalog-drag-hint">좌우로 드래그 · 스와이프</span>
@@ -574,10 +590,16 @@
                         <div class="catalog-preview-copy">
                             <p>STYLE STUDY · 실시간 스타일 매치</p>
                             <strong id="catalogChosenStyle">소프트 레이어드</strong>
+                            <span class="catalog-rotation-reference" id="catalogRotationReference">미디엄 레이어드 · 12컷 연속 턴테이블</span>
                             <div class="catalog-live-style" aria-live="polite">
                                 <div class="catalog-live-style-cover"><img id="catalogLiveThumbnail" src="image/generated-female-layered.jpg" alt="현재 선택한 스타일 썸네일" draggable="false"><span id="catalogLiveColorWash"></span></div>
                                 <div><em>LIVE STYLE MATCH</em><b id="catalogLiveMeta">커트 · 미디엄</b><small id="catalogLiveHint">기장 슬라이더로 비슷한 길이의 스타일을 바로 찾아보세요.</small></div>
                             </div>
+                            <dl class="catalog-style-dna" aria-label="선택 스타일 세부 정보">
+                                <div><dt>실루엣</dt><dd id="catalogSilhouette">내추럴 레이어</dd></div>
+                                <div><dt>텍스처</dt><dd id="catalogTexture">소프트 C컬</dd></div>
+                                <div><dt>손질 시간</dt><dd id="catalogMaintenance">5–7분</dd></div>
+                            </dl>
                             <div class="catalog-range">
                                 <label for="catalogLength">희망 기장 <output id="catalogLengthOutput">미디엄</output></label>
                                 <input id="catalogLength" type="range" min="1" max="5" step="1" value="3" oninput="handleCatalogLengthChange(this.value)">
@@ -586,6 +608,23 @@
                                 <label for="catalogStyleVariant">스타일 변형 <output id="catalogStyleOutput">소프트 레이어드</output></label>
                                 <input id="catalogStyleVariant" type="range" min="1" max="6" step="1" value="1" oninput="handleCatalogStyleChange(this.value)">
                             </div>
+                            <div class="catalog-detail-divider">STYLE DETAIL</div>
+                            <div class="catalog-range">
+                                <label for="catalogTextureDetail"><span id="catalogTextureLabel">레이어 위치</span> <output id="catalogTextureDetailOutput">중간</output></label>
+                                <input id="catalogTextureDetail" type="range" min="0" max="100" step="5" value="55" oninput="updateCatalogDetail('texture', this.value)">
+                            </div>
+                            <div class="catalog-range">
+                                <label for="catalogVolumeDetail">뿌리 볼륨 <output id="catalogVolumeDetailOutput">밸런스</output></label>
+                                <input id="catalogVolumeDetail" type="range" min="0" max="100" step="5" value="50" oninput="updateCatalogDetail('volume', this.value)">
+                            </div>
+                            <div class="catalog-choice">
+                                <span id="catalogFaceLineLabel">앞머리 · 페이스라인</span>
+                                <div class="catalog-choice-group" role="group" aria-label="앞머리와 페이스라인 선택">
+                                    <button type="button" class="is-active" data-catalog-choice="내추럴 오픈" onclick="setCatalogChoice(this)">내추럴 오픈</button>
+                                    <button type="button" data-catalog-choice="사이드 뱅" onclick="setCatalogChoice(this)">사이드 뱅</button>
+                                    <button type="button" data-catalog-choice="페이스 레이어" onclick="setCatalogChoice(this)">페이스 레이어</button>
+                                </div>
+                            </div>
                             <div class="catalog-range">
                                 <label for="catalogAge">추천 연령대 <output id="catalogAgeOutput">30대</output></label>
                                 <input id="catalogAge" type="range" min="10" max="70" step="10" value="30" oninput="updateCatalogPreview()">
@@ -593,13 +632,19 @@
                             <div class="catalog-color-picker">
                                 <label>컬러 시뮬레이션 <output id="catalogColorOutput">내추럴 브라운</output></label>
                                 <div class="catalog-color-swatches" role="group" aria-label="헤어 컬러 선택">
-                                    <button type="button" class="catalog-color-swatch is-active" style="--swatch:#5b3a2d" data-tone="내추럴 브라운" data-wash="" onclick="setCatalogColor(this)" aria-label="내추럴 브라운"></button>
+                                    <button type="button" class="catalog-color-swatch is-active" style="--swatch:#5b3a2d" data-tone="내추럴 브라운" data-wash="rgba(91,58,45,0.24)" onclick="setCatalogColor(this)" aria-label="내추럴 브라운"></button>
                                     <button type="button" class="catalog-color-swatch" style="--swatch:#a99d8b" data-tone="애쉬 베이지" data-wash="rgba(192,176,150,0.22)" onclick="setCatalogColor(this)" aria-label="애쉬 베이지"></button>
                                     <button type="button" class="catalog-color-swatch" style="--swatch:#9d493d" data-tone="로즈 브라운" data-wash="rgba(154,74,92,0.23)" onclick="setCatalogColor(this)" aria-label="로즈 브라운"></button>
                                     <button type="button" class="catalog-color-swatch" style="--swatch:#b85b2a" data-tone="코퍼 오렌지" data-wash="rgba(182,72,32,0.28)" onclick="setCatalogColor(this)" aria-label="코퍼 오렌지"></button>
                                     <button type="button" class="catalog-color-swatch" style="--swatch:#263654" data-tone="블루 블랙" data-wash="rgba(25,48,85,0.26)" onclick="setCatalogColor(this)" aria-label="블루 블랙"></button>
+                                    <button type="button" class="catalog-color-swatch" style="--swatch:#714450" data-tone="모브 브라운" data-wash="rgba(113,68,80,0.26)" onclick="setCatalogColor(this)" aria-label="모브 브라운"></button>
                                 </div>
                             </div>
+                            <div class="catalog-range">
+                                <label for="catalogColorStrength">발색 강도 <output id="catalogColorStrengthOutput">50%</output></label>
+                                <input id="catalogColorStrength" type="range" min="0" max="100" step="5" value="50" oninput="setCatalogColorStrength(this.value)">
+                            </div>
+                            <div class="catalog-recipe" id="catalogRecipe" aria-live="polite"><b>CONSULT RECIPE</b> · 미디엄 레이어 · 소프트 C컬 · 밸런스 볼륨 · 내추럴 브라운 50%</div>
                             <div class="catalog-rotation-scrubber">
                                 <label for="catalogRotationScrubber">360° 프레임 슬라이드 <output id="catalogFrameOutput">1 / 12</output></label>
                                 <input id="catalogRotationScrubber" type="range" min="0" max="11" step="1" value="0" oninput="setCatalogFrame(this.value)" aria-label="360도 회전 프레임">
@@ -1497,16 +1542,130 @@
     let catalogPointerStartX = 0;
     let catalogPointerStartAngle = 0;
     let catalogPointerDidMove = false;
+    let catalogColorTone = '내추럴 브라운';
+    let catalogColorWash = 'rgba(91,58,45,0.24)';
+    let catalogColorStrength = 50;
+    let catalogDetailState = { texture: 55, volume: 50, choice: '내추럴 오픈' };
     const catalogRotationAssets = {
-        female: Array.from({ length: 12 }, (_, index) => `image/catalog-spin-female-${String(index).padStart(2, '0')}.jpg`),
-        male: Array.from({ length: 12 }, (_, index) => `image/catalog-spin-male-${String(index).padStart(2, '0')}.jpg`)
+        'female-bob': Array.from({ length: 12 }, (_, index) => `image/catalog-turntable/female-bob-${String(index).padStart(2, '0')}.jpg`),
+        'female-medium': Array.from({ length: 12 }, (_, index) => `image/catalog-turntable/female-medium-${String(index).padStart(2, '0')}.jpg`),
+        'female-long': Array.from({ length: 12 }, (_, index) => `image/catalog-turntable/female-long-${String(index).padStart(2, '0')}.jpg`),
+        male: Array.from({ length: 12 }, (_, index) => `image/catalog-turntable/male-${String(index).padStart(2, '0')}.jpg`)
+    };
+    const catalogRotationProfileNames = {
+        'female-bob': '보브 실루엣',
+        'female-medium': '미디엄 레이어',
+        'female-long': '롱 웨이브',
+        male: '남성 텍스처'
     };
     const catalogFrameNames = ['정면', '우측 30°', '우측 3/4', '우측면', '우측 후면', '후면 3/4', '후면', '좌측 후면', '좌측 3/4', '좌측면', '좌측 정면', '정면 3/4'];
+    const catalogStyleProfiles = {
+        '소프트 레이어드': { silhouette: '중간 레이어', texture: '소프트 C컬', maintenance: '5–7분', detailLabel: '레이어 위치', detail: 55, volume: 50, choices: ['내추럴 오픈', '사이드 뱅', '페이스 레이어'] },
+        '프렌치 보브': { silhouette: '턱선 인사이드', texture: '매끈한 C컬', maintenance: '4–6분', detailLabel: '끝선 인사이드', detail: 60, volume: 45, choices: ['가르마 오픈', '사이드 볼륨', '턱선 포인트'] },
+        '허쉬컷': { silhouette: '에어리 샤기', texture: '가벼운 질감', maintenance: '6–8분', detailLabel: '질감 레이어', detail: 70, volume: 60, choices: ['시스루 뱅', '사이드 뱅', '페이스 컷'] },
+        'C컬 보브': { silhouette: '클래식 보브', texture: '안쪽 C컬', maintenance: '4–6분', detailLabel: 'C컬 선명도', detail: 65, volume: 42, choices: ['미들 파트', '사이드 파트', '볼륨 뱅'] },
+        '시스루 뱅 롱': { silhouette: '롱 페이스 레이어', texture: '내추럴 스트레이트', maintenance: '7–9분', detailLabel: '앞머리 밀도', detail: 45, volume: 48, choices: ['시스루 뱅', '커튼 뱅', '오픈 뱅'] },
+        '롱 레이어드 컷': { silhouette: '롱 레이어', texture: '흐르는 결', maintenance: '6–8분', detailLabel: '레이어 높이', detail: 60, volume: 55, choices: ['커튼 뱅', '페이스 레이어', '오픈 파트'] },
+        '빌드펌 롱웨이브': { silhouette: '볼륨 롱 웨이브', texture: '탄력 S컬', maintenance: '8–10분', detailLabel: '컬 탄성', detail: 70, volume: 68, choices: ['커튼 뱅', '글램 웨이브', '페이스 웨이브'] },
+        '레이어드 S펌': { silhouette: '입체 레이어', texture: '느슨한 S컬', maintenance: '8–10분', detailLabel: '웨이브 밀도', detail: 60, volume: 62, choices: ['사이드 뱅', 'S컬 포인트', '오픈 파트'] },
+        '소프트 히피펌': { silhouette: '에어리 볼륨', texture: '소프트 히피', maintenance: '9–11분', detailLabel: '컬 간격', detail: 75, volume: 72, choices: ['시스루 뱅', '웨이브 뱅', '페이스 컬'] },
+        '볼륨 C컬펌': { silhouette: '매끈한 볼륨', texture: '굵은 C컬', maintenance: '5–7분', detailLabel: 'C컬 볼륨', detail: 58, volume: 65, choices: ['사이드 파트', '뿌리 볼륨', '인사이드 컬'] },
+        '로우 번 업스타일': { silhouette: '소프트 업스타일', texture: '로우 번 결', maintenance: '10–12분', detailLabel: '번 위치', detail: 45, volume: 58, choices: ['잔머리 연출', '미들 파트', '사이드 포인트'] },
+        '코코아 브라운': { silhouette: '미디엄 레이어', texture: '윤기 스트레이트', maintenance: '5–7분', detailLabel: '톤 온 톤', detail: 55, volume: 48, choices: ['페이스 라이트', '내추럴 뱅', '윤기 라인'] },
+        '애쉬 베이지': { silhouette: '롱 레이어', texture: '소프트 웨이브', maintenance: '7–9분', detailLabel: '베이지 믹스', detail: 65, volume: 52, choices: ['페이스 라이트', '커튼 뱅', '소프트 톤'] },
+        '코퍼 오렌지': { silhouette: '미디엄 레이어', texture: '글로시 웨이브', maintenance: '7–9분', detailLabel: '코퍼 포인트', detail: 72, volume: 55, choices: ['페이스 라이트', '사이드 뱅', '글로시 라인'] },
+        '로즈 브라운': { silhouette: '보브 실루엣', texture: '소프트 C컬', maintenance: '5–7분', detailLabel: '로즈 믹스', detail: 58, volume: 46, choices: ['미들 파트', '사이드 볼륨', '페이스 톤'] },
+        '텍스처 투블럭': { silhouette: '클린 투블럭', texture: '매트 텍스처', maintenance: '3–5분', detailLabel: '탑 텍스처', detail: 60, volume: 55, choices: ['내추럴 다운', '쉼표 앞머리', '리프트 업'] },
+        '댄디 크롭': { silhouette: '댄디 크롭', texture: '소프트 질감', maintenance: '3–5분', detailLabel: '프린지 길이', detail: 45, volume: 42, choices: ['내추럴 뱅', '사이드 프린지', '리프트 뱅'] },
+        '리프컷': { silhouette: '미디엄 리프', texture: '결감 레이어', maintenance: '6–8분', detailLabel: '리프 레이어', detail: 65, volume: 57, choices: ['가르마 오픈', '사이드 파트', '페이스 리프'] },
+        '소프트 울프컷': { silhouette: '소프트 울프', texture: '에어리 레이어', maintenance: '7–9분', detailLabel: '넥 레이어', detail: 70, volume: 64, choices: ['시스루 프린지', '사이드 뱅', '리프트 탑'] },
+        '쉐도우 다운컷': { silhouette: '다운 텍스처', texture: '내추럴 쉐도우', maintenance: '4–6분', detailLabel: '다운 밸런스', detail: 55, volume: 44, choices: ['내추럴 뱅', '쉼표 프린지', '사이드 다운'] },
+        '가르마 펌': { silhouette: '클래식 가르마', texture: '루즈 컬', maintenance: '5–7분', detailLabel: '가르마 볼륨', detail: 60, volume: 62, choices: ['5:5 파트', '6:4 파트', '7:3 파트'] },
+        '애즈 펌': { silhouette: '소프트 애즈', texture: '가벼운 C컬', maintenance: '5–7분', detailLabel: '컬 결', detail: 55, volume: 58, choices: ['6:4 파트', '7:3 파트', '내추럴 뱅'] },
+        '쉐도우 펌': { silhouette: '쉐도우 쉐입', texture: '루즈 웨이브', maintenance: '6–8분', detailLabel: '웨이브 밀도', detail: 65, volume: 66, choices: ['내추럴 뱅', '볼륨 프린지', '다운 사이드'] },
+        '볼륨 다운펌': { silhouette: '클린 다운', texture: '볼륨 탑', maintenance: '4–6분', detailLabel: '다운 강도', detail: 60, volume: 55, choices: ['리프트 뱅', '내추럴 뱅', '사이드 다운'] },
+        '블루 블랙': { silhouette: '클린 숏', texture: '글로시 텍스처', maintenance: '4–6분', detailLabel: '딥 블루 비율', detail: 60, volume: 48, choices: ['매트 피니시', '글로시 피니시', '포인트 라인'] },
+        '애쉬 브라운': { silhouette: '미디엄 레이어', texture: '소프트 결감', maintenance: '6–8분', detailLabel: '애쉬 믹스', detail: 55, volume: 54, choices: ['소프트 파트', '페이스 라이트', '내추럴 뱅'] },
+        '스모키 그레이': { silhouette: '텍스처 크롭', texture: '매트 쉐입', maintenance: '4–6분', detailLabel: '스모키 밀도', detail: 70, volume: 50, choices: ['매트 피니시', '프린지 포인트', '다운 사이드'] }
+    };
 
     function getCatalogCards(gender = catalogGender) {
         return $(`.catalog-style-card[data-gender="${gender}"]`).filter(function() {
             return catalogCategory === 'all' || $(this).data('category') === catalogCategory;
         }).toArray();
+    }
+
+    function getCatalogStyleProfile(selected) {
+        const name = selected.data('name');
+        return catalogStyleProfiles[name] || {
+            silhouette: selected.data('length-label') || '맞춤 실루엣',
+            texture: selected.data('category') === 'perm' ? '내추럴 컬' : '소프트 결감',
+            maintenance: '5–7분',
+            detailLabel: selected.data('category') === 'color' ? '컬러 믹스' : '디테일 밸런스',
+            detail: 55,
+            volume: 50,
+            choices: ['내추럴 오픈', '사이드 포인트', '페이스 라인']
+        };
+    }
+
+    function getCatalogRotationProfile(selected) {
+        if (selected.data('gender') === 'male') return 'male';
+        const length = Number(selected.data('length'));
+        if (length <= 2) return 'female-bob';
+        if (length >= 5) return 'female-long';
+        return 'female-medium';
+    }
+
+    function catalogScaleWord(value, low, mid, high) {
+        const number = Number(value);
+        if (number < 35) return low;
+        if (number > 70) return high;
+        return mid;
+    }
+
+    function updateCatalogStyleControls() {
+        const selected = $('.catalog-style-card.is-selected');
+        if (!selected.length) return;
+        const profile = getCatalogStyleProfile(selected);
+        catalogDetailState.texture = profile.detail;
+        catalogDetailState.volume = profile.volume;
+        catalogDetailState.choice = profile.choices[0];
+        $('#catalogSilhouette').text(profile.silhouette);
+        $('#catalogTexture').text(profile.texture);
+        $('#catalogMaintenance').text(profile.maintenance);
+        $('#catalogTextureLabel').text(profile.detailLabel);
+        $('#catalogTextureDetail').val(profile.detail);
+        $('#catalogVolumeDetail').val(profile.volume);
+        $('#catalogFaceLineLabel').text(profile.detailLabel.includes('컬러') || profile.detailLabel.includes('믹스') ? '피니시 · 포인트' : '앞머리 · 페이스라인');
+        $('.catalog-choice-group button').each(function(index) {
+            const choice = profile.choices[index] || profile.choices[0];
+            $(this).text(choice).attr('data-catalog-choice', choice).toggleClass('is-active', index === 0);
+        });
+        updateCatalogDetailOutputs();
+    }
+
+    function updateCatalogDetailOutputs() {
+        const selected = $('.catalog-style-card.is-selected');
+        if (!selected.length) return;
+        const profile = getCatalogStyleProfile(selected);
+        const textureWord = catalogScaleWord(catalogDetailState.texture, '은은하게', '밸런스', '선명하게');
+        const volumeWord = catalogScaleWord(catalogDetailState.volume, '차분하게', '밸런스', '풍성하게');
+        $('#catalogTextureDetailOutput').text(textureWord);
+        $('#catalogVolumeDetailOutput').text(volumeWord);
+        $('#catalogRecipe').text(`CONSULT RECIPE · ${selected.data('name')} · ${profile.detailLabel} ${textureWord} · 뿌리 볼륨 ${volumeWord} · ${catalogDetailState.choice} · ${catalogColorTone} ${catalogColorStrength}%`);
+    }
+
+    function updateCatalogDetail(type, value) {
+        catalogDetailState[type] = Number(value);
+        updateCatalogDetailOutputs();
+    }
+
+    function setCatalogChoice(button) {
+        if (!button) return;
+        $('.catalog-choice-group button').removeClass('is-active');
+        $(button).addClass('is-active');
+        catalogDetailState.choice = $(button).attr('data-catalog-choice');
+        updateCatalogDetailOutputs();
     }
 
     function openCatalog() {
@@ -1516,6 +1675,7 @@
         $('#catalogPanel, .catalog-card').scrollTop(0);
         $('.calcover, .calcovermini').css('filter', 'blur(2px) opacity(0.5)');
         setCatalogGender(catalogGender);
+        applyCatalogColor(catalogColorTone, catalogColorWash);
     }
 
     function closeCatalog() {
@@ -1566,6 +1726,7 @@
         $('#catalogStyleOutput').text(selected.data('name'));
         if (!options.preserveLength) $('#catalogLength').val(selected.data('length'));
         if (selected.data('tone')) applyCatalogColor(selected.data('tone'), selected.data('wash'));
+        updateCatalogStyleControls();
         updateCatalogPreview();
         updateCatalogView();
     }
@@ -1614,11 +1775,18 @@
     }
 
     function applyCatalogColor(tone, wash) {
-        $('#catalogColorOutput').text(tone);
-        $('#catalogColorWash, #catalogLiveColorWash').css({ background: wash || 'transparent', opacity: wash ? 1 : 0 });
+        catalogColorTone = tone || '내추럴 브라운';
+        catalogColorWash = wash || 'rgba(91,58,45,0.24)';
+        const match = String(catalogColorWash).match(/rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)(?:\s*,\s*([\d.]+))?\s*\)/);
+        const baseAlpha = match ? Number(match[4] || 0.24) : 0.24;
+        const opacity = (catalogColorStrength / 100) * Math.min(0.56, baseAlpha * 1.8);
+        $('#catalogColorOutput').text(catalogColorTone);
+        $('#catalogColorStrengthOutput').text(`${catalogColorStrength}%`);
+        $('#catalogColorWash, #catalogLiveColorWash').css({ background: catalogColorWash, opacity });
         $('.catalog-color-swatch').each(function() {
-            $(this).toggleClass('is-active', $(this).data('tone') === tone);
+            $(this).toggleClass('is-active', $(this).data('tone') === catalogColorTone);
         });
+        updateCatalogDetailOutputs();
     }
 
     function setCatalogColor(button) {
@@ -1627,22 +1795,29 @@
         applyCatalogColor(selected.data('tone'), selected.data('wash'));
     }
 
+    function setCatalogColorStrength(value) {
+        catalogColorStrength = Number(value);
+        applyCatalogColor(catalogColorTone, catalogColorWash);
+    }
+
     function updateCatalogView() {
         const selected = $('.catalog-style-card.is-selected');
         if (!selected.length) return;
         const frame = Math.round(catalogAngle / 30) % 12;
         const normalizedAngle = frame * 30;
         const styleName = selected.data('name');
-        const isMale = catalogGender === 'male';
-        const styleSource = selected.find('img').attr('src');
-        const isStylePreview = frame === 0;
-        const source = isStylePreview ? styleSource : catalogRotationAssets[catalogGender][frame];
-
-        $('#catalogModelImage')
-            .attr('src', source)
-            .attr('alt', isStylePreview ? `${styleName} 스타일 실시간 프리뷰` : `${styleName} ${isMale ? '남성' : '여성'} 스타일 참고 모델 ${catalogFrameNames[frame]} 모습`);
-        $('#catalogRotationOutput').text(isStylePreview ? `스타일 프리뷰 · 0° · 1/12` : `${catalogFrameNames[frame]} · ${normalizedAngle}° · ${frame + 1}/12`);
+        const rotationProfile = getCatalogRotationProfile(selected);
+        const source = catalogRotationAssets[rotationProfile][frame];
+        const modelImage = $('#catalogModelImage');
+        if (modelImage.attr('src') !== source) {
+            $('.catalog-preview-image').addClass('is-frame-changing');
+            modelImage.one('load', function() { $('.catalog-preview-image').removeClass('is-frame-changing'); });
+            window.setTimeout(() => $('.catalog-preview-image').removeClass('is-frame-changing'), 250);
+        }
+        modelImage.attr('src', source).attr('alt', `${styleName} ${catalogFrameNames[frame]} · 동일 기장 12컷 회전 프리뷰`);
+        $('#catalogRotationOutput').text(`${catalogFrameNames[frame]} · ${normalizedAngle}° · ${frame + 1}/12`);
         $('#catalogFrameOutput').text(`${frame + 1} / 12`);
+        $('#catalogRotationReference').text(`${catalogRotationProfileNames[rotationProfile]} · 12컷 연속 턴테이블`);
         $('#catalogRotationScrubber').val(frame);
         $('#catalog360Stage').css('--catalog-angle', `${normalizedAngle}deg`).attr('aria-valuenow', normalizedAngle).attr('aria-valuetext', catalogFrameNames[frame]);
         $('.catalog-view-controls button').each(function() {
