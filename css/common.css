@@ -53,7 +53,8 @@ input {border-radius: 0;}
 .notice {padding: 2px 14px; width:100%!important; padding-left: 27px; display: inline!important; border: 0!important; border-radius: 0!important; margin: 0!important;}
 .notice_list { margin-top: 10px; border: 1px solid; border-radius: 40px; padding: 2px 0;}
 
-.slider-wrapper {position:absolute; inset:0; height:240px; overflow: hidden; z-index:0; background:#2a2527;}
+.slider-wrapper {position:absolute; inset:0; height:240px; overflow: hidden; z-index:0;}
+.header .slider-wrapper {background:#2a2527;}
 .slider-wrapper .item {height:240px; flex:0 0 240px; object-fit:cover; object-position:center; filter:saturate(0.76) contrast(0.94) brightness(0.76);}
 
 .month_prev {background-image: url(../icon/circle-chevron-left.png); background-size: 40%; background-repeat: no-repeat; background-position: center; background-position-x: 13px; width: 50px; height: 50px; display: inline-block; margin: 0 3%; vertical-align: middle; border: 1px solid #999; border-radius: 100px; cursor:pointer;}
