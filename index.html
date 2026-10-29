@@ -95,6 +95,12 @@
             transform: translateY(-1px);
             box-shadow: 0 2px 8px rgba(244, 63, 94, 0.4);
         }
+        /* A taller, brighter editorial gallery makes the breadth of salon styles visible. */
+        .header { height: 300px; }
+        .header .dim, .slider-wrapper { height: 300px; }
+        .header .dim { width: 100%; background: linear-gradient(90deg, rgba(8, 7, 15, 0.58), rgba(8, 7, 15, 0.34), rgba(8, 7, 15, 0.55)); backdrop-filter: blur(1.5px); -webkit-backdrop-filter: blur(1.5px); }
+        .slider-wrapper .items { height: 300px; }
+        .slider-wrapper .item { display: block; width: 200px; height: 300px; max-width: none; flex: 0 0 200px; object-fit: cover; object-position: center; }
         /* The store details stay safely above the notice while the tab keeps its overlap below. */
         .store_name { transform: translateY(-38px); }
         /* Notice overlay on the moving gallery */
@@ -128,6 +134,9 @@
             text-shadow: 0 1px 8px rgba(255, 97, 159, 0.7);
         }
         @media screen and (max-width: 430px) {
+            .header { height: 286px; }
+            .header .dim, .slider-wrapper, .slider-wrapper .items { height: 286px; }
+            .slider-wrapper .item { width: 191px; height: 286px; flex-basis: 191px; }
             .tenant-bar { padding: 11px 14px; }
             .tenant-brand-mark { width: 30px; height: 30px; }
             .tenant-brand-name { font-size: 0.88rem; }
@@ -272,22 +281,29 @@
             font-weight: 600;
         }
 
-        /* Side menu: put the visual catalogue first and keep account actions at the bottom. */
-        .aside { overflow-y: auto; display: flex !important; flex-direction: column; }
-        .aside .catalog-menu { width: calc(100% - 40px); min-height: 90px; margin: 64px 20px 0; padding: 10px; border: 0; border-radius: 16px; background: linear-gradient(135deg, #f43f5e 0%, #ec4899 100%); box-shadow: 0 12px 25px rgba(236, 72, 153, 0.26); color: #fff; font: inherit; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 11px; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
-        .aside .catalog-menu:hover { transform: translateY(-2px); box-shadow: 0 16px 28px rgba(236, 72, 153, 0.36); }
-        .catalog-menu-thumb { width: 66px; height: 66px; flex: 0 0 66px; overflow: hidden; border-radius: 12px; background: #fff3f7; box-shadow: 0 5px 12px rgba(103, 16, 57, 0.2); }
-        .catalog-menu-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
-        .catalog-menu-copy { display: grid; gap: 3px; }
-        .catalog-menu-copy strong { font-size: 1rem; letter-spacing: -0.03em; }
-        .catalog-menu-copy small { color: rgba(255,255,255,0.86); font-size: 0.7rem; line-height: 1.3; }
-        .aside .map { margin: 18px 20px 0; padding: 0; }
-        .aside .tel, .aside .share { margin: 16px 20px 0; }
-        .aside .map span, .aside .tel span, .aside .share span { font-size: 1rem; }
-        .aside .qr { margin: 14px 20px 0; }
-        .aside-bottom-actions { margin-top: auto; padding: 20px; display: grid; gap: 10px; }
-        .aside .side-action { width: 100%; min-height: 43px; margin: 0; padding: 11px 14px; border: 0; border-radius: 12px; background: #171820; color: #fff; font: inherit; font-size: 0.88rem; font-weight: 800; line-height: 1.2; text-align: center; cursor: pointer; box-sizing: border-box; transition: transform 0.2s ease, box-shadow 0.2s ease; }
-        .aside .side-action:hover { transform: translateY(-1px); box-shadow: 0 8px 17px rgba(23, 24, 32, 0.24); }
+        /* A refined menu with the catalogue as a visual entry point. */
+        .aside { overflow-y: auto; display: flex !important; flex-direction: column; background: radial-gradient(circle at 80% 8%, rgba(255, 179, 210, 0.78), transparent 28%), linear-gradient(165deg, #fffdfd 0%, #fff5f8 54%, #f3f0ff 100%); border-left: 1px solid rgba(255,255,255,0.85); border-radius: 28px 0 0 0; }
+        .aside .close { top: 18px; right: 18px; width: 34px; height: 34px; padding: 6px; border-radius: 50%; background-color: rgba(255,255,255,0.78); box-shadow: 0 7px 18px rgba(49, 24, 42, 0.12); }
+        .aside .catalog-menu { position: relative; width: calc(100% - 32px); height: 188px; min-height: 188px; margin: 66px 16px 0; padding: 0; border: 0; border-radius: 20px; background: #251422; box-shadow: 0 18px 28px rgba(95, 29, 65, 0.28); color: #fff; font: inherit; text-align: left; cursor: pointer; display: block; overflow: hidden; isolation: isolate; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+        .aside .catalog-menu::after { display: none; }
+        .aside .catalog-menu:hover { transform: translateY(-3px); box-shadow: 0 23px 34px rgba(95, 29, 65, 0.34); }
+        .catalog-menu-thumb { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; background: #36202f; }
+        .catalog-menu-thumb::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7, 5, 12, 0.04) 10%, rgba(18, 8, 20, 0.88) 100%); }
+        .catalog-menu-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: center 28%; transition: transform 0.35s ease; }
+        .catalog-menu:hover .catalog-menu-thumb img { transform: scale(1.04); }
+        .catalog-menu-copy { position: absolute; z-index: 1; inset: auto 14px 14px; display: grid; gap: 2px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .catalog-menu-copy em { color: #ffccdc; font-size: 0.58rem; font-style: normal; font-weight: 900; letter-spacing: 0.16em; }
+        .catalog-menu-copy strong { font-size: 1.16rem; letter-spacing: -0.04em; }
+        .catalog-menu-copy small { color: rgba(255,255,255,0.86); font-size: 0.68rem; line-height: 1.35; }
+        .catalog-menu-arrow { position: absolute; right: 0; bottom: 1px; display: grid; width: 28px; height: 28px; place-items: center; border: 1px solid rgba(255,255,255,0.46); border-radius: 50%; font-size: 0.9rem; }
+        .aside .map, .aside .tel, .aside .share { display: flex; align-items: center; width: calc(100% - 32px); min-height: 47px; margin: 10px 16px 0; padding: 10px 11px; border: 1px solid rgba(127, 94, 122, 0.10); border-radius: 13px; background: rgba(255,255,255,0.64); box-shadow: 0 5px 13px rgba(91, 49, 75, 0.06); box-sizing: border-box; transition: background 0.2s ease, transform 0.2s ease; }
+        .aside .map:hover, .aside .tel:hover, .aside .share:hover { background: rgba(255,255,255,0.92); transform: translateX(-2px); }
+        .aside .map span, .aside .tel span, .aside .share span { font-size: 0.92rem; font-weight: 800; color: #352733; }
+        .aside .map .map_icon, .aside .tel .tel_icon, .aside .share .share_icon, .aside .share .qr_icon { width: 22px; height: 22px; margin-right: 10px; }
+        .aside .qr { margin: 14px 16px 0; }
+        .aside-bottom-actions { margin-top: auto; padding: 18px 16px 20px; display: grid; gap: 9px; }
+        .aside .side-action { width: 100%; min-height: 45px; margin: 0; padding: 11px 14px; border: 0; border-radius: 13px; background: linear-gradient(135deg, #171820, #2a2732); color: #fff; font: inherit; font-size: 0.86rem; font-weight: 800; line-height: 1.2; text-align: center; cursor: pointer; box-sizing: border-box; box-shadow: 0 8px 16px rgba(31, 24, 35, 0.18); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .aside .side-action:hover { transform: translateY(-1px); box-shadow: 0 11px 20px rgba(23, 24, 32, 0.28); }
         .aside .admin.side-action { border: 0; color: #fff; backdrop-filter: none; }
 
         /* The catalogue is a foreground consultation studio, not a competing form. */
@@ -301,18 +317,18 @@
         .catalog-gender button { flex: 1; padding: 10px; border: 1px solid #e5e7eb; border-radius: 10px; background: #fff; color: #6b7280; font: inherit; font-weight: 800; cursor: pointer; }
         .catalog-gender button.is-active { border-color: #f35381; background: #fff0f5; color: #e3376b; }
         .catalog-content { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(320px, 0.88fr); gap: 24px; align-items: start; }
-        .catalog-style-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+        .catalog-style-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
         .catalog-style-card { padding: 0; overflow: hidden; border: 2px solid transparent; border-radius: 14px; background: #f8f8fa; text-align: left; cursor: pointer; }
         .catalog-style-card:hover, .catalog-style-card.is-selected { border-color: #f35381; box-shadow: 0 5px 16px rgba(243, 83, 129, 0.22); }
-        .catalog-style-card img { display: block; width: 100%; height: 124px; object-fit: cover; }
+        .catalog-style-card img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: contain; background: #eeeaf0; }
         .catalog-style-card span { display: block; padding: 8px 9px 2px; color: #1f2937; font-size: 0.78rem; font-weight: 800; }
         .catalog-style-card small { display: block; padding: 0 9px 9px; color: #9ca3af; font-size: 0.7rem; }
         .catalog-preview { overflow: hidden; border: 1px solid #f0e7eb; border-radius: 18px; background: linear-gradient(155deg, #fff5f8, #f5f7ff); }
-        .catalog-360-stage { position: relative; height: 336px; overflow: hidden; background: #e9e8ef; touch-action: pan-y; user-select: none; cursor: grab; }
+        .catalog-360-stage { position: relative; height: 336px; overflow: hidden; background: radial-gradient(circle at center, #f7eff1, #d9dbe3); touch-action: pan-y; user-select: none; cursor: grab; }
         .catalog-360-stage:active { cursor: grabbing; }
         .catalog-360-stage::after { content: ''; position: absolute; inset: auto 0 0; height: 32%; pointer-events: none; background: linear-gradient(transparent, rgba(18, 21, 36, 0.22)); }
         .catalog-preview-image { width: 100%; height: 100%; }
-        .catalog-preview-image img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; transition: opacity 0.16s ease, transform 0.16s ease; }
+        .catalog-preview-image img { width: 100%; height: 100%; object-fit: contain; object-position: center; transition: opacity 0.16s ease, transform 0.16s ease; }
         .catalog-preview-image img.is-mirrored { transform: scaleX(-1); }
         .catalog-rotation-badge { position: absolute; z-index: 1; top: 12px; left: 12px; padding: 6px 9px; border-radius: 999px; background: rgba(17, 18, 29, 0.62); color: #fff; font-size: 0.7rem; font-weight: 800; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
         .catalog-drag-hint { position: absolute; z-index: 1; right: 12px; bottom: 12px; color: #fff; font-size: 0.68rem; font-weight: 700; text-shadow: 0 1px 5px rgba(0,0,0,0.65); }
@@ -345,7 +361,7 @@
             .catalog-content { grid-template-columns: 1fr; }
             .catalog-preview { order: -1; }
             .catalog-style-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-            .catalog-style-card img { height: 110px; }
+            .catalog-style-card img { height: auto; }
             .catalog-360-stage { height: min(62vw, 292px); }
         }
     </style>
@@ -363,8 +379,8 @@
         <div class='aside'>
             <div class='close' onclick="menuclose();"></div>
             <button type="button" class="catalog-menu" onclick="openCatalog()">
-                <span class="catalog-menu-thumb"><img src="image/generated-female-layered.jpg" alt=""></span>
-                <span class="catalog-menu-copy"><strong>헤어 카탈로그</strong><small>기장·스타일을 고르고<br>360°로 미리 보세요</small></span>
+                <span class="catalog-menu-thumb"><img src="image/hero-glam-wave.jpg" alt="롱 웨이브 헤어스타일 모델"></span>
+                <span class="catalog-menu-copy"><em>HAIR CATALOG</em><strong>헤어 카탈로그</strong><small>스타일을 고르고 360°로<br>상담 준비를 시작하세요</small><i class="catalog-menu-arrow" aria-hidden="true">↗</i></span>
             </button>
             <div class='map' id="menuMapBtn" onclick="openShopMap();"><div class='map_icon'></div><span>위치보기</span></div>
             <div class='tel' id="menuTelBtn" onclick="callShop();"><div class='tel_icon'></div><span>문의전화</span></div>
@@ -619,28 +635,22 @@
         <div class="slider-wrapper">
             <div class="items-holder">
                 <div class="items">
-                    <img src="image/generated-female-layered.jpg" loading="eager" class="item" alt="소프트 레이어드 여성 스타일"/>
-                    <img src="image/generated-female-bob.jpg" loading="eager" class="item" alt="프렌치 보브 여성 스타일"/>
-                    <img src="image/generated-female-wave.jpg" loading="eager" class="item" alt="빌드펌 롱웨이브 여성 스타일"/>
-                    <img src="image/generated-female-hush.jpg" loading="lazy" class="item" alt="허쉬컷 여성 스타일"/>
-                    <img src="image/generated-female-bangs.jpg" loading="lazy" class="item" alt="시스루 뱅 롱 여성 스타일"/>
-                    <img src="image/generated-female-lob.jpg" loading="lazy" class="item" alt="C컬 보브 여성 스타일"/>
-                    <img src="image/generated-male-twoblock.jpg" loading="lazy" class="item" alt="텍스처 투블럭 남성 스타일"/>
-                    <img src="image/generated-male-part.jpg" loading="lazy" class="item" alt="가르마 펌 남성 스타일"/>
-                    <img src="image/generated-male-leaf.jpg" loading="lazy" class="item" alt="리프컷 남성 스타일"/>
-                    <img src="image/generated-male-crop.jpg" loading="lazy" class="item" alt="댄디 크롭 남성 스타일"/>
+                    <img src="image/hero-cute-bob.jpg" loading="eager" class="item" alt="귀여운 파스텔 보브 스타일의 성인 여성 모델"/>
+                    <img src="image/hero-glam-wave.jpg" loading="eager" class="item" alt="글래머러스한 롱 웨이브 스타일의 성인 여성 모델"/>
+                    <img src="image/hero-curl-updo.jpg" loading="eager" class="item" alt="내추럴 컬리 업스타일의 성인 여성 모델"/>
+                    <img src="image/hero-braid-balayage.jpg" loading="lazy" class="item" alt="발레아쥬 브레이드 스타일의 성인 여성 모델"/>
+                    <img src="image/hero-wolf-cut.jpg" loading="lazy" class="item" alt="텍스처 울프컷 스타일의 성인 남성 모델"/>
+                    <img src="image/hero-copper-shag.jpg" loading="lazy" class="item" alt="코퍼 샤그 스타일의 성인 여성 모델"/>
+                    <img src="image/hero-braided-fade.jpg" loading="lazy" class="item" alt="브레이디드 페이드 스타일의 성인 남성 모델"/>
                 </div>
                 <div class="items">
-                    <img src="image/generated-female-layered.jpg" loading="lazy" class="item" alt="소프트 레이어드 여성 스타일"/>
-                    <img src="image/generated-female-bob.jpg" loading="lazy" class="item" alt="프렌치 보브 여성 스타일"/>
-                    <img src="image/generated-female-wave.jpg" loading="lazy" class="item" alt="빌드펌 롱웨이브 여성 스타일"/>
-                    <img src="image/generated-female-hush.jpg" loading="lazy" class="item" alt="허쉬컷 여성 스타일"/>
-                    <img src="image/generated-female-bangs.jpg" loading="lazy" class="item" alt="시스루 뱅 롱 여성 스타일"/>
-                    <img src="image/generated-female-lob.jpg" loading="lazy" class="item" alt="C컬 보브 여성 스타일"/>
-                    <img src="image/generated-male-twoblock.jpg" loading="lazy" class="item" alt="텍스처 투블럭 남성 스타일"/>
-                    <img src="image/generated-male-part.jpg" loading="lazy" class="item" alt="가르마 펌 남성 스타일"/>
-                    <img src="image/generated-male-leaf.jpg" loading="lazy" class="item" alt="리프컷 남성 스타일"/>
-                    <img src="image/generated-male-crop.jpg" loading="lazy" class="item" alt="댄디 크롭 남성 스타일"/>
+                    <img src="image/hero-cute-bob.jpg" loading="lazy" class="item" alt="귀여운 파스텔 보브 스타일의 성인 여성 모델"/>
+                    <img src="image/hero-glam-wave.jpg" loading="lazy" class="item" alt="글래머러스한 롱 웨이브 스타일의 성인 여성 모델"/>
+                    <img src="image/hero-curl-updo.jpg" loading="lazy" class="item" alt="내추럴 컬리 업스타일의 성인 여성 모델"/>
+                    <img src="image/hero-braid-balayage.jpg" loading="lazy" class="item" alt="발레아쥬 브레이드 스타일의 성인 여성 모델"/>
+                    <img src="image/hero-wolf-cut.jpg" loading="lazy" class="item" alt="텍스처 울프컷 스타일의 성인 남성 모델"/>
+                    <img src="image/hero-copper-shag.jpg" loading="lazy" class="item" alt="코퍼 샤그 스타일의 성인 여성 모델"/>
+                    <img src="image/hero-braided-fade.jpg" loading="lazy" class="item" alt="브레이디드 페이드 스타일의 성인 남성 모델"/>
                 </div>
             </div>
         </div>
