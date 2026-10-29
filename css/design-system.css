@@ -517,22 +517,25 @@ button,
   appearance: none;
   -webkit-appearance: none;
   display: inline-flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 44px;
-  min-height: 44px;
-  width: 100%;
-  max-width: 52px;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  min-height: 42px;
+  max-width: 42px;
+  max-height: 42px;
+  aspect-ratio: 1 / 1;
   margin: 0 auto;
-  padding: 4px;
+  padding: 0;
   border: 1.5px solid transparent;
-  border-radius: 50%;
+  border-radius: 50% !important;
   background: transparent;
   color: var(--lh-ink);
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 0.9375rem;
+  font-weight: 800;
   cursor: pointer;
+  box-sizing: border-box;
   transition: background-color var(--lh-duration-fast) ease,
               border-color var(--lh-duration-fast) ease,
               color var(--lh-duration-fast) ease,
@@ -543,7 +546,7 @@ button,
 .calendar .calendar-date:hover:not(:disabled) {
   background: var(--lh-pink-soft);
   color: var(--lh-pink-deep);
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 .calendar .calendar-date.sunday {
@@ -551,8 +554,59 @@ button,
 }
 
 .calendar .calendar-date.today {
-  border-color: var(--lh-pink);
-  font-weight: 800;
+  position: relative;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  min-height: 42px;
+  max-width: 42px;
+  max-height: 42px;
+  border-radius: 50% !important;
+  aspect-ratio: 1 / 1;
+  padding: 0 !important;
+  border: none !important;
+  background: linear-gradient(135deg, var(--lh-pink) 0%, #ff5287 100%) !important;
+  color: #ffffff !important;
+  font-weight: 900;
+  box-shadow: 0 4px 14px rgba(243, 83, 129, 0.45);
+  z-index: 2;
+}
+
+.calendar .calendar-date.today::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 2px solid var(--lh-pink);
+  animation: lhTodayRipple 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.calendar .calendar-date.today::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(243, 83, 129, 0.7);
+  animation: lhTodayRipple 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite 0.75s;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes lhTodayRipple {
+  0% {
+    transform: scale(0.88);
+    opacity: 0.95;
+  }
+  65% {
+    transform: scale(1.52);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.52);
+    opacity: 0;
+  }
 }
 
 .calendar .calendar-date.selected {
@@ -646,9 +700,27 @@ button,
     font-size: 0.8125rem;
   }
   .calendar .calendar-date {
-    min-width: 38px;
-    min-height: 38px;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    max-width: 36px;
+    max-height: 36px;
+    border-radius: 50% !important;
+    aspect-ratio: 1 / 1;
+    padding: 0 !important;
     font-size: 0.875rem;
+  }
+  .calendar .calendar-date.today {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    max-width: 36px;
+    max-height: 36px;
+    border-radius: 50% !important;
+    aspect-ratio: 1 / 1;
+    padding: 0 !important;
   }
   .calendar-holiday-label {
     font-size: 0.625rem;
