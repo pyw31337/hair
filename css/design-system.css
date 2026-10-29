@@ -95,7 +95,8 @@ body {
   color: var(--lh-ink);
   background-color: var(--lh-bg);
   line-height: 1.55;
-  font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  letter-spacing: -0.015em;
   margin: 0;
   padding: 0;
   padding-bottom: var(--lh-safe-bottom);

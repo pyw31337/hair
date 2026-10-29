@@ -34,8 +34,9 @@
     <meta name="msapplication-config" content="favicon/browserconfig.xml?v=brand-20261028c">
     <meta name="msapplication-TileColor" content="#0b1020">
     <meta name="theme-color" content="#0b1020">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
     <link href="css/common.css?v=hero-lookbook-20261029" rel="stylesheet" />
-    <link href="css/design-system.css?v=20261029a" rel="stylesheet" />
+    <link href="css/design-system.css?v=20261029b" rel="stylesheet" />
     <link href="css/checkbox.css" rel="stylesheet" />
     <link href="css/infinite-carousel-css-only.webflow.182ee2047.css" rel="stylesheet" type="text/css"/>
 
@@ -76,26 +77,38 @@
         .tenant-menu {
             appearance: none;
             border: 0;
-            width: 30px;
-            height: 30px;
+            width: 34px;
+            height: 34px;
             padding: 0;
-            background: url('icon/menu.png') center / cover no-repeat;
+            background: transparent !important;
+            background-image: url('icon/menu.png') !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            background-size: 20px !important;
             cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.16s ease, transform 0.16s ease;
+        }
+        .tenant-menu:hover {
+            background-color: rgba(255, 255, 255, 0.16) !important;
+            transform: scale(1.05);
         }
         .btn-new-shop {
-            background: linear-gradient(135deg, #f43f5e 0%, #ec4899 100%);
-            color: #fff;
+            background: var(--lh-pink) !important;
+            color: #fff !important;
             border: none;
             border-radius: 9999px;
-            padding: 4px 11px;
-            font-size: 0.73rem;
-            font-weight: 600;
+            padding: 5px 13px;
+            font-size: 0.75rem;
+            font-weight: 700;
             cursor: pointer;
+            box-shadow: 0 2px 8px rgba(243, 83, 129, 0.35);
             transition: all 0.2s ease;
         }
         .btn-new-shop:hover {
+            background: var(--lh-pink-hover) !important;
             transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(244, 63, 94, 0.4);
+            box-shadow: 0 4px 12px rgba(243, 83, 129, 0.45);
         }
         /* A taller, brighter editorial gallery makes the breadth of salon styles visible. */
         .header { height: 300px; }
@@ -285,8 +298,15 @@
 
         /* A refined menu with the catalogue as a visual entry point. */
         .aside { overflow-y: auto; display: flex !important; flex-direction: column; background: radial-gradient(circle at 80% 8%, rgba(255, 179, 210, 0.78), transparent 28%), linear-gradient(165deg, #fffdfd 0%, #fff5f8 54%, #f3f0ff 100%); border-left: 1px solid rgba(255,255,255,0.85); border-radius: 28px 0 0 0; }
-        .aside .close { top: 18px; right: 18px; width: 34px; height: 34px; padding: 6px; border-radius: 50%; background-color: rgba(255,255,255,0.78); box-shadow: 0 7px 18px rgba(49, 24, 42, 0.12); }
-        .aside .catalog-menu { position: relative; width: calc(100% - 32px); height: 188px; min-height: 188px; margin: 66px 16px 0; padding: 0; border: 0; border-radius: 20px; background: #251422; box-shadow: 0 18px 28px rgba(95, 29, 65, 0.28); color: #fff; font: inherit; text-align: left; cursor: pointer; display: block; overflow: hidden; isolation: isolate; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+        .aside-header-bar { display: flex; align-items: center; justify-content: space-between; padding: max(16px, calc(var(--lh-safe-top) + 12px)) 16px 8px; }
+        .aside-store-badge { display: flex; align-items: center; gap: 7px; overflow: hidden; }
+        .aside-store-dot { width: 7px; height: 7px; border-radius: 50%; background-color: var(--lh-pink); flex-shrink: 0; box-shadow: 0 0 6px rgba(243, 83, 129, 0.6); }
+        .aside-store-name { font-size: 0.82rem; font-weight: 700; color: var(--lh-muted-strong); letter-spacing: -0.02em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 170px; }
+        .aside .close, .aside-close-btn { position: static !important; width: 28px; height: 28px; min-width: 28px; min-height: 28px; padding: 0; border: 0; border-radius: 8px; background: transparent !important; box-shadow: none !important; cursor: pointer; display: grid; place-items: center; color: var(--lh-ink); transition: background-color 0.16s ease, transform 0.16s ease; }
+        .aside .close:hover, .aside-close-btn:hover { background-color: rgba(0,0,0,0.06) !important; transform: scale(1.05); }
+        .aside-close-icon { display: block; width: 14px; height: 14px; background: url('icon/x.png') center / contain no-repeat; opacity: 0.75; }
+
+        .aside .catalog-menu { position: relative; width: calc(100% - 32px); height: 188px; min-height: 188px; margin: 10px 16px 0; padding: 0; border: 0; border-radius: 20px; background: #251422; box-shadow: 0 18px 28px rgba(95, 29, 65, 0.28); color: #fff; font: inherit; text-align: left; cursor: pointer; display: block; overflow: hidden; isolation: isolate; transition: transform 0.25s ease, box-shadow 0.25s ease; }
         .aside .catalog-menu::after { display: none; }
         .aside .catalog-menu:hover { transform: translateY(-3px); box-shadow: 0 23px 34px rgba(95, 29, 65, 0.34); }
         .catalog-menu-thumb { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; background: #36202f; }
@@ -298,14 +318,21 @@
         .catalog-menu-copy strong { font-size: 1.16rem; letter-spacing: -0.04em; }
         .catalog-menu-copy small { color: rgba(255,255,255,0.86); font-size: 0.68rem; line-height: 1.35; }
         .catalog-menu-arrow { position: absolute; right: 0; bottom: 1px; display: grid; width: 28px; height: 28px; place-items: center; border: 1px solid rgba(255,255,255,0.46); border-radius: 50%; font-size: 0.9rem; }
-        .aside .map, .aside .tel, .aside .share { display: flex; align-items: center; width: calc(100% - 32px); min-height: 47px; margin: 10px 16px 0; padding: 10px 11px; border: 1px solid rgba(127, 94, 122, 0.10); border-radius: 13px; background: rgba(255,255,255,0.64); box-shadow: 0 5px 13px rgba(91, 49, 75, 0.06); box-sizing: border-box; transition: background 0.2s ease, transform 0.2s ease; }
-        .aside .map:hover, .aside .tel:hover, .aside .share:hover { background: rgba(255,255,255,0.92); transform: translateX(-2px); }
-        .aside .map span, .aside .tel span, .aside .share span { font-size: 0.92rem; font-weight: 800; color: #352733; }
-        .aside .map .map_icon, .aside .tel .tel_icon, .aside .share .share_icon, .aside .share .qr_icon { width: 22px; height: 22px; margin-right: 10px; }
-        .aside .qr { margin: 14px 16px 0; }
+
+        /* Clean unboxed navigation items with harmonious compact icons */
+        .aside-nav-list { display: flex; flex-direction: column; gap: 2px; margin-top: 12px; }
+        .aside .map, .aside .tel, .aside .share, .aside-nav-item { display: flex; align-items: center; width: calc(100% - 24px); min-height: 42px; margin: 1px 12px; padding: 10px 12px; border: 0 !important; border-radius: 10px; background: transparent !important; box-shadow: none !important; box-sizing: border-box; cursor: pointer; transition: background 0.16s ease, transform 0.16s ease, color 0.16s ease; }
+        .aside .map:hover, .aside .tel:hover, .aside .share:hover, .aside-nav-item:hover { background: rgba(243, 83, 129, 0.08) !important; transform: translateX(3px); }
+        .aside .map span, .aside .tel span, .aside .share span, .aside-nav-item span { font-size: 0.875rem; font-weight: 700; color: #2e2632; transition: color 0.16s ease; }
+        .aside .map:hover span, .aside .tel:hover span, .aside .share:hover span, .aside-nav-item:hover span { color: var(--lh-pink-deep); }
+        .aside .map .map_icon, .aside .tel .tel_icon, .aside .share .share_icon, .aside .share .qr_icon, .aside-nav-icon { width: 18px; height: 18px; min-width: 18px; min-height: 18px; margin-right: 11px; opacity: 0.72; background-size: contain; background-repeat: no-repeat; background-position: center; display: inline-flex; align-items: center; justify-content: center; color: var(--lh-pink); transition: opacity 0.16s ease, transform 0.16s ease; }
+        .aside .map:hover .map_icon, .aside .tel:hover .tel_icon, .aside .share:hover .share_icon, .aside .share:hover .qr_icon, .aside-nav-item:hover .aside-nav-icon { opacity: 1; transform: scale(1.08); }
+        .aside .qr { margin: 10px 16px 0; }
         .aside-bottom-actions { margin-top: auto; padding: 18px 16px 20px; display: grid; gap: 9px; }
         .aside .side-action { width: 100%; min-height: 45px; margin: 0; padding: 11px 14px; border: 0; border-radius: 13px; background: linear-gradient(135deg, #171820, #2a2732); color: #fff; font: inherit; font-size: 0.86rem; font-weight: 800; line-height: 1.2; text-align: center; cursor: pointer; box-sizing: border-box; box-shadow: 0 8px 16px rgba(31, 24, 35, 0.18); transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .aside .side-action:hover { transform: translateY(-1px); box-shadow: 0 11px 20px rgba(23, 24, 32, 0.28); }
+        .aside .btn-new-shop.side-action { background: var(--lh-pink) !important; box-shadow: 0 4px 14px rgba(243, 83, 129, 0.35) !important; color: #fff !important; }
+        .aside .btn-new-shop.side-action:hover { background: var(--lh-pink-hover) !important; box-shadow: 0 6px 18px rgba(243, 83, 129, 0.45) !important; }
         .aside .admin.side-action { border: 0; color: #fff; backdrop-filter: none; }
 
         /* The catalogue is a foreground consultation studio, not a competing form. */
@@ -412,12 +439,11 @@
         .header .dim, .header .slider-wrapper, .header .slider-wrapper .items { height: 100%; }
         .tenant-bar { padding: max(18px, calc(var(--lh-safe-top) + 14px)) 18px 14px; }
         .tenant-bar { padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
-        .tenant-nav-actions { display: flex; align-items: center; gap: 8px; }
-        .tenant-menu { width: 44px; height: 44px; border-radius: 50%; background-size: 30px; border: 0; background-color: rgba(255,255,255,0.22); cursor: pointer; transition: background-color 0.16s ease; }
-        .tenant-menu:hover { background-color: rgba(255,255,255,0.36); }
-        .btn-holiday-quick-open { min-height: 40px; padding: 6px 14px; border: 1.5px solid rgba(255,255,255,0.4); border-radius: var(--lh-radius-pill); background: rgba(30, 25, 36, 0.45); color: #ffffff; font-family: inherit; font-size: 0.8125rem; font-weight: 700; cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: all 0.16s ease; }
+        .tenant-menu { width: 34px; height: 34px; min-width: 34px; min-height: 34px; border-radius: 8px; background: transparent !important; background-image: url('icon/menu.png'); background-position: center; background-repeat: no-repeat; background-size: 20px; border: 0; box-shadow: none; cursor: pointer; transition: background-color 0.16s ease, transform 0.16s ease; }
+        .tenant-menu:hover { background-color: rgba(255,255,255,0.16) !important; transform: scale(1.05); }
+        .btn-holiday-quick-open { display: none; min-height: 36px; padding: 6px 14px; border: 1.5px solid rgba(255,255,255,0.4); border-radius: var(--lh-radius-pill); background: rgba(30, 25, 36, 0.45); color: #ffffff; font-family: inherit; font-size: 0.8125rem; font-weight: 700; cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: all 0.16s ease; }
         .btn-holiday-quick-open:hover { background: var(--lh-pink); border-color: var(--lh-pink); }
-        .btn-holiday-link { display: inline-flex; align-items: center; padding: 2px 8px; margin-left: 6px; border: 1px solid rgba(243,83,129,0.35); border-radius: 6px; background: rgba(255,255,255,0.9); color: var(--lh-pink-deep); font: inherit; font-size: 0.75rem; font-weight: 800; cursor: pointer; }
+        .btn-holiday-link { display: none; align-items: center; padding: 2px 8px; margin-left: 6px; border: 1px solid rgba(243,83,129,0.35); border-radius: 6px; background: rgba(255,255,255,0.9); color: var(--lh-pink-deep); font: inherit; font-size: 0.75rem; font-weight: 800; cursor: pointer; }
         .btn-holiday-link:hover { background: var(--lh-pink); color: #fff; }
         .store_name { transform: translateY(-38px); }
         .store-notice-bar { bottom: 54px; min-height: 44px; box-sizing: border-box; }
@@ -534,15 +560,31 @@
     <!-- 슬라이드 아웃 메뉴 & 팝업 커버 -->
     <div class="formcover">
         <div class='aside'>
-            <div class='close' onclick="menuclose();"></div>
+            <div class="aside-header-bar">
+                <div class="aside-store-badge">
+                    <span class="aside-store-dot"></span>
+                    <span class="aside-store-name" id="asideStoreName">J.Hair Shop</span>
+                </div>
+                <button type="button" class="aside-close-btn" onclick="menuclose();" aria-label="메뉴 닫기">
+                    <span class="aside-close-icon" aria-hidden="true"></span>
+                </button>
+            </div>
             <button type="button" class="catalog-menu" onclick="openCatalog()">
                 <span class="catalog-menu-thumb"><img src="image/hero-glam-wave.jpg" alt="롱 웨이브 헤어스타일 모델"></span>
                 <span class="catalog-menu-copy"><em>HAIR CATALOG</em><strong>헤어 카탈로그</strong><small>스타일을 고르고 360°로<br>상담 준비를 시작하세요</small><i class="catalog-menu-arrow" aria-hidden="true">↗</i></span>
             </button>
-            <div class='map' id="menuMapBtn" onclick="openShopMap();"><div class='map_icon'></div><span>위치보기</span></div>
-            <div class='tel' id="menuTelBtn" onclick="callShop();"><div class='tel_icon'></div><span>문의전화</span></div>
-            <div class='share' id="kakaotalk-sharing-btn" onclick="shareKakao();"><div class='share_icon'></div><span>카카오톡 공유</span></div>
-            <div class='share' onclick="openHolidayModal(); menuclose();" style="border-top:1px solid #eee; margin-top:10px;"><div class='icon_notice' style="opacity:0.8;"></div><span>🗓️ 휴무일 관리 / 설정</span></div>
+            <div class="aside-nav-list">
+                <div class='map' id="menuMapBtn" onclick="openShopMap();"><div class='map_icon'></div><span>위치보기</span></div>
+                <div class='tel' id="menuTelBtn" onclick="callShop();"><div class='tel_icon'></div><span>문의전화</span></div>
+                <div class='share' id="kakaotalk-sharing-btn" onclick="shareKakao();"><div class='share_icon'></div><span>카카오톡 공유</span></div>
+                <div class='share' onclick="share();"><div class='qr_icon'></div><span>QR / 주소 복사</span></div>
+                <div class='aside-nav-item' id="menuHolidaySettingBtn" onclick="openHolidayModal(); menuclose();" style="display:none;">
+                    <span class="aside-nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-smile"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12m12 -4v4m-8 -4v4m-4 4h16m-9.995 3h.01m3.99 0h.01" /><path d="M10.005 17a3.5 3.5 0 0 0 4 0" /></svg>
+                    </span>
+                    <span>휴무일 관리 설정</span>
+                </div>
+            </div>
             <div class='qr'></div>
             <!-- 관리자 로그인 폼 -->
             <form class="form_admin" id="formAdmin" onsubmit="handleAdminLogin(event);">
@@ -885,7 +927,7 @@
                 <span class="tenant-brand-name">렛츠헤어</span>
             </a>
             <div class="tenant-nav-actions">
-                <button type="button" class="btn-holiday-quick-open" onclick="openHolidayModal();" aria-label="매장 휴무일 설정">🗓️ 휴무일 설정</button>
+                <button type="button" class="btn-holiday-quick-open" id="headerHolidayBtn" onclick="openHolidayModal();" style="display:none;" aria-label="매장 휴무일 설정">🗓️ 휴무일 설정</button>
                 <button type="button" class="tenant-menu" onclick="menuopen();" aria-label="메뉴 열기"></button>
             </div>
         </nav>
@@ -1297,6 +1339,7 @@
         if (!currentShop) return;
         document.title = `${currentShop.name} 시술예약 | 렛츠헤어`;
         $('#storeTitleTxt').text(currentShop.title || currentShop.name);
+        $('#asideStoreName').text(currentShop.title || currentShop.name);
         $('#cardStoreName').text(currentShop.name);
         $('#cancelCardStoreName').text(currentShop.name);
         $('#storeHoursTxt').text(currentShop.hoursText || `${currentShop.startHour || 12}:00 ~ ${currentShop.endHour || 20}:00`);
@@ -1316,12 +1359,16 @@
             $('#adminStatsWrap').show();
             $('#formNotice').show();
             $('#anotice').val(currentShop.notice || '');
+            $('#headerHolidayBtn').show();
+            $('#menuHolidaySettingBtn').show();
             renderServiceEditor();
             renderHolidaySettings();
         } else {
             $('#adminActiveBadge').hide();
             $('#adminStatsWrap').hide();
             $('#formNotice').hide();
+            $('#headerHolidayBtn').hide();
+            $('#menuHolidaySettingBtn').hide();
             $('#adminServiceEditor').hide();
             $('#adminHolidaySettings').hide();
         }
