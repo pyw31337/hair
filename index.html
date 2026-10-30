@@ -403,8 +403,7 @@
         .catalog-color-wash { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: transparent; mix-blend-mode: color; -webkit-mask-image: radial-gradient(ellipse 55% 52% at 50% 36%, #000 44%, rgba(0,0,0,0.85) 64%, transparent 100%); mask-image: radial-gradient(ellipse 55% 52% at 50% 36%, #000 44%, rgba(0,0,0,0.85) 64%, transparent 100%); transition: background 0.2s ease, opacity 0.2s ease; z-index: 1; }
         
         /* Dynamic Bangs & Silhouette SVG Layer */
-        .catalog-bangs-layer { position: absolute; inset: 0; pointer-events: none; z-index: 2; transition: opacity 0.2s ease; }
-        .catalog-bangs-layer svg { width: 100%; height: 100%; display: block; }
+        .catalog-bangs-layer { display: none; }
         .catalog-bangs-badge { position: absolute; bottom: 38px; left: 10px; right: 10px; padding: 6px 10px; border-radius: 999px; background: rgba(18, 16, 26, 0.78); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: #fff; font-size: 0.65rem; font-weight: 800; text-align: center; pointer-events: none; opacity: 0; transform: translateY(4px); transition: opacity 0.25s ease, transform 0.25s ease; z-index: 3; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
         .catalog-bangs-badge.is-visible { opacity: 1; transform: translateY(0); }
 
@@ -2742,13 +2741,33 @@
     const catalogRotationAssets = {
         'female-bob': Array.from({ length: 12 }, (_, index) => `image/catalog-turntable/female-bob-${String(index).padStart(2, '0')}.jpg`),
         'female-medium': Array.from({ length: 12 }, (_, index) => `image/catalog-turntable/female-medium-${String(index).padStart(2, '0')}.jpg`),
+        'female-hush': [
+            'image/catalog-turntable/female-hush-00.jpg',
+            ...Array.from({ length: 11 }, (_, index) => `image/catalog-turntable/female-medium-${String(index + 1).padStart(2, '0')}.jpg`)
+        ],
+        'female-lob': [
+            'image/catalog-turntable/female-lob-00.jpg',
+            ...Array.from({ length: 11 }, (_, index) => `image/catalog-turntable/female-bob-${String(index + 1).padStart(2, '0')}.jpg`)
+        ],
+        'female-bangs': [
+            'image/catalog-turntable/female-bangs-00.jpg',
+            ...Array.from({ length: 11 }, (_, index) => `image/catalog-turntable/female-long-${String(index + 1).padStart(2, '0')}.jpg`)
+        ],
+        'female-wave': [
+            'image/catalog-turntable/female-wave-00.jpg',
+            ...Array.from({ length: 11 }, (_, index) => `image/catalog-turntable/female-long-${String(index + 1).padStart(2, '0')}.jpg`)
+        ],
         'female-long': Array.from({ length: 12 }, (_, index) => `image/catalog-turntable/female-long-${String(index).padStart(2, '0')}.jpg`),
         male: Array.from({ length: 12 }, (_, index) => `image/catalog-turntable/male-${String(index).padStart(2, '0')}.jpg`)
     };
     const catalogRotationProfileNames = {
-        'female-bob': '보브 실루엣',
-        'female-medium': '미디엄 레이어',
-        'female-long': '롱 웨이브',
+        'female-bob': '프렌치 보브 실루엣',
+        'female-medium': '소프트 레이어드 실루엣',
+        'female-hush': '허쉬컷 실루엣',
+        'female-lob': 'C컬 보브 실루엣',
+        'female-bangs': '시스루 뱅 롱 실루엣',
+        'female-wave': '빌드펌 웨이브 실루엣',
+        'female-long': '롱 레이어드 실루엣',
         male: '남성 텍스처'
     };
     const catalogFrameNames = ['정면', '우측 30°', '우측 3/4', '우측면', '우측 후면', '후면 3/4', '후면', '좌측 후면', '좌측 3/4', '좌측면', '좌측 정면', '정면 3/4'];
@@ -2803,6 +2822,14 @@
 
     function getCatalogRotationProfile(selected) {
         if (selected.data('gender') === 'male') return 'male';
+        const name = selected.data('name');
+        if (name === '허쉬컷') return 'female-hush';
+        if (name === 'C컬 보브' || name === '볼륨 C컬펌') return 'female-lob';
+        if (name === '시스루 뱅 롱' || name === '애쉬 베이지') return 'female-bangs';
+        if (name === '빌드펌 롱웨이브' || name === '레이어드 S펌' || name === '소프트 히피펌') return 'female-wave';
+        if (name === '프렌치 보브' || name === '로즈 브라운') return 'female-bob';
+        if (name === '롱 레이어드 컷') return 'female-long';
+        if (name === '소프트 레이어드' || name === '로우 번 업스타일' || name === '코코아 브라운' || name === '코퍼 오렌지') return 'female-medium';
         const length = Number(selected.data('length'));
         if (length <= 2) return 'female-bob';
         if (length >= 5) return 'female-long';
@@ -2878,83 +2905,7 @@
 
     function renderBangsOverlay(choice = catalogDetailState.choice) {
         const svg = document.getElementById('catalogBangsSvg');
-        if (!svg) return;
-        // Fade out bangs if viewing model from behind
-        const frame = Math.round(catalogAngle / 30) % 12;
-        const normalizedAngle = frame * 30;
-        const isBack = (normalizedAngle >= 120 && normalizedAngle <= 240);
-        if (isBack) {
-            $('#catalogBangsLayer').css('opacity', '0');
-            return;
-        }
-        $('#catalogBangsLayer').css('opacity', '1');
-
-        // Color matching from active hair tone
-        const match = String(catalogColorWash).match(/rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)/);
-        const r = match ? Math.round(Number(match[1])) : 75;
-        const g = match ? Math.round(Number(match[2])) : 55;
-        const b = match ? Math.round(Number(match[3])) : 45;
-        const hairTone = `rgb(${r}, ${g}, ${b})`;
-
-        let svgContent = '';
-        if (choice.includes('사이드') || choice.includes('뱅') || choice.includes('프린지')) {
-            svgContent = `
-                <defs>
-                    <linearGradient id="bangGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="${hairTone}" stop-opacity="0.95"/>
-                        <stop offset="100%" stop-color="${hairTone}" stop-opacity="0.45"/>
-                    </linearGradient>
-                    <filter id="softStrands" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur stdDeviation="1.2" result="blur"/>
-                        <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-                    </filter>
-                </defs>
-                <g filter="url(#softStrands)">
-                    <!-- Left cheek side sweep -->
-                    <path d="M 168 138 C 154 150, 138 178, 134 212 C 131 236, 136 262, 146 278 C 142 262, 139 232, 143 208 C 148 176, 162 152, 168 138 Z" fill="url(#bangGrad)"/>
-                    <path d="M 172 142 C 160 156, 148 186, 144 220 C 142 242, 146 266, 154 282 C 149 266, 146 238, 150 214 C 154 184, 166 158, 172 142 Z" fill="url(#bangGrad)" opacity="0.8"/>
-                    <!-- Right cheek side sweep -->
-                    <path d="M 192 138 C 206 150, 222 178, 226 212 C 229 236, 224 262, 214 278 C 218 262, 221 232, 217 208 C 212 176, 198 152, 192 138 Z" fill="url(#bangGrad)"/>
-                    <path d="M 188 142 C 200 156, 212 186, 216 220 C 218 242, 214 266, 206 282 C 211 266, 214 238, 210 214 C 206 184, 194 158, 188 142 Z" fill="url(#bangGrad)" opacity="0.8"/>
-                    <!-- Delicate center wisps -->
-                    <path d="M 177 132 C 175 148, 171 168, 169 180 C 171 168, 175 148, 178 132 Z" fill="${hairTone}" opacity="0.6"/>
-                    <path d="M 183 132 C 185 148, 189 168, 191 180 C 189 168, 185 148, 182 132 Z" fill="${hairTone}" opacity="0.6"/>
-                </g>
-            `;
-        } else if (choice.includes('페이스 레이어') || choice.includes('리프') || choice.includes('질감') || choice.includes('포인트')) {
-            svgContent = `
-                <defs>
-                    <linearGradient id="layerGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="${hairTone}" stop-opacity="0.92"/>
-                        <stop offset="100%" stop-color="${hairTone}" stop-opacity="0.35"/>
-                    </linearGradient>
-                    <filter id="softStrands" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur stdDeviation="1.5" result="blur"/>
-                        <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-                    </filter>
-                </defs>
-                <g filter="url(#softStrands)">
-                    <!-- Jawline framing layers -->
-                    <path d="M 142 190 C 132 225, 126 265, 134 305 C 140 330, 150 350, 156 360 C 148 342, 138 315, 134 288 C 128 250, 134 218, 142 190 Z" fill="url(#layerGrad)"/>
-                    <path d="M 218 190 C 228 225, 234 265, 226 305 C 220 330, 210 350, 204 360 C 212 342, 222 315, 226 288 C 232 250, 226 218, 218 190 Z" fill="url(#layerGrad)"/>
-                </g>
-            `;
-        } else {
-            // Natural open hairline root lift
-            svgContent = `
-                <defs>
-                    <linearGradient id="openGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="${hairTone}" stop-opacity="0.75"/>
-                        <stop offset="100%" stop-color="${hairTone}" stop-opacity="0.2"/>
-                    </linearGradient>
-                </defs>
-                <g opacity="0.6">
-                    <path d="M 176 128 C 172 136, 168 146, 164 158 C 166 146, 171 135, 176 128 Z" fill="url(#openGrad)"/>
-                    <path d="M 184 128 C 188 136, 192 146, 196 158 C 194 146, 189 135, 184 128 Z" fill="url(#openGrad)"/>
-                </g>
-            `;
-        }
-        svg.innerHTML = svgContent;
+        if (svg) svg.innerHTML = '';
     }
 
     /* Sequential Step Accordion Navigation */
