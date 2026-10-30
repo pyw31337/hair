@@ -476,14 +476,17 @@
         /* Right Column: Sequential Step Journey */
         .catalog-steps-col { display: flex; flex-direction: column; gap: 14px; }
         .catalog-step-card { border: 1.5px solid #eee5ea; border-radius: 18px; background: #ffffff; box-shadow: 0 4px 14px rgba(22, 16, 26, 0.03); overflow: hidden; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
-        .catalog-step-card.is-open { border-color: rgba(243, 83, 129, 0.35); box-shadow: 0 8px 24px rgba(243, 83, 129, 0.08); }
-        .catalog-step-header { display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; background: #ffffff; cursor: pointer; user-select: none; border-bottom: 1px solid transparent; }
-        .catalog-step-card.is-open .catalog-step-header { border-bottom-color: #f5edf1; background: linear-gradient(90deg, #fffafc, #ffffff); }
+        .catalog-step-card.is-open { border-color: #f35381; box-shadow: 0 8px 24px rgba(243, 83, 129, 0.12); }
+        .catalog-step-header { display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; background: #ffffff; cursor: pointer; user-select: none; border-bottom: 1px solid transparent; transition: background 0.2s ease, border-color 0.2s ease; }
+        .catalog-step-card.is-open .catalog-step-header { border-bottom-color: transparent; background: #f35381; }
         .catalog-step-title-wrap { display: flex; align-items: center; gap: 10px; }
-        .catalog-step-num { padding: 3px 8px; border-radius: 999px; background: #fbebf1; color: #e3376b; font-size: 0.64rem; font-weight: 900; letter-spacing: 0.06em; }
-        .catalog-step-card.is-open .catalog-step-num { background: #f35381; color: #ffffff; }
-        .catalog-step-header h3 { margin: 0; font-size: 0.88rem; font-weight: 800; color: #1f2937; }
-        .catalog-step-toggle-btn { font-size: 0.72rem; color: #e3376b; font-weight: 800; background: #fff0f5; padding: 4px 10px; border-radius: 999px; }
+        .catalog-step-num { padding: 3px 8px; border-radius: 999px; background: #fbebf1; color: #e3376b; font-size: 0.64rem; font-weight: 900; letter-spacing: 0.06em; transition: all 0.2s ease; }
+        .catalog-step-card.is-open .catalog-step-num { background: transparent; color: #ffffff; padding: 0; font-size: 0.72rem; letter-spacing: 0.04em; }
+        .catalog-step-header h3 { margin: 0; font-size: 0.88rem; font-weight: 800; color: #1f2937; transition: color 0.2s ease; }
+        .catalog-step-card.is-open .catalog-step-header h3 { color: #ffffff; }
+        .catalog-step-toggle-btn { font-size: 0.72rem; color: #e3376b; font-weight: 800; background: #fff0f5; padding: 4px 10px; border-radius: 999px; transition: all 0.16s ease; }
+        .catalog-step-card.is-open .catalog-step-toggle-btn { background: #ffffff; color: #f35381; font-weight: 800; padding: 5px 14px; border-radius: 999px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); }
+        .catalog-step-card.is-open .catalog-step-toggle-btn:hover { background: #fff5f8; transform: translateY(-1px); }
         
         .catalog-step-summary { display: flex; align-items: center; justify-content: space-between; padding: 11px 16px; background: #fdfafc; border-top: 1px solid #f6edf2; cursor: pointer; gap: 12px; }
         .catalog-step-summary:hover { background: #fff0f5; }
@@ -508,11 +511,11 @@
         .catalog-service-filter button { flex: 0 0 auto; min-width: 52px; padding: 6px 11px; border: 1px solid #ece7ec; border-radius: 999px; background: #fff; color: #6b7280; font: inherit; font-size: 0.72rem; font-weight: 800; cursor: pointer; transition: all 0.16s ease; }
         .catalog-service-filter button.is-active { border-color: #f35381; background: #f35381; color: #fff; box-shadow: 0 4px 10px rgba(243, 83, 129, 0.22); }
         .catalog-style-count { margin-left: auto; padding-left: 6px; color: #9ca3af; font-size: 0.72rem; font-weight: 800; white-space: nowrap; }
-        .catalog-style-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; align-content: start; max-height: 480px; overflow-y: auto; padding-right: 2px; }
+        .catalog-style-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 10px; align-content: start; max-height: 480px; overflow-y: auto; padding: 8px 6px 12px; margin: 0 -6px; }
         .catalog-style-grid::-webkit-scrollbar { width: 5px; }
         .catalog-style-grid::-webkit-scrollbar-thumb { background: rgba(243, 83, 129, 0.3); border-radius: 999px; }
-        .catalog-style-card { position: relative; padding: 0; overflow: hidden; border: 2px solid transparent; border-radius: 12px; background: #f8f8fa; text-align: left; cursor: pointer; transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease; }
-        .catalog-style-card:hover, .catalog-style-card.is-selected { border-color: #f35381; box-shadow: 0 4px 14px rgba(243, 83, 129, 0.22); transform: translateY(-2px); }
+        .catalog-style-card { position: relative; padding: 0; overflow: hidden; border: 2.5px solid transparent; border-radius: 12px; background: #f8f8fa; text-align: left; cursor: pointer; background-clip: padding-box; transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease; }
+        .catalog-style-card:hover, .catalog-style-card.is-selected { border-color: #f35381; box-shadow: 0 4px 14px rgba(243, 83, 129, 0.28); transform: translateY(-2px); }
         .catalog-style-card img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: contain; background: #eeeaf0; }
         .catalog-style-card::after { content: attr(data-service); position: absolute; top: 6px; left: 6px; padding: 3px 6px; border-radius: 999px; background: rgba(24, 22, 31, 0.68); color: #fff; font-size: 0.54rem; font-weight: 900; letter-spacing: 0.05em; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
         .catalog-style-card span { display: block; padding: 7px 8px 2px; color: #1f2937; font-size: 0.75rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -2963,6 +2966,14 @@
             card.removeClass('is-open');
             $(`#catalogStep${stepNum}Body`).slideUp(200);
             $(`#catalogStep${stepNum}Summary`).slideDown(200);
+            const toggleBtn = $(`#step${stepNum}ToggleLabel`);
+            if (toggleBtn.length) {
+                if (stepNum === 1) toggleBtn.text('변경');
+                else if (stepNum === 2) toggleBtn.text('조절하기');
+                else if (stepNum === 3) toggleBtn.text('디테일');
+                else if (stepNum === 4) toggleBtn.text('컬러');
+                else if (stepNum === 5) toggleBtn.text('완성하기');
+            }
         } else {
             openCatalogStep(stepNum);
         }
@@ -2974,18 +2985,34 @@
             const card = $(`#catalogStep${i}`);
             const body = $(`#catalogStep${i}Body`);
             const summary = $(`#catalogStep${i}Summary`);
+            const toggleBtn = $(`#step${i}ToggleLabel`);
             if (i === stepNum) {
                 card.addClass('is-open');
                 summary.hide();
                 body.show();
+                if (toggleBtn.length) {
+                    if (i === 1) toggleBtn.text('선택 완료');
+                    else if (i === 5) toggleBtn.text('완성하기');
+                    else toggleBtn.text('선택 완료');
+                }
             } else {
                 card.removeClass('is-open');
                 body.hide();
                 if (summary.length) summary.show();
+                if (toggleBtn.length) {
+                    if (i === 1) toggleBtn.text('변경');
+                    else if (i === 2) toggleBtn.text('조절하기');
+                    else if (i === 3) toggleBtn.text('디테일');
+                    else if (i === 4) toggleBtn.text('컬러');
+                    else if (i === 5) toggleBtn.text('완성하기');
+                }
             }
         }
         updateStepSummaries();
         syncAllSliders();
+        if (stepNum === 1) {
+            $('#catalogStyleGrid').scrollTop(0);
+        }
         if (stepNum > 2) {
             const el = document.getElementById(`catalogStep${stepNum}`);
             if (el) {
@@ -3054,6 +3081,7 @@
         $('.calcover, .calcovermini').css('filter', 'blur(2px) opacity(0.5)');
         setCatalogGender(catalogGender);
         applyCatalogColor(catalogColorTone, catalogColorWash);
+        openCatalogStep(1);
         syncAllSliders();
     }
 
@@ -3843,7 +3871,7 @@
         if (urlParams.has('openCatalog')) {
             openCatalog();
             const stepParam = urlParams.get('step');
-            if (stepParam) setTimeout(() => openCatalogStep(Number(stepParam)), 50);
+            if (stepParam) openCatalogStep(Number(stepParam));
             if (urlParams.has('testSampleFace')) setTimeout(loadSampleFace, 150);
             if (urlParams.has('expandReport')) setTimeout(toggleAiReport, 200);
             if (urlParams.has('testAngle')) setCatalogAngle(Number(urlParams.get('testAngle')));
