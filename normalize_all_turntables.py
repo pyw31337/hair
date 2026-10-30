@@ -188,6 +188,56 @@ def run_normalization():
             out_im.save(rel_path, quality=95)
             print(f"  Processed {rel_path}: {new_w}x{new_h} pasted at ({paste_x}, {paste_y}) with ref_blend")
 
+    # 3. Generate 15 Length x Bangs Matrix Images
+    print("\n=== Generating 15 Length x Bangs Matrix Images ===")
+    from PIL import ImageFilter
+    bob = Image.open('image/catalog-turntable/female-bob-00.jpg')
+    lob = Image.open('image/catalog-turntable/female-lob-00.jpg')
+    med = Image.open('image/catalog-turntable/female-medium-00.jpg')
+    hush = Image.open('image/catalog-turntable/female-hush-00.jpg')
+    wave = Image.open('image/catalog-turntable/female-wave-00.jpg')
+    bangs_src = Image.open('image/catalog-turntable/female-bangs-00.jpg')
+
+    mask_bangs = Image.new('L', (360, 480), 0)
+    m_arr = np.array(mask_bangs)
+    Y, X = np.ogrid[:480, :360]
+    dist_b = ((X - 180) / 44.0)**2 + ((Y - 155) / 42.0)**2
+    valid = (dist_b < 1.0) & (Y < 202) & (Y > 115)
+    m_arr[valid] = (255 * (1.0 - dist_b[valid])).astype(np.uint8)
+    mask_bangs = Image.fromarray(m_arr).filter(ImageFilter.GaussianBlur(radius=6))
+
+    mask_side = Image.new('L', (360, 480), 0)
+    s_arr = np.array(mask_side)
+    dist_l = ((X - 155) / 22.0)**2 + ((Y - 170) / 35.0)**2
+    dist_r = ((X - 205) / 22.0)**2 + ((Y - 170) / 35.0)**2
+    valid_l = (dist_l < 1.0) & (Y < 215) & (Y > 125)
+    valid_r = (dist_r < 1.0) & (Y < 215) & (Y > 125)
+    s_arr[valid_l] = (255 * (1.0 - dist_l[valid_l])).astype(np.uint8)
+    s_arr[valid_r] = (255 * (1.0 - dist_r[valid_r])).astype(np.uint8)
+    mask_side = Image.fromarray(s_arr).filter(ImageFilter.GaussianBlur(radius=6))
+
+    # Length 1
+    bob.save('image/catalog-turntable/female-len1-open.jpg', quality=95)
+    Image.composite(bangs_src, bob, mask_bangs).save('image/catalog-turntable/female-len1-bangs.jpg', quality=95)
+    Image.composite(med, bob, mask_side).save('image/catalog-turntable/female-len1-side.jpg', quality=95)
+    # Length 2
+    lob.save('image/catalog-turntable/female-len2-open.jpg', quality=95)
+    Image.composite(bangs_src, lob, mask_bangs).save('image/catalog-turntable/female-len2-bangs.jpg', quality=95)
+    Image.composite(med, lob, mask_side).save('image/catalog-turntable/female-len2-side.jpg', quality=95)
+    # Length 3
+    Image.composite(bob, med, mask_side).save('image/catalog-turntable/female-len3-open.jpg', quality=95)
+    Image.composite(bangs_src, med, mask_bangs).save('image/catalog-turntable/female-len3-bangs.jpg', quality=95)
+    med.save('image/catalog-turntable/female-len3-side.jpg', quality=95)
+    # Length 4
+    hush.save('image/catalog-turntable/female-len4-open.jpg', quality=95)
+    Image.composite(bangs_src, hush, mask_bangs).save('image/catalog-turntable/female-len4-bangs.jpg', quality=95)
+    Image.composite(med, hush, mask_side).save('image/catalog-turntable/female-len4-side.jpg', quality=95)
+    # Length 5
+    wave.save('image/catalog-turntable/female-len5-open.jpg', quality=95)
+    bangs_src.save('image/catalog-turntable/female-len5-bangs.jpg', quality=95)
+    Image.composite(med, wave, mask_side).save('image/catalog-turntable/female-len5-side.jpg', quality=95)
+    print("  Saved 15 length + bangs matrix images successfully!")
+
     print("\nAll 360 turntable assets and front styles normalized with identical eye level and head scale!")
 
 if __name__ == '__main__':

@@ -399,8 +399,7 @@
         .catalog-360-stage.is-rotating, .catalog-360-stage:active { cursor: grabbing; }
         .catalog-preview-image { position: relative; width: 100%; height: 100%; }
         .catalog-preview-image img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; user-select: none; -webkit-user-select: none; -webkit-user-drag: none; pointer-events: none; transition: opacity 0.12s ease; }
-        .catalog-preview-image.is-frame-changing img { opacity: 0.75; }
-        .catalog-color-wash { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: transparent; mix-blend-mode: color; -webkit-mask-image: radial-gradient(ellipse 55% 52% at 50% 36%, #000 44%, rgba(0,0,0,0.85) 64%, transparent 100%); mask-image: radial-gradient(ellipse 55% 52% at 50% 36%, #000 44%, rgba(0,0,0,0.85) 64%, transparent 100%); transition: background 0.2s ease, opacity 0.2s ease; z-index: 1; }
+        .catalog-color-wash { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: transparent; mix-blend-mode: color; -webkit-mask-image: radial-gradient(ellipse 40% 46% at 50% 50%, transparent 40%, rgba(0,0,0,0.5) 58%, #000 78%); mask-image: radial-gradient(ellipse 40% 46% at 50% 50%, transparent 40%, rgba(0,0,0,0.5) 58%, #000 78%); transition: background 0.2s ease, opacity 0.2s ease; z-index: 1; }
         
         /* Dynamic Bangs & Silhouette SVG Layer */
         .catalog-bangs-layer { display: none; }
@@ -535,10 +534,13 @@
 
         /* Step 04: Color Studio */
         .catalog-color-picker { margin-top: 4px; }
-        .catalog-color-swatches { display: flex; gap: 8px; margin-top: 8px; }
-        .catalog-color-swatch { width: 30px; height: 30px; padding: 3px; border: 1.5px solid #e5e7eb; border-radius: 50%; background: #fff; cursor: pointer; transition: all 0.16s ease; }
-        .catalog-color-swatch span { display: block; width: 100%; height: 100%; border-radius: 50%; background: var(--swatch); }
-        .catalog-color-swatch:hover, .catalog-color-swatch.is-active { border-color: #f35381; box-shadow: 0 0 0 3px rgba(243,83,129,0.22); transform: scale(1.08); }
+        .catalog-color-swatches { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 8px; }
+        .catalog-color-swatch { width: 100%; aspect-ratio: 1; max-width: 44px; margin: 0 auto; padding: 3px; border: 1.5px solid #e5e7eb; border-radius: 50%; background: #fff; cursor: pointer; transition: all 0.16s ease; }
+        .catalog-color-swatch span { display: block; width: 100%; height: 100%; border-radius: 50%; background: var(--swatch); box-shadow: inset 0 1px 2px rgba(0,0,0,0.18); }
+        .catalog-color-swatch:hover, .catalog-color-swatch.is-active { border-color: #f35381; box-shadow: 0 0 0 3px rgba(243,83,129,0.25); transform: scale(1.08); }
+        .catalog-color-badge-info { margin-top: 10px; padding: 9px 12px; border-radius: 9px; background: #faf8fb; border: 1px solid #f0e6ee; display: flex; flex-direction: column; gap: 3px; }
+        .color-badge-name { font-size: 0.76rem; font-weight: 800; color: #1f2937; }
+        .color-badge-desc { font-size: 0.67rem; color: #6b7280; line-height: 1.35; }
 
         /* Step 05: AI Try-On Studio & Booking */
         .ai-tryon-container { display: flex; flex-direction: column; gap: 14px; }
@@ -1080,16 +1082,16 @@
                                     </div>
                                     <input id="catalogVolumeDetail" class="lh-slider" type="range" min="0" max="100" step="5" value="50" oninput="updateCatalogDetail('volume', this.value)">
                                 </div>
-                                <button type="button" class="btn-step-next" onclick="goToCatalogStep(4)">다음: 퍼스널 컬러 시뮬레이션 →</button>
+                                <button type="button" class="btn-step-next" onclick="goToCatalogStep(4)">다음: 살롱 트렌드 헤어 컬러링 →</button>
                             </div>
                         </div>
 
-                        <!-- STEP 04: Personal Color Simulation -->
+                        <!-- STEP 04: Salon Trend Hair Coloring -->
                         <div class="catalog-step-card" id="catalogStep4">
                             <div class="catalog-step-header" onclick="toggleCatalogStep(4)">
                                 <div class="catalog-step-title-wrap">
                                     <span class="catalog-step-num">STEP 04</span>
-                                    <h3>퍼스널 헤어 컬러 시뮬레이션</h3>
+                                    <h3>살롱 트렌드 헤어 컬러링</h3>
                                 </div>
                                 <span class="catalog-step-toggle-btn" id="step4ToggleLabel">컬러</span>
                             </div>
@@ -1107,16 +1109,24 @@
                             <div class="catalog-step-body" id="catalogStep4Body" style="display:none;">
                                 <div class="catalog-color-picker">
                                     <div class="lh-range-header">
-                                        <span>추천 퍼스널 컬러</span>
+                                        <span>인기 살롱 컬러 10선</span>
                                         <output id="catalogColorOutput">내추럴 브라운</output>
                                     </div>
                                     <div class="catalog-color-swatches" role="group" aria-label="헤어 컬러 선택">
-                                        <button type="button" class="catalog-color-swatch is-active" style="--swatch:#5b3a2d" data-tone="내추럴 브라운" data-wash="rgba(91,58,45,0.24)" onclick="setCatalogColor(this)" aria-label="내추럴 브라운"></button>
-                                        <button type="button" class="catalog-color-swatch" style="--swatch:#a99d8b" data-tone="애쉬 베이지" data-wash="rgba(192,176,150,0.22)" onclick="setCatalogColor(this)" aria-label="애쉬 베이지"></button>
-                                        <button type="button" class="catalog-color-swatch" style="--swatch:#9d493d" data-tone="로즈 브라운" data-wash="rgba(154,74,92,0.23)" onclick="setCatalogColor(this)" aria-label="로즈 브라운"></button>
-                                        <button type="button" class="catalog-color-swatch" style="--swatch:#b85b2a" data-tone="코퍼 오렌지" data-wash="rgba(182,72,32,0.28)" onclick="setCatalogColor(this)" aria-label="코퍼 오렌지"></button>
-                                        <button type="button" class="catalog-color-swatch" style="--swatch:#263654" data-tone="블루 블랙" data-wash="rgba(25,48,85,0.26)" onclick="setCatalogColor(this)" aria-label="블루 블랙"></button>
-                                        <button type="button" class="catalog-color-swatch" style="--swatch:#714450" data-tone="모브 브라운" data-wash="rgba(113,68,80,0.26)" onclick="setCatalogColor(this)" aria-label="모브 브라운"></button>
+                                        <button type="button" class="catalog-color-swatch is-active" style="--swatch:#5b3a2d" data-tone="내추럴 브라운" data-wash="rgba(91,58,45,0.26)" onclick="setCatalogColor(this)" aria-label="내추럴 브라운" title="내추럴 브라운"></button>
+                                        <button type="button" class="catalog-color-swatch" style="--swatch:#453229" data-tone="모카 브라운" data-wash="rgba(69,50,41,0.30)" onclick="setCatalogColor(this)" aria-label="모카 브라운" title="모카 브라운"></button>
+                                        <button type="button" class="catalog-color-swatch" style="--swatch:#baa792" data-tone="애쉬 베이지" data-wash="rgba(186,167,146,0.30)" onclick="setCatalogColor(this)" aria-label="애쉬 베이지" title="애쉬 베이지"></button>
+                                        <button type="button" class="catalog-color-swatch" style="--swatch:#c9b49c" data-tone="밀크티 베이지" data-wash="rgba(201,180,156,0.28)" onclick="setCatalogColor(this)" aria-label="밀크티 베이지" title="밀크티 베이지"></button>
+                                        <button type="button" class="catalog-color-swatch" style="--swatch:#5f5d47" data-tone="매트 올리브 브라운" data-wash="rgba(95,93,71,0.32)" onclick="setCatalogColor(this)" aria-label="매트 올리브 브라운" title="매트 올리브 브라운"></button>
+                                        <button type="button" class="catalog-color-swatch" style="--swatch:#8a5639" data-tone="밤비 브라운" data-wash="rgba(138,86,57,0.30)" onclick="setCatalogColor(this)" aria-label="밤비 브라운" title="밤비 브라운"></button>
+                                        <button type="button" class="catalog-color-swatch" style="--swatch:#a15060" data-tone="핑크 로즈 브라운" data-wash="rgba(161,80,96,0.28)" onclick="setCatalogColor(this)" aria-label="핑크 로즈 브라운" title="핑크 로즈 브라운"></button>
+                                        <button type="button" class="catalog-color-swatch" style="--swatch:#b85b2a" data-tone="코퍼 오렌지" data-wash="rgba(184,91,42,0.30)" onclick="setCatalogColor(this)" aria-label="코퍼 오렌지" title="코퍼 오렌지"></button>
+                                        <button type="button" class="catalog-color-swatch" style="--swatch:#662939" data-tone="와인 플럼 버건디" data-wash="rgba(102,41,57,0.34)" onclick="setCatalogColor(this)" aria-label="와인 플럼 버건디" title="와인 플럼 버건디"></button>
+                                        <button type="button" class="catalog-color-swatch" style="--swatch:#1e293b" data-tone="미드나잇 블루 블랙" data-wash="rgba(30,41,59,0.36)" onclick="setCatalogColor(this)" aria-label="미드나잇 블루 블랙" title="미드나잇 블루 블랙"></button>
+                                    </div>
+                                    <div class="catalog-color-badge-info" id="catalogColorBadgeInfo">
+                                        <span class="color-badge-name">내추럴 브라운</span>
+                                        <small class="color-badge-desc">누구에게나 실패 없는 살롱 시그니처 데일리 브라운</small>
                                     </div>
                                 </div>
                                 <div class="lh-range-wrap">
@@ -2899,6 +2909,7 @@
         window.clearTimeout(badge.data('timer'));
         badge.data('timer', setTimeout(() => badge.removeClass('is-visible'), 2400));
         
+        updateCatalogView();
         updateCatalogDetailOutputs();
         updateStepSummaries();
     }
@@ -3108,6 +3119,7 @@
             return best;
         }, cards[0]);
         selectCatalogStyle(nearest, { preserveLength: true, skipFold: true });
+        updateCatalogView();
     }
 
     function handleCatalogStyleChange(value) {
@@ -3138,18 +3150,33 @@
         $('#catalogLiveHint').text(`${name}을(를) 기준으로 기장과 컬러를 비교하고 있습니다.`);
     }
 
+    const salonColorDescriptions = {
+        '내추럴 브라운': '누구에게나 실패 없는 살롱 시그니처 데일리 브라운',
+        '모카 브라운': '붉은기 없는 차분하고 깊이감 있는 딥 웜 브라운',
+        '애쉬 베이지': '맑고 투명한 피부톤을 완성하는 쿨톤 최애 베이지',
+        '밀크티 베이지': '부드럽고 크리미한 화사함의 뉴트럴 라떼 베이지',
+        '매트 올리브 브라운': '노란기와 붉은기를 완벽 커버하는 카키 올리브',
+        '밤비 브라운': '사슴처럼 부드럽고 따뜻한 감성의 웜톤 시그니처',
+        '핑크 로즈 브라운': '은은한 핑크빛 생기를 더해주는 로맨틱 무드 컬러',
+        '코퍼 오렌지': '생동감 넘치고 트렌디한 탠저린 코퍼 브라운',
+        '와인 플럼 버건디': '고급스럽고 우아한 깊이감의 체리 버건디',
+        '미드나잇 블루 블랙': '피부를 하얗게 돋보이게 하는 쿨한 딥 블루 블랙'
+    };
+
     function applyCatalogColor(tone, wash) {
         catalogColorTone = tone || '내추럴 브라운';
-        catalogColorWash = wash || 'rgba(91,58,45,0.24)';
+        catalogColorWash = wash || 'rgba(91,58,45,0.26)';
         const match = String(catalogColorWash).match(/rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)(?:\s*,\s*([\d.]+))?\s*\)/);
-        const baseAlpha = match ? Number(match[4] || 0.24) : 0.24;
-        const opacity = (catalogColorStrength / 100) * Math.min(0.56, baseAlpha * 1.8);
+        const baseAlpha = match ? Number(match[4] || 0.26) : 0.26;
+        const opacity = (catalogColorStrength / 100) * Math.min(0.68, baseAlpha * 1.8);
         $('#catalogColorOutput').text(catalogColorTone);
         $('#catalogColorStrengthOutput').text(`${catalogColorStrength}%`);
         $('#catalogColorWash, #catalogLiveColorWash').css({ background: catalogColorWash, opacity });
         $('.catalog-color-swatch').each(function() {
             $(this).toggleClass('is-active', $(this).data('tone') === catalogColorTone);
         });
+        $('#catalogColorBadgeInfo .color-badge-name').text(catalogColorTone);
+        $('#catalogColorBadgeInfo .color-badge-desc').text(salonColorDescriptions[catalogColorTone] || '살롱 시그니처 맞춤 컬러링');
         renderBangsOverlay(catalogDetailState.choice);
         updateCatalogDetailOutputs();
     }
@@ -3173,7 +3200,22 @@
         const normalizedAngle = frame * 30;
         const styleName = selected.data('name');
         const rotationProfile = getCatalogRotationProfile(selected);
-        const source = catalogRotationAssets[rotationProfile][frame];
+        
+        let source;
+        if (frame === 0 && selected.data('gender') !== 'male') {
+            const length = Math.max(1, Math.min(5, Number($('#catalogLength').val()) || Number(selected.data('length')) || 3));
+            const choice = catalogDetailState.choice || '';
+            let bangKey = 'open';
+            if (choice.includes('시스루') || choice.includes('뱅') || choice.includes('프린지')) {
+                bangKey = 'bangs';
+            } else if (choice.includes('사이드') || choice.includes('페이스') || choice.includes('레이어')) {
+                bangKey = 'side';
+            }
+            source = `image/catalog-turntable/female-len${length}-${bangKey}.jpg`;
+        } else {
+            source = catalogRotationAssets[rotationProfile][frame];
+        }
+
         const modelImage = $('#catalogModelImage');
         if (modelImage.attr('src') !== source) {
             $('.catalog-preview-image').addClass('is-frame-changing');
