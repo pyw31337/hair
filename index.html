@@ -399,7 +399,22 @@
         .catalog-360-stage.is-rotating, .catalog-360-stage:active { cursor: grabbing; }
         .catalog-preview-image { position: relative; width: 100%; height: 100%; }
         .catalog-preview-image img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; user-select: none; -webkit-user-select: none; -webkit-user-drag: none; pointer-events: none; transition: opacity 0.12s ease; }
-        .catalog-color-wash { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: transparent; mix-blend-mode: color; -webkit-mask-image: radial-gradient(ellipse 40% 46% at 50% 50%, transparent 40%, rgba(0,0,0,0.5) 58%, #000 78%); mask-image: radial-gradient(ellipse 40% 46% at 50% 50%, transparent 40%, rgba(0,0,0,0.5) 58%, #000 78%); transition: background 0.2s ease, opacity 0.2s ease; z-index: 1; }
+        .catalog-color-wash {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0;
+            background: transparent;
+            mix-blend-mode: color;
+            -webkit-mask-image: radial-gradient(ellipse 34% 30% at 50% 44%, transparent 55%, #000 75%),
+                                linear-gradient(to bottom, #000 75%, transparent 95%);
+            mask-image: radial-gradient(ellipse 34% 30% at 50% 44%, transparent 55%, #000 75%),
+                        linear-gradient(to bottom, #000 75%, transparent 95%);
+            -webkit-mask-composite: source-in;
+            mask-composite: intersect;
+            transition: background 0.15s ease, opacity 0.15s ease;
+            z-index: 1;
+        }
         
         /* Dynamic Bangs & Silhouette SVG Layer */
         .catalog-bangs-layer { display: none; }
@@ -3389,16 +3404,20 @@
         const rotationProfile = getCatalogRotationProfile(selected);
         
         let source;
-        if (frame === 0 && selected.data('gender') !== 'male') {
+        if (selected.data('gender') !== 'male') {
             const length = Math.max(1, Math.min(5, Number($('#catalogLength').val()) || Number(selected.data('length')) || 3));
-            const choice = catalogDetailState.choice || '';
-            let bangKey = 'open';
-            if (choice.includes('시스루') || choice.includes('뱅') || choice.includes('프린지')) {
-                bangKey = 'bangs';
-            } else if (choice.includes('사이드') || choice.includes('페이스') || choice.includes('레이어')) {
-                bangKey = 'side';
+            if (frame === 0) {
+                const choice = catalogDetailState.choice || '';
+                let bangKey = 'open';
+                if (choice.includes('시스루') || choice.includes('뱅') || choice.includes('프린지')) {
+                    bangKey = 'bangs';
+                } else if (choice.includes('사이드') || choice.includes('페이스') || choice.includes('레이어')) {
+                    bangKey = 'side';
+                }
+                source = `image/catalog-turntable/female-len${length}-${bangKey}.jpg`;
+            } else {
+                source = `image/catalog-turntable/female-len${length}-8a-${String(frame).padStart(2, '0')}.jpg`;
             }
-            source = `image/catalog-turntable/female-len${length}-${bangKey}.jpg`;
         } else {
             source = catalogRotationAssets[rotationProfile][frame];
         }

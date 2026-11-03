@@ -177,9 +177,14 @@
             pointer-events: none;
             opacity: 0;
             mix-blend-mode: color;
-            -webkit-mask-image: radial-gradient(ellipse 40% 46% at 50% 50%, transparent 40%, rgba(0,0,0,0.5) 58%, #000 78%);
-            mask-image: radial-gradient(ellipse 40% 46% at 50% 50%, transparent 40%, rgba(0,0,0,0.5) 58%, #000 78%);
-            transition: background 0.2s ease, opacity 0.2s ease;
+            /* High-precision hair mask: keeps face oval and clothing clean, isolates hair strands */
+            -webkit-mask-image: radial-gradient(ellipse 34% 30% at 50% 44%, transparent 55%, #000 75%),
+                                linear-gradient(to bottom, #000 75%, transparent 95%);
+            mask-image: radial-gradient(ellipse 34% 30% at 50% 44%, transparent 55%, #000 75%),
+                        linear-gradient(to bottom, #000 75%, transparent 95%);
+            -webkit-mask-composite: source-in;
+            mask-composite: intersect;
+            transition: background 0.15s ease, opacity 0.15s ease;
             z-index: 2;
         }
 
@@ -827,46 +832,88 @@
 
                     <div class="style-cards-grid" id="styleCardsGrid">
                         <!-- Female Styles (1차) -->
-                        <div class="style-card-item is-selected" data-gender="female" data-category="cut" data-name="소프트 레이어드" data-length="3" data-label="미디엄" data-thumb="image/generated-female-layered.jpg" onclick="chooseStyle(this)">
+                        <div class="style-card-item is-selected" data-gender="female" data-category="cut" data-name="소프트 레이어드" data-length="3" data-bangs="side" data-label="미디엄" data-thumb="image/generated-female-layered.jpg" onclick="chooseStyle(this)">
                             <img class="style-card-thumb" src="image/generated-female-layered.jpg" alt="소프트 레이어드">
                             <div class="style-card-info">
                                 <span class="style-card-name">소프트 레이어드</span>
-                                <span class="style-card-length">미디엄 · 국민 컷</span>
+                                <span class="style-card-length">미디엄 · 사이드 뱅</span>
                             </div>
                         </div>
-                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="프렌치 보브" data-length="1" data-label="숏" data-thumb="image/generated-female-bob.jpg" onclick="chooseStyle(this)">
+                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="프렌치 보브" data-length="1" data-bangs="open" data-label="숏" data-thumb="image/generated-female-bob.jpg" onclick="chooseStyle(this)">
                             <img class="style-card-thumb" src="image/generated-female-bob.jpg" alt="프렌치 보브">
                             <div class="style-card-info">
                                 <span class="style-card-name">프렌치 보브</span>
-                                <span class="style-card-length">숏 · 시크 단발</span>
+                                <span class="style-card-length">숏 · 내추럴 오픈</span>
                             </div>
                         </div>
-                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="C컬 보브" data-length="2" data-label="보브" data-thumb="image/generated-female-lob.jpg" onclick="chooseStyle(this)">
+                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="C컬 보브" data-length="2" data-bangs="open" data-label="보브" data-thumb="image/generated-female-lob.jpg" onclick="chooseStyle(this)">
                             <img class="style-card-thumb" src="image/generated-female-lob.jpg" alt="C컬 보브">
                             <div class="style-card-info">
                                 <span class="style-card-name">C컬 보브</span>
-                                <span class="style-card-length">보브 · 깔끔 턱선</span>
+                                <span class="style-card-length">단발 · 턱선 라인</span>
                             </div>
                         </div>
-                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="허쉬컷" data-length="4" data-label="세미롱" data-thumb="image/generated-female-hush.jpg" onclick="chooseStyle(this)">
+                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="허쉬컷" data-length="4" data-bangs="bangs" data-label="세미롱" data-thumb="image/generated-female-hush.jpg" onclick="chooseStyle(this)">
                             <img class="style-card-thumb" src="image/generated-female-hush.jpg" alt="허쉬컷">
                             <div class="style-card-info">
                                 <span class="style-card-name">허쉬컷</span>
-                                <span class="style-card-length">세미롱 · 샤기 질감</span>
+                                <span class="style-card-length">세미롱 · 시스루 뱅</span>
                             </div>
                         </div>
-                        <div class="style-card-item" data-gender="female" data-category="perm" data-name="빌드펌 롱웨이브" data-length="5" data-label="롱" data-thumb="image/generated-female-wave.jpg" onclick="chooseStyle(this)">
+                        <div class="style-card-item" data-gender="female" data-category="perm" data-name="빌드펌 롱웨이브" data-length="5" data-bangs="side" data-label="롱" data-thumb="image/generated-female-wave.jpg" onclick="chooseStyle(this)">
                             <img class="style-card-thumb" src="image/generated-female-wave.jpg" alt="빌드펌 롱웨이브">
                             <div class="style-card-info">
                                 <span class="style-card-name">빌드펌 롱웨이브</span>
-                                <span class="style-card-length">롱 · 글램 S컬</span>
+                                <span class="style-card-length">롱 · 사이드 뱅</span>
                             </div>
                         </div>
-                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="시스루 뱅 롱" data-length="5" data-label="롱" data-thumb="image/generated-female-bangs.jpg" onclick="chooseStyle(this)">
+                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="시스루 뱅 롱" data-length="5" data-bangs="bangs" data-label="롱" data-thumb="image/generated-female-bangs.jpg" onclick="chooseStyle(this)">
                             <img class="style-card-thumb" src="image/generated-female-bangs.jpg" alt="시스루 뱅 롱">
                             <div class="style-card-info">
                                 <span class="style-card-name">시스루 뱅 롱</span>
-                                <span class="style-card-length">롱 · 청순 슬릭</span>
+                                <span class="style-card-length">롱 · 시스루 뱅</span>
+                            </div>
+                        </div>
+                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="단발 태슬컷" data-length="2" data-bangs="open" data-label="단발" data-thumb="image/generated-female-lob.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/generated-female-lob.jpg" alt="단발 태슬컷">
+                            <div class="style-card-info">
+                                <span class="style-card-name">단발 태슬컷</span>
+                                <span class="style-card-length">단발 · 스트레이트</span>
+                            </div>
+                        </div>
+                        <div class="style-card-item" data-gender="female" data-category="perm" data-name="볼륨 C컬 단발" data-length="2" data-bangs="bangs" data-label="단발" data-thumb="image/generated-female-bob.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/generated-female-bob.jpg" alt="볼륨 C컬 단발">
+                            <div class="style-card-info">
+                                <span class="style-card-name">볼륨 C컬 단발</span>
+                                <span class="style-card-length">단발 · 풍성한 볼륨</span>
+                            </div>
+                        </div>
+                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="픽시 숏컷" data-length="1" data-bangs="open" data-label="숏" data-thumb="image/generated-female-bob.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/generated-female-bob.jpg" alt="픽시 숏컷">
+                            <div class="style-card-info">
+                                <span class="style-card-name">픽시 숏컷</span>
+                                <span class="style-card-length">숏 · 도회적 무드</span>
+                            </div>
+                        </div>
+                        <div class="style-card-item" data-gender="female" data-category="perm" data-name="히피펌 세미롱" data-length="4" data-bangs="open" data-label="세미롱" data-thumb="image/generated-female-hush.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/generated-female-hush.jpg" alt="히피펌 세미롱">
+                            <div class="style-card-info">
+                                <span class="style-card-name">히피펌 세미롱</span>
+                                <span class="style-card-length">세미롱 · 자유로운 컬</span>
+                            </div>
+                        </div>
+                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="슬릭 레이어드" data-length="3" data-bangs="open" data-label="미디엄" data-thumb="image/generated-female-layered.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/generated-female-layered.jpg" alt="슬릭 레이어드">
+                            <div class="style-card-info">
+                                <span class="style-card-name">슬릭 레이어드</span>
+                                <span class="style-card-length">미디엄 · 매끄러운 결</span>
+                            </div>
+                        </div>
+                        <div class="style-card-item" data-gender="female" data-category="perm" data-name="젤리펌 롱" data-length="5" data-bangs="bangs" data-label="롱" data-thumb="image/generated-female-wave.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/generated-female-wave.jpg" alt="젤리펌 롱">
+                            <div class="style-card-info">
+                                <span class="style-card-name">젤리펌 롱</span>
+                                <span class="style-card-length">롱 · 탱글한 탄력</span>
                             </div>
                         </div>
                     </div>
@@ -1091,11 +1138,13 @@
             '좌측 전측면 · 315°'
         ];
 
-        // 8-Angle Asset Sequences
+        // 8-Angle Asset Sequences for all 5 Lengths & Male
         const rotationAssets8 = {
-            'female-bob': Array.from({ length: 8 }, (_, i) => `image/catalog-turntable/female-bob-8a-${String(i).padStart(2, '0')}.jpg`),
-            'female-medium': Array.from({ length: 8 }, (_, i) => `image/catalog-turntable/female-medium-8a-${String(i).padStart(2, '0')}.jpg`),
-            'female-long': Array.from({ length: 8 }, (_, i) => `image/catalog-turntable/female-long-8a-${String(i).padStart(2, '0')}.jpg`),
+            1: Array.from({ length: 8 }, (_, i) => `image/catalog-turntable/female-len1-8a-${String(i).padStart(2, '0')}.jpg`),
+            2: Array.from({ length: 8 }, (_, i) => `image/catalog-turntable/female-len2-8a-${String(i).padStart(2, '0')}.jpg`),
+            3: Array.from({ length: 8 }, (_, i) => `image/catalog-turntable/female-len3-8a-${String(i).padStart(2, '0')}.jpg`),
+            4: Array.from({ length: 8 }, (_, i) => `image/catalog-turntable/female-len4-8a-${String(i).padStart(2, '0')}.jpg`),
+            5: Array.from({ length: 8 }, (_, i) => `image/catalog-turntable/female-len5-8a-${String(i).padStart(2, '0')}.jpg`),
             male: Array.from({ length: 8 }, (_, i) => `image/catalog-turntable/male-8a-${String(i).padStart(2, '0')}.jpg`)
         };
 
@@ -1110,20 +1159,17 @@
             const frame = Math.round(studioState.angle / 45) % 8;
             const normalizedAngle = frame * 45;
 
-            // Determine image source
+            // Determine image source in real-time across all options
             let source;
-            if (frame === 0 && studioState.gender === 'female') {
-                // Front 15-photo matrix (Length x Bangs)
-                source = `image/catalog-turntable/female-len${studioState.length}-${studioState.bangs}.jpg`;
-            } else {
-                let prof = 'female-medium';
-                if (studioState.gender === 'male') {
-                    prof = 'male';
+            if (studioState.gender === 'female') {
+                const len = studioState.length;
+                if (frame === 0) {
+                    source = `image/catalog-turntable/female-len${len}-${studioState.bangs}.jpg`;
                 } else {
-                    if (studioState.length <= 2) prof = 'female-bob';
-                    else if (studioState.length >= 5) prof = 'female-long';
+                    source = rotationAssets8[len][frame];
                 }
-                source = rotationAssets8[prof][frame];
+            } else {
+                source = rotationAssets8.male[frame];
             }
 
             $('#stageModelImg').attr('src', source);
@@ -1136,9 +1182,9 @@
             const lengthLabels = { 1: '숏', 2: '단발', 3: '미디엄', 4: '세미롱', 5: '롱' };
             const bangLabels = { open: '내추럴 오픈', bangs: '시스루 뱅', side: '사이드 뱅' };
             if (frame === 0) {
-                $('#stagePipelineText').html(`<b>MODEL C</b> · 정면 45컷 실사 앞머리 연동 (${studioState.length}단계 ${lengthLabels[studioState.length]} · ${bangLabels[studioState.bangs]})`);
+                $('#stagePipelineText').html(`<b>MODEL C</b> · 실시간 옵션 연동 (${studioState.length}단계 ${lengthLabels[studioState.length]} · ${bangLabels[studioState.bangs]})`);
             } else {
-                $('#stagePipelineText').html(`<b>MODEL C</b> · 8각도 3D 기장 실루엣 (${frame + 1}/8 · ${angleNames8[frame]})`);
+                $('#stagePipelineText').html(`<b>MODEL C</b> · ${lengthLabels[studioState.length]} 기장 8각도 360° 턴테이블 (${frame + 1}/8 · ${angleNames8[frame]})`);
             }
 
             // Quick view buttons
@@ -1239,21 +1285,51 @@
             const dam = $('#diagDamage').val();
             const face = $('#diagFace').val();
 
+            let targetStyle = '소프트 레이어드';
+            let targetLength = 3;
+            let targetBangs = 'side';
             let title = '소프트 레이어드 & 사이드 뱅 추천';
             let desc = '자연스러운 반곱슬 결감을 활용해 볼륨과 페이스라인을 정돈하는 레이어드 스타일입니다.';
 
             if (tex === 'straight') {
-                title = '볼륨 C컬 보브 또는 빌드펌 웨이브 추천';
-                desc = '직모 특유의 볼륨 꺼짐을 방지하기 위해 턱선 및 어깨선 C컬 펌을 더해 입체감을 살립니다.';
+                targetStyle = 'C컬 보브';
+                targetLength = 2;
+                targetBangs = 'open';
+                title = 'C컬 단발 보브 & 내추럴 오픈 추천';
+                desc = '직모 특유의 볼륨 꺼짐을 방지하기 위해 턱선 C컬을 더해 단정하고 시크한 입체감을 살립니다.';
             } else if (tex === 'curly') {
-                title = '매직 슬릭컷 또는 소프트 허쉬컷 추천';
-                desc = '곱슬기를 차분하게 펴주는 볼륨매직과 가벼운 질감의 레이어로 손질 시간을 대폭 줄입니다.';
+                targetStyle = '허쉬컷';
+                targetLength = 4;
+                targetBangs = 'bangs';
+                title = '소프트 허쉬컷 & 시스루 뱅 추천';
+                desc = '가벼운 샤기 레이어로 모량을 덜어내고 공기감 넘치는 스타일리시한 실루엣을 완성합니다.';
             }
+
+            // Real-time synchronization to model state
+            studioState.styleName = targetStyle;
+            studioState.length = targetLength;
+            studioState.bangs = targetBangs;
+
+            // Sync UI elements
+            $('.style-card-item').removeClass('is-selected');
+            $(`.style-card-item[data-name="${targetStyle}"]`).addClass('is-selected');
+            $('#summaryStyleName').text(targetStyle);
+            $('#sliderLength').val(targetLength);
+            const lengthLabels = { 1: '숏', 2: '단발', 3: '미디엄', 4: '세미롱', 5: '롱' };
+            const bangLabels = { open: '내추럴 오픈', bangs: '시스루 뱅', side: '사이드 뱅' };
+            $('#outputLength').text(`${targetLength}단계 · ${lengthLabels[targetLength]}`);
+            $('#summaryLengthTitle').text(`기장: ${lengthLabels[targetLength]} (${targetLength}단계)`);
+            $('.choice-btn').removeClass('is-active');
+            $(`.choice-btn[data-bang="${targetBangs}"]`).addClass('is-active');
+            $('#summaryBangsTitle').text(`앞머리: ${bangLabels[targetBangs]}`);
 
             $('#diagnosisRecomBox strong').text(`수석 디자이너 1:1 처방: ${title}`);
             $('#diagnosisPrescription').text(desc);
             $('#summaryDiagTitle').text(`진단 완료: ${tex} · ${vol} 모량`);
             $('#summaryDiagDesc').text(title);
+
+            updateStageView();
+            showToast(`💡 1:1 진단 처방 [${targetStyle}]이(가) 모델에 실시간 반영되었습니다.`);
         }
 
         // -------------------------------------------------------------
@@ -1276,6 +1352,13 @@
 
             studioState.styleName = item.data('name');
             studioState.length = Number(item.data('length')) || 3;
+            if (item.data('bangs')) {
+                studioState.bangs = item.data('bangs');
+                $('.choice-btn').removeClass('is-active');
+                $(`.choice-btn[data-bang="${studioState.bangs}"]`).addClass('is-active');
+                const bangLabels = { open: '내추럴 오픈', bangs: '시스루 뱅', side: '사이드 뱅' };
+                $('#summaryBangsTitle').text(`앞머리: ${bangLabels[studioState.bangs]}`);
+            }
             
             $('#summaryStyleName').text(studioState.styleName);
             $('#summaryThumb1').attr('src', item.data('thumb'));
@@ -1286,7 +1369,7 @@
             $('#summaryLengthTitle').text(`기장: ${lengthLabels[studioState.length]} (${studioState.length}단계)`);
 
             updateStageView();
-            showToast(`✨ [${studioState.styleName}] 스타일이 모델에 반영되었습니다.`);
+            showToast(`✨ [${studioState.styleName}] 스타일이 모델에 즉시 반영되었습니다.`);
             goToStep(2);
         }
 
@@ -1530,10 +1613,46 @@
             setTimeout(() => toast.removeClass('is-show'), 2400);
         }
 
+        function preloadTurntableAssets() {
+            // Preload all 40 turntable frames and 15 front matrix frames into browser cache
+            for (let len = 1; len <= 5; len++) {
+                ['open', 'bangs', 'side'].forEach(b => {
+                    const img = new Image();
+                    img.src = `image/catalog-turntable/female-len${len}-${b}.jpg`;
+                });
+                for (let a = 0; a < 8; a++) {
+                    const img = new Image();
+                    img.src = `image/catalog-turntable/female-len${len}-8a-${String(a).padStart(2, '0')}.jpg`;
+                }
+            }
+        }
+
         // Initialization
         $(document).ready(function() {
-            updateStageView();
+            preloadTurntableAssets();
             runDiagnosis();
+            const params = new URLSearchParams(location.search);
+            if (params.has('testLength')) {
+                studioState.length = Number(params.get('testLength'));
+                $('#sliderLength').val(studioState.length);
+                const lengthLabels = { 1: '숏', 2: '단발', 3: '미디엄', 4: '세미롱', 5: '롱' };
+                $('#outputLength').text(`${studioState.length}단계 · ${lengthLabels[studioState.length]}`);
+                $('#summaryLengthTitle').text(`기장: ${lengthLabels[studioState.length]} (${studioState.length}단계)`);
+            }
+            if (params.has('testBangs')) {
+                studioState.bangs = params.get('testBangs');
+                $('.choice-btn').removeClass('is-active');
+                $(`.choice-btn[data-bang="${studioState.bangs}"]`).addClass('is-active');
+                const bangLabels = { open: '내추럴 오픈', bangs: '시스루 뱅', side: '사이드 뱅' };
+                $('#summaryBangsTitle').text(`앞머리: ${bangLabels[studioState.bangs]}`);
+            }
+            if (params.has('testAngle')) {
+                studioState.angle = Number(params.get('testAngle'));
+            }
+            if (params.has('testStep')) {
+                goToStep(Number(params.get('testStep')));
+            }
+            updateStageView();
         });
     </script>
 </body>

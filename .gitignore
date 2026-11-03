@@ -13,3 +13,4 @@ Thumbs.db
 *.bak
 *.zip
 *.tar.gz
+__pycache__/
