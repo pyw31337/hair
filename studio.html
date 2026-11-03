@@ -161,7 +161,7 @@
         }
         .stage-viewport.is-rotating, .stage-viewport:active { cursor: grabbing; }
 
-        .stage-img-layer { position: relative; width: 100%; height: 100%; }
+        .stage-img-layer { position: relative; width: 100%; height: 100%; overflow: hidden; }
         .stage-img-layer img {
             width: 100%;
             height: 100%;
@@ -169,8 +169,101 @@
             object-position: center top;
             display: block;
             pointer-events: none;
-            transition: opacity 0.12s ease;
+            transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), filter 0.24s ease, opacity 0.12s ease;
         }
+
+        /* 1. Hair Density / Volume Visual Reactions */
+        .stage-img-layer.vol-thin img {
+            transform: scaleX(0.965);
+        }
+        .stage-img-layer.vol-normal img {
+            transform: scaleX(1.0);
+        }
+        .stage-img-layer.vol-thick img {
+            transform: scaleX(1.045);
+            filter: drop-shadow(0 0 12px rgba(35, 20, 15, 0.4));
+        }
+
+        /* 2. Hair Damage / Sheen & Frizz Visual Reactions */
+        .stage-shine-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0;
+            mix-blend-mode: overlay;
+            background: radial-gradient(ellipse 55% 15% at 50% 27%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.2) 48%, transparent 78%),
+                        radial-gradient(ellipse 65% 20% at 50% 64%, rgba(255, 255, 255, 0.35), transparent 70%);
+            transition: opacity 0.25s ease;
+            z-index: 2;
+        }
+        .stage-img-layer.damage-healthy .stage-shine-layer {
+            opacity: 0.95;
+        }
+        .stage-img-layer.damage-colored .stage-shine-layer {
+            opacity: 0.32;
+        }
+        .stage-img-layer.damage-bleached .stage-shine-layer {
+            opacity: 0;
+        }
+
+        .stage-damage-frizz {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0;
+            mix-blend-mode: screen;
+            background: radial-gradient(ellipse 85% 75% at 50% 50%, transparent 60%, rgba(255, 255, 255, 0.2) 85%, transparent 100%),
+                        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 1px, transparent 1px, transparent 4px);
+            transition: opacity 0.25s ease;
+            z-index: 2;
+        }
+        .stage-img-layer.damage-bleached .stage-damage-frizz {
+            opacity: 0.88;
+        }
+        .stage-img-layer.damage-bleached img {
+            filter: contrast(0.91) saturate(0.85) brightness(0.97);
+        }
+
+        /* 3. Facial Diagnostic Contour Guide */
+        .stage-face-guide {
+            position: absolute;
+            top: 42%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            opacity: 0;
+            transition: all 0.25s ease;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .stage-face-guide.is-active {
+            opacity: 1;
+        }
+        .stage-face-oval {
+            width: 140px;
+            height: 180px;
+            border-radius: 50%;
+            border: 1.5px dashed rgba(243, 83, 129, 0.7);
+            box-shadow: 0 0 20px rgba(243, 83, 129, 0.35);
+            transition: all 0.25s ease;
+        }
+        .stage-face-label {
+            margin-top: 10px;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            background: rgba(18, 16, 26, 0.88);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(243, 83, 129, 0.45);
+            color: #f472b6;
+            font-size: 0.64rem;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+        }
+
         .stage-color-mask {
             position: absolute;
             inset: 0;
@@ -411,8 +504,25 @@
             gap: 10px;
         }
         .diagnosis-icon { font-size: 1.2rem; }
-        .diagnosis-text strong { display: block; font-size: 0.8rem; font-weight: 800; color: #10b981; margin-bottom: 2px; }
         .diagnosis-text p { font-size: 0.72rem; color: #cbd5e1; line-height: 1.4; }
+        .btn-apply-prescription {
+            margin-top: 8px;
+            padding: 6px 14px;
+            border-radius: var(--studio-radius-sm);
+            border: 0;
+            background: linear-gradient(90deg, #f35381, #e3376b);
+            color: #fff;
+            font: inherit;
+            font-size: 0.72rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(243, 83, 129, 0.35);
+            transition: all 0.16s ease;
+        }
+        .btn-apply-prescription:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(243, 83, 129, 0.5);
+        }
 
         /* Step 1: Base Styles Grid */
         .style-filters { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -692,9 +802,15 @@
                      role="slider" aria-label="8각도 회전 턴테이블" aria-valuemin="0" aria-valuemax="315" aria-valuenow="0" tabindex="0"
                      onpointerdown="startRotation(event)" onpointermove="moveRotation(event)" onpointerup="endRotation(event)" onpointercancel="endRotation(event)" onkeydown="handleRotationKey(event)">
                     
-                    <div class="stage-img-layer">
-                        <img id="stageModelImg" src="image/catalog-turntable/female-medium-8a-00.jpg" alt="헤어 모델 8각도 회전 프리뷰" draggable="false">
+                    <div class="stage-img-layer" id="stageImgLayer">
+                        <img id="stageModelImg" src="image/catalog-turntable/female-len3-side.jpg" alt="헤어 모델 8각도 회전 프리뷰" draggable="false">
+                        <span class="stage-shine-layer" id="stageShineLayer"></span>
+                        <span class="stage-damage-frizz" id="stageFrizzLayer"></span>
                         <span class="stage-color-mask" id="stageColorMask"></span>
+                        <div class="stage-face-guide" id="stageFaceGuide">
+                            <div class="stage-face-oval" id="stageFaceOval"></div>
+                            <span class="stage-face-label" id="stageFaceLabel">계란형 · 황금비 1:1.618 밸런스</span>
+                        </div>
                     </div>
 
                     <span class="stage-angle-badge" id="stageAngleBadge">정면 · 0° · 1/8</span>
@@ -796,6 +912,7 @@
                         <div class="diagnosis-text">
                             <strong>수석 디자이너 1:1 처방: 소프트 레이어드 &amp; 사이드 뱅 추천</strong>
                             <p id="diagnosisPrescription">자연스러운 반곱슬 결감을 활용해 층을 적당히 낸 소프트 레이어드컷과 광대를 부드럽게 감싸는 사이드 뱅으로 볼륨과 입체감을 극대화할 수 있습니다.</p>
+                            <button type="button" class="btn-apply-prescription" id="btnApplyPrescription" onclick="applyPrescription()">✨ 처방 스타일 모델에 즉시 반영하기</button>
                         </div>
                     </div>
 
@@ -1119,11 +1236,15 @@
             gender: 'female',
             angle: 0, // 0, 45, 90, 135, 180, 225, 270, 315
             length: 3, // 1..5
-            bangs: 'open', // 'open', 'bangs', 'side'
+            bangs: 'side', // 'open', 'bangs', 'side'
             styleName: '소프트 레이어드',
             colorName: '내추럴 브라운',
             colorWash: 'rgba(91,58,45,0.30)',
             colorStrength: 50,
+            diagTexture: 'wavy',
+            diagVolume: 'normal',
+            diagDamage: 'healthy',
+            diagFace: 'oval',
             activeStep: 0
         };
 
@@ -1178,13 +1299,39 @@
             $('#stageScrubber').val(frame);
             $('#stageViewport').css('--stage-angle', `${normalizedAngle}deg`);
 
-            // Pipeline tag
+            // Real-time Visual Effects for Volume (모량), Damage (손상도), Face (얼굴형)
+            const layer = $('#stageImgLayer');
+            layer.removeClass('vol-thin vol-normal vol-thick damage-healthy damage-colored damage-bleached');
+            layer.addClass(`vol-${studioState.diagVolume}`);
+            layer.addClass(`damage-${studioState.diagDamage}`);
+
+            // Face guide display
+            const faceGuide = $('#stageFaceGuide');
+            if (studioState.activeStep === 0 && frame === 0) {
+                faceGuide.addClass('is-active');
+                const faceConfigs = {
+                    oval: { label: '계란형 · 황금비 1:1.618 밸런스', w: 140, h: 180, rad: '50%' },
+                    round: { label: '둥근형 · 정수리 볼륨 & 턱선 슬리밍 커버', w: 154, h: 164, rad: '50%' },
+                    square: { label: '각진형 · 사이드 뱅 페이스라인 곡선 완화', w: 150, h: 174, rad: '44% 44% 36% 36%' },
+                    long: { label: '긴형 · 이마 뱅 라인 & 가로 볼륨 확장', w: 132, h: 192, rad: '50%' }
+                };
+                const cfg = faceConfigs[studioState.diagFace] || faceConfigs.oval;
+                $('#stageFaceOval').css({ width: `${cfg.w}px`, height: `${cfg.h}px`, borderRadius: cfg.rad });
+                $('#stageFaceLabel').text(cfg.label);
+            } else {
+                faceGuide.removeClass('is-active');
+            }
+
+            // Pipeline tag with full context
             const lengthLabels = { 1: '숏', 2: '단발', 3: '미디엄', 4: '세미롱', 5: '롱' };
             const bangLabels = { open: '내추럴 오픈', bangs: '시스루 뱅', side: '사이드 뱅' };
+            const volLabels = { normal: '보통 숱', thick: '숱 많음(풍성)', thin: '숱 적음(슬릭)' };
+            const damLabels = { healthy: '건강모(윤기)', colored: '염색모', bleached: '극손상(매트)' };
+
             if (frame === 0) {
-                $('#stagePipelineText').html(`<b>MODEL C</b> · 실시간 옵션 연동 (${studioState.length}단계 ${lengthLabels[studioState.length]} · ${bangLabels[studioState.bangs]})`);
+                $('#stagePipelineText').html(`<b>1:1 맞춤 컨설팅</b> · ${lengthLabels[studioState.length]} (${studioState.styleName}) · ${bangLabels[studioState.bangs]} · ${volLabels[studioState.diagVolume]} · ${damLabels[studioState.diagDamage]}`);
             } else {
-                $('#stagePipelineText').html(`<b>MODEL C</b> · ${lengthLabels[studioState.length]} 기장 8각도 360° 턴테이블 (${frame + 1}/8 · ${angleNames8[frame]})`);
+                $('#stagePipelineText').html(`<b>360° 턴테이블</b> · ${lengthLabels[studioState.length]} 기장 (${frame + 1}/8 · ${angleNames8[frame]})`);
             }
 
             // Quick view buttons
@@ -1193,7 +1340,7 @@
             });
 
             // Update recipe card
-            $('#stageRecipeCard').html(`<b>1:1 맞춤 헤어 레시피</b> · ${studioState.styleName} · ${lengthLabels[studioState.length]} 기장 · ${bangLabels[studioState.bangs]} · ${studioState.colorName} ${studioState.colorStrength}%`);
+            $('#stageRecipeCard').html(`<b>1:1 맞춤 헤어 레시피</b> · ${studioState.styleName} (${lengthLabels[studioState.length]}) · ${bangLabels[studioState.bangs]} · ${volLabels[studioState.diagVolume]} · ${studioState.colorName} ${studioState.colorStrength}%`);
             $('#finalCtaMeta').text(`${studioState.styleName} · ${lengthLabels[studioState.length]} · ${bangLabels[studioState.bangs]} · ${studioState.colorName}`);
         }
 
@@ -1256,6 +1403,8 @@
                 body.slideDown(200);
                 summary.slideUp(180);
                 box.addClass('is-active');
+                studioState.activeStep = stepNum;
+                updateStageView();
             }
         }
 
@@ -1270,6 +1419,8 @@
             $(`#stepBody${nextStep}`).slideDown(200);
             $(`#stepBox${nextStep}`).addClass('is-active');
 
+            updateStageView();
+
             // Scroll to step on mobile
             if (window.innerWidth < 1024) {
                 $('html, body').animate({ scrollTop: $(`#stepBox${nextStep}`).offset().top - 80 }, 300);
@@ -1277,27 +1428,27 @@
         }
 
         // -------------------------------------------------------------
-        // Step 0: Diagnosis Logic
+        // Step 0: Diagnosis Logic (Real-time Visual Buildup)
         // -------------------------------------------------------------
         function runDiagnosis() {
-            const tex = $('#diagTexture').val();
-            const vol = $('#diagVolume').val();
-            const dam = $('#diagDamage').val();
-            const face = $('#diagFace').val();
+            studioState.diagTexture = $('#diagTexture').val();
+            studioState.diagVolume = $('#diagVolume').val();
+            studioState.diagDamage = $('#diagDamage').val();
+            studioState.diagFace = $('#diagFace').val();
 
             let targetStyle = '소프트 레이어드';
             let targetLength = 3;
             let targetBangs = 'side';
             let title = '소프트 레이어드 & 사이드 뱅 추천';
-            let desc = '자연스러운 반곱슬 결감을 활용해 볼륨과 페이스라인을 정돈하는 레이어드 스타일입니다.';
+            let desc = '자연스러운 반곱슬 결감을 활용해 층을 적당히 낸 소프트 레이어드컷과 광대를 부드럽게 감싸는 사이드 뱅으로 볼륨과 입체감을 극대화할 수 있습니다.';
 
-            if (tex === 'straight') {
+            if (studioState.diagTexture === 'straight') {
                 targetStyle = 'C컬 보브';
                 targetLength = 2;
                 targetBangs = 'open';
                 title = 'C컬 단발 보브 & 내추럴 오픈 추천';
                 desc = '직모 특유의 볼륨 꺼짐을 방지하기 위해 턱선 C컬을 더해 단정하고 시크한 입체감을 살립니다.';
-            } else if (tex === 'curly') {
+            } else if (studioState.diagTexture === 'curly') {
                 targetStyle = '허쉬컷';
                 targetLength = 4;
                 targetBangs = 'bangs';
@@ -1305,7 +1456,26 @@
                 desc = '가벼운 샤기 레이어로 모량을 덜어내고 공기감 넘치는 스타일리시한 실루엣을 완성합니다.';
             }
 
-            // Real-time synchronization to model state
+            const volNames = { normal: '보통 숱', thick: '숱 많음', thin: '숱 적음' };
+            const damNames = { healthy: '건강모', colored: '염색모', bleached: '극손상모' };
+            $('#summaryDiagTitle').text(`진단: ${studioState.diagTexture} · ${volNames[studioState.diagVolume]} · ${damNames[studioState.diagDamage]}`);
+            $('#summaryDiagDesc').text(title);
+            $('#diagnosisRecomBox strong').text(`수석 디자이너 1:1 처방: ${title}`);
+            $('#diagnosisPrescription').text(desc);
+
+            // Store recommended values in apply button
+            $('#btnApplyPrescription').data('style', targetStyle).data('len', targetLength).data('bangs', targetBangs);
+
+            updateStageView();
+            showToast(`💡 모발 진단(모량·손상도·얼굴형)이 모델에 실시간 반영되었습니다.`);
+        }
+
+        function applyPrescription() {
+            const btn = $('#btnApplyPrescription');
+            const targetStyle = btn.data('style') || '소프트 레이어드';
+            const targetLength = Number(btn.data('len')) || 3;
+            const targetBangs = btn.data('bangs') || 'side';
+
             studioState.styleName = targetStyle;
             studioState.length = targetLength;
             studioState.bangs = targetBangs;
@@ -1323,13 +1493,9 @@
             $(`.choice-btn[data-bang="${targetBangs}"]`).addClass('is-active');
             $('#summaryBangsTitle').text(`앞머리: ${bangLabels[targetBangs]}`);
 
-            $('#diagnosisRecomBox strong').text(`수석 디자이너 1:1 처방: ${title}`);
-            $('#diagnosisPrescription').text(desc);
-            $('#summaryDiagTitle').text(`진단 완료: ${tex} · ${vol} 모량`);
-            $('#summaryDiagDesc').text(title);
-
             updateStageView();
-            showToast(`💡 1:1 진단 처방 [${targetStyle}]이(가) 모델에 실시간 반영되었습니다.`);
+            showToast(`✨ 디자이너 처방 [${targetStyle}]이(가) 기본 스타일로 적용되었습니다.`);
+            goToStep(1);
         }
 
         // -------------------------------------------------------------
@@ -1352,6 +1518,8 @@
 
             studioState.styleName = item.data('name');
             studioState.length = Number(item.data('length')) || 3;
+            
+            // Set style bangs
             if (item.data('bangs')) {
                 studioState.bangs = item.data('bangs');
                 $('.choice-btn').removeClass('is-active');
@@ -1369,7 +1537,7 @@
             $('#summaryLengthTitle').text(`기장: ${lengthLabels[studioState.length]} (${studioState.length}단계)`);
 
             updateStageView();
-            showToast(`✨ [${studioState.styleName}] 스타일이 모델에 즉시 반영되었습니다.`);
+            showToast(`✨ [${studioState.styleName}] 스타일이 모델에 반영되었습니다.`);
             goToStep(2);
         }
 
@@ -1381,11 +1549,12 @@
             const lengthLabels = { 1: '숏', 2: '단발', 3: '미디엄', 4: '세미롱', 5: '롱' };
             $('#outputLength').text(`${val}단계 · ${lengthLabels[val]}`);
             $('#summaryLengthTitle').text(`기장: ${lengthLabels[val]} (${val}단계)`);
+            $('#summaryStyleName').text(`${studioState.styleName} (${lengthLabels[val]} 커스텀)`);
             updateStageView();
         }
 
         // -------------------------------------------------------------
-        // Step 3: Bangs Selection
+        // Step 3: Bangs Selection (Zero-Drift Front Layer)
         // -------------------------------------------------------------
         function changeBangs(el, type) {
             $('.choice-btn').removeClass('is-active');
@@ -1395,7 +1564,7 @@
             const bangLabels = { open: '내추럴 오픈', bangs: '시스루 뱅', side: '사이드 뱅' };
             $('#summaryBangsTitle').text(`앞머리: ${bangLabels[type]}`);
             updateStageView();
-            showToast(`✨ 앞머리가 [${bangLabels[type]}] 실사로 연동되었습니다.`);
+            showToast(`✨ 앞머리가 [${bangLabels[type]}]으로 실시간 변경되었습니다.`);
         }
 
         // -------------------------------------------------------------
