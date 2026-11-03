@@ -235,10 +235,18 @@ def run_normalization():
     # Length 5
     wave.save('image/catalog-turntable/female-len5-open.jpg', quality=95)
     bangs_src.save('image/catalog-turntable/female-len5-bangs.jpg', quality=95)
-    Image.composite(med, wave, mask_side).save('image/catalog-turntable/female-len5-side.jpg', quality=95)
-    print("  Saved 15 length + bangs matrix images successfully!")
+    # 4. Generate 8-Angle (45-degree) Crisp Sequences
+    print("\n=== Generating 8-Angle (45-degree) Crisp Sequences ===")
+    mapping_8a = [0, 1, 3, 5, 6, 7, 9, 11]
+    for prof in ['female-bob', 'female-medium', 'female-long', 'male']:
+        for idx, f in enumerate(mapping_8a):
+            src = f"image/catalog-turntable/{prof}-{f:02d}.jpg"
+            dst = f"image/catalog-turntable/{prof}-8a-{idx:02d}.jpg"
+            im = Image.open(src)
+            im.save(dst, quality=95)
+        print(f"  Saved 8-angle sequence for {prof}")
 
-    print("\nAll 360 turntable assets and front styles normalized with identical eye level and head scale!")
+    print("\nAll 360 turntable assets (12-frame & 8-frame) and front styles normalized with identical eye level and head scale!")
 
 if __name__ == '__main__':
     run_normalization()

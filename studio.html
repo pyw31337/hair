@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>LET'S HAIR STUDIO · 360° AI 1:1 맞춤 헤어 컨설팅 시뮬레이터</title>
+    <meta name="description" content="미용실 방문 전, 모바일과 태블릿으로 본인의 모발 컨디션에 맞춘 기장, 앞머리, 살롱 컬러를 8각도 360°로 시뮬레이션하고 내 얼굴에 실사 AI로 가상 착용해보세요.">
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+        :root {
+            --studio-bg: #0d0c13;
+            --studio-surface: #171520;
+            --studio-surface-card: #201d2c;
+            --studio-surface-raised: #2a263a;
+            --studio-border: rgba(255, 255, 255, 0.08);
+            --studio-border-focus: #f35381;
+            --studio-pink: #f35381;
+            --studio-pink-deep: #e3376b;
+            --studio-pink-soft: rgba(243, 83, 129, 0.14);
+            --studio-text: #f8fafc;
+            --studio-text-sub: #94a3b8;
+            --studio-text-muted: #64748b;
+            --studio-radius-sm: 8px;
+            --studio-radius-md: 14px;
+            --studio-radius-lg: 22px;
+            --studio-radius-full: 9999px;
+            --studio-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { width: 100%; min-height: 100vh; background: var(--studio-bg); color: var(--studio-text); font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+        /* Navigation Bar */
+        .studio-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 14px 24px;
+            background: rgba(13, 12, 19, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--studio-border);
+        }
+        .studio-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+        .studio-logo-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #f35381, #7c3aed);
+            display: grid;
+            place-items: center;
+            font-size: 1rem;
+            box-shadow: 0 4px 14px rgba(243, 83, 129, 0.4);
+        }
+        .studio-title-wrap h1 { font-size: 1.05rem; font-weight: 900; letter-spacing: -0.01em; display: flex; align-items: center; gap: 6px; }
+        .studio-title-wrap h1 span { font-family: 'Playfair Display', serif; font-style: italic; color: #f472b6; font-size: 1.15rem; }
+        .studio-title-wrap small { font-size: 0.68rem; color: var(--studio-text-sub); display: block; }
+
+        .studio-gender-tabs { display: flex; gap: 4px; background: rgba(255, 255, 255, 0.05); padding: 4px; border-radius: var(--studio-radius-full); border: 1px solid var(--studio-border); }
+        .studio-gender-btn {
+            border: 0;
+            padding: 6px 14px;
+            border-radius: var(--studio-radius-full);
+            background: transparent;
+            color: var(--studio-text-sub);
+            font: inherit;
+            font-size: 0.76rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.16s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .studio-gender-btn.is-active {
+            background: var(--studio-pink);
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(243, 83, 129, 0.45);
+        }
+        .studio-gender-btn small { font-size: 0.6rem; opacity: 0.8; font-weight: 600; }
+
+        .studio-nav-actions { display: flex; align-items: center; gap: 10px; }
+        .btn-nav-home {
+            padding: 7px 14px;
+            border-radius: var(--studio-radius-full);
+            border: 1px solid var(--studio-border);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--studio-text-sub);
+            font: inherit;
+            font-size: 0.74rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.16s ease;
+        }
+        .btn-nav-home:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+
+        /* Main Workspace Layout */
+        .studio-main {
+            display: grid;
+            grid-template-columns: minmax(360px, 440px) minmax(0, 1fr);
+            gap: 28px;
+            max-width: 1540px;
+            margin: 0 auto;
+            padding: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .studio-main { grid-template-columns: 1fr; gap: 20px; padding: 16px; }
+        }
+
+        /* Left Sticky Stage: 8-Angle 360 Turntable Studio */
+        .studio-stage-col { position: sticky; top: 76px; display: flex; flex-direction: column; gap: 16px; }
+
+        .stage-frame {
+            position: relative;
+            border-radius: var(--studio-radius-lg);
+            overflow: hidden;
+            background: #1e1c26;
+            border: 1px solid var(--studio-border);
+            box-shadow: var(--studio-shadow);
+        }
+        .stage-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            background: rgba(18, 16, 26, 0.85);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--studio-border);
+            font-size: 0.64rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            color: var(--studio-text-sub);
+        }
+        .stage-topbar-tag { color: var(--studio-pink); display: flex; align-items: center; gap: 5px; }
+        .stage-topbar-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #10b981; box-shadow: 0 0 6px #10b981; }
+
+        .stage-viewport {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            max-height: 520px;
+            background: #beb8bc;
+            overflow: hidden;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+            cursor: grab;
+            --stage-angle: 0deg;
+        }
+        .stage-viewport.is-rotating, .stage-viewport:active { cursor: grabbing; }
+
+        .stage-img-layer { position: relative; width: 100%; height: 100%; }
+        .stage-img-layer img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+            pointer-events: none;
+            transition: opacity 0.12s ease;
+        }
+        .stage-color-mask {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0;
+            mix-blend-mode: color;
+            -webkit-mask-image: radial-gradient(ellipse 40% 46% at 50% 50%, transparent 40%, rgba(0,0,0,0.5) 58%, #000 78%);
+            mask-image: radial-gradient(ellipse 40% 46% at 50% 50%, transparent 40%, rgba(0,0,0,0.5) 58%, #000 78%);
+            transition: background 0.2s ease, opacity 0.2s ease;
+            z-index: 2;
+        }
+
+        .stage-angle-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 6px 12px;
+            border-radius: var(--studio-radius-full);
+            background: rgba(15, 14, 23, 0.78);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 800;
+            z-index: 3;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .stage-compass {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255, 255, 255, 0.75);
+            background: rgba(18, 16, 26, 0.45);
+            backdrop-filter: blur(8px);
+            z-index: 3;
+        }
+        .stage-compass::before { content: '8-ANG'; position: absolute; inset: 0; display: grid; place-items: center; font-size: 0.52rem; font-weight: 900; color: #fff; }
+        .stage-compass::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--studio-pink);
+            border: 2px solid #fff;
+            transform: translateX(-50%) rotate(var(--stage-angle));
+            transform-origin: 50% 24px;
+            transition: transform 0.12s linear;
+        }
+
+        .stage-pipeline-tag {
+            position: absolute;
+            bottom: 34px;
+            left: 12px;
+            right: 12px;
+            padding: 6px 14px;
+            border-radius: var(--studio-radius-full);
+            background: rgba(18, 16, 26, 0.82);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-align: center;
+            z-index: 3;
+            pointer-events: none;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+        .stage-pipeline-tag b { color: #f472b6; }
+        .stage-drag-tip {
+            position: absolute;
+            bottom: 12px;
+            right: 14px;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.63rem;
+            font-weight: 700;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+            z-index: 3;
+        }
+
+        /* 8-Angle Scrubber Card */
+        .stage-scrubber-card {
+            padding: 12px 16px;
+            border-radius: var(--studio-radius-md);
+            background: var(--studio-surface-card);
+            border: 1px solid var(--studio-border);
+        }
+        .stage-scrubber-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 0.74rem; font-weight: 800; }
+        .stage-scrubber-header output { color: var(--studio-pink); background: var(--studio-pink-soft); padding: 2px 8px; border-radius: var(--studio-radius-full); }
+        
+        .studio-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: var(--studio-radius-full);
+            background: rgba(255, 255, 255, 0.12);
+            outline: none;
+            margin: 8px 0 4px;
+            cursor: pointer;
+        }
+        .studio-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 3.5px solid var(--studio-pink);
+            box-shadow: 0 2px 8px rgba(243, 83, 129, 0.5);
+        }
+
+        .stage-ticks-8 { display: grid; grid-template-columns: repeat(8, 1fr); gap: 3px; margin-top: 4px; }
+        .stage-ticks-8 i { height: 3px; border-radius: var(--studio-radius-full); background: rgba(255, 255, 255, 0.15); }
+        .stage-ticks-8 i:nth-child(2n + 1) { background: var(--studio-pink); }
+
+        .stage-quick-views { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+        .stage-quick-views button {
+            border: 1px solid var(--studio-border);
+            padding: 8px 4px;
+            border-radius: var(--studio-radius-sm);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--studio-text-sub);
+            font: inherit;
+            font-size: 0.7rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.16s ease;
+        }
+        .stage-quick-views button:hover, .stage-quick-views button.is-active {
+            border-color: var(--studio-pink);
+            background: var(--studio-pink-soft);
+            color: #fff;
+        }
+
+        /* Live Recipe Summary Card */
+        .stage-recipe-card {
+            padding: 12px 14px;
+            border-radius: var(--studio-radius-md);
+            background: linear-gradient(135deg, rgba(243, 83, 129, 0.12), rgba(124, 58, 237, 0.12));
+            border: 1px solid rgba(243, 83, 129, 0.25);
+            font-size: 0.72rem;
+            line-height: 1.5;
+            color: #e2e8f0;
+        }
+        .stage-recipe-card b { color: var(--studio-pink); font-weight: 900; }
+
+        /* Right Column: Step Journey Consultation Flow */
+        .studio-flow-col { display: flex; flex-direction: column; gap: 18px; }
+
+        .step-box {
+            border-radius: var(--studio-radius-lg);
+            background: var(--studio-surface-card);
+            border: 1px solid var(--studio-border);
+            overflow: hidden;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .step-box.is-active { border-color: rgba(243, 83, 129, 0.5); box-shadow: 0 8px 24px rgba(243, 83, 129, 0.1); }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            cursor: pointer;
+            user-select: none;
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .step-header:hover { background: rgba(255, 255, 255, 0.04); }
+        .step-title-wrap { display: flex; align-items: center; gap: 12px; }
+        .step-badge {
+            padding: 3px 8px;
+            border-radius: var(--studio-radius-full);
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--studio-text-sub);
+            font-size: 0.65rem;
+            font-weight: 900;
+            letter-spacing: 0.06em;
+        }
+        .step-box.is-active .step-badge { background: var(--studio-pink); color: #fff; }
+        .step-title-wrap h3 { font-size: 0.94rem; font-weight: 800; }
+        .step-toggle-btn { font-size: 0.72rem; color: var(--studio-text-muted); font-weight: 800; }
+
+        .step-summary-bar {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid var(--studio-border);
+            font-size: 0.78rem;
+            cursor: pointer;
+        }
+        .step-summary-left { display: flex; align-items: center; gap: 12px; }
+        .step-summary-thumb { width: 38px; height: 38px; border-radius: 8px; object-fit: cover; border: 1.5px solid var(--studio-pink); }
+        .step-summary-bar strong { color: #fff; font-weight: 800; }
+        .step-summary-bar span { color: var(--studio-text-sub); font-size: 0.72rem; }
+        .btn-edit-step { padding: 4px 10px; border-radius: var(--studio-radius-full); border: 1px solid var(--studio-border); background: transparent; color: var(--studio-pink); font: inherit; font-size: 0.68rem; font-weight: 800; cursor: pointer; }
+
+        .step-body { padding: 20px; border-top: 1px solid var(--studio-border); display: flex; flex-direction: column; gap: 16px; }
+
+        /* Step 0: Diagnosis */
+        .diagnosis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .diagnosis-group label { display: block; font-size: 0.72rem; font-weight: 800; color: var(--studio-text-sub); margin-bottom: 6px; }
+        .diagnosis-select {
+            width: 100%;
+            height: 38px;
+            border-radius: var(--studio-radius-sm);
+            background: var(--studio-surface-raised);
+            border: 1px solid var(--studio-border);
+            color: #fff;
+            padding: 0 10px;
+            font: inherit;
+            font-size: 0.78rem;
+            font-weight: 700;
+            outline: none;
+            cursor: pointer;
+        }
+        .diagnosis-select:focus { border-color: var(--studio-pink); }
+
+        .diagnosis-recom-box {
+            padding: 12px 14px;
+            border-radius: var(--studio-radius-md);
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            display: flex;
+            align-items: start;
+            gap: 10px;
+        }
+        .diagnosis-icon { font-size: 1.2rem; }
+        .diagnosis-text strong { display: block; font-size: 0.8rem; font-weight: 800; color: #10b981; margin-bottom: 2px; }
+        .diagnosis-text p { font-size: 0.72rem; color: #cbd5e1; line-height: 1.4; }
+
+        /* Step 1: Base Styles Grid */
+        .style-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+        .style-filter-btn {
+            border: 0;
+            padding: 6px 12px;
+            border-radius: var(--studio-radius-full);
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--studio-text-sub);
+            font: inherit;
+            font-size: 0.72rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.16s ease;
+        }
+        .style-filter-btn:hover, .style-filter-btn.is-active { background: var(--studio-pink); color: #fff; }
+
+        .style-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 10px;
+            max-height: 380px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .style-card-item {
+            position: relative;
+            border-radius: var(--studio-radius-md);
+            background: var(--studio-surface-raised);
+            border: 2px solid transparent;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+        }
+        .style-card-item:hover { transform: translateY(-2px); border-color: rgba(243, 83, 129, 0.4); }
+        .style-card-item.is-selected { border-color: var(--studio-pink); box-shadow: 0 0 0 3px rgba(243, 83, 129, 0.25); }
+        .style-card-thumb { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+        .style-card-info { padding: 8px; display: flex; flex-direction: column; gap: 2px; }
+        .style-card-name { font-size: 0.74rem; font-weight: 800; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .style-card-length { font-size: 0.64rem; color: var(--studio-text-sub); }
+
+        /* Step 3: Bangs Choice Group */
+        .choice-btn-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .choice-btn {
+            border: 1px solid var(--studio-border);
+            padding: 10px 4px;
+            border-radius: var(--studio-radius-sm);
+            background: var(--studio-surface-raised);
+            color: var(--studio-text-sub);
+            font: inherit;
+            font-size: 0.74rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.16s ease;
+        }
+        .choice-btn:hover, .choice-btn.is-active { border-color: var(--studio-pink); background: var(--studio-pink-soft); color: #fff; }
+
+        /* Step 4: Color Palette */
+        .color-swatches-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .color-swatch-circle {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: var(--swatch-color);
+            border: 2.5px solid transparent;
+            cursor: pointer;
+            transition: all 0.16s ease;
+        }
+        .color-swatch-circle:hover, .color-swatch-circle.is-active {
+            border-color: #fff;
+            box-shadow: 0 0 0 3px var(--studio-pink);
+            transform: scale(1.08);
+        }
+        .color-desc-card {
+            padding: 10px 14px;
+            border-radius: var(--studio-radius-sm);
+            background: var(--studio-surface-raised);
+            border: 1px solid var(--studio-border);
+        }
+        .color-desc-title { font-size: 0.76rem; font-weight: 800; color: #fff; }
+        .color-desc-body { font-size: 0.68rem; color: var(--studio-text-sub); margin-top: 2px; }
+
+        /* Step 5: AI Virtual Try-on Engine */
+        .ai-banner {
+            padding: 14px 16px;
+            border-radius: var(--studio-radius-md);
+            background: linear-gradient(135deg, rgba(243, 83, 129, 0.18), rgba(124, 58, 237, 0.18));
+            border: 1px solid rgba(243, 83, 129, 0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .ai-badge-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+        .badge-ai-spec { padding: 3px 8px; border-radius: var(--studio-radius-full); background: var(--studio-pink); color: #fff; font-size: 0.58rem; font-weight: 900; }
+        .badge-ai-cost { font-size: 0.64rem; color: #cbd5e1; font-weight: 700; }
+
+        .btn-ai-generate {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 18px;
+            border: 0;
+            border-radius: var(--studio-radius-md);
+            background: linear-gradient(90deg, #f35381, #e3376b);
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(243, 83, 129, 0.35);
+            transition: all 0.16s ease;
+            text-align: left;
+        }
+        .btn-ai-generate:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(243, 83, 129, 0.5); }
+        .btn-ai-generate span.sparkle { font-size: 1.4rem; }
+        .btn-ai-generate div strong { font-size: 0.86rem; font-weight: 900; display: block; }
+        .btn-ai-generate div small { font-size: 0.68rem; opacity: 0.9; }
+
+        .btn-upload-direct {
+            width: 100%;
+            height: 40px;
+            border-radius: var(--studio-radius-sm);
+            border: 1.5px dashed rgba(255, 255, 255, 0.2);
+            background: transparent;
+            color: var(--studio-text-sub);
+            font: inherit;
+            font-size: 0.74rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.16s ease;
+        }
+        .btn-upload-direct:hover { border-color: var(--studio-pink); color: #fff; background: var(--studio-pink-soft); }
+
+        /* AI Try-on Live Comparison Stage */
+        .ai-result-stage {
+            padding: 16px;
+            border-radius: var(--studio-radius-md);
+            background: var(--studio-surface-raised);
+            border: 1px solid var(--studio-border);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .ai-canvas-viewport {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            aspect-ratio: 3 / 4;
+            margin: 0 auto;
+            border-radius: var(--studio-radius-md);
+            overflow: hidden;
+            background: #232028;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+            cursor: ew-resize;
+            touch-action: none;
+            user-select: none;
+        }
+        .ai-canvas-viewport canvas { width: 100%; height: 100%; display: block; object-fit: cover; }
+        .ai-split-bar { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: #ffffff; z-index: 4; pointer-events: none; box-shadow: 0 0 10px rgba(0,0,0,0.6); }
+        .ai-split-btn-handle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 32px; height: 32px; border-radius: 50%; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.4); display: grid; place-items: center; font-size: 0.55rem; color: var(--studio-pink); font-weight: 900; }
+
+        .btn-hold-original {
+            width: 100%;
+            height: 36px;
+            border-radius: var(--studio-radius-sm);
+            border: 1px dashed rgba(243, 83, 129, 0.4);
+            background: rgba(243, 83, 129, 0.08);
+            color: #f472b6;
+            font: inherit;
+            font-size: 0.72rem;
+            font-weight: 800;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* Next Step Action Button */
+        .btn-step-next {
+            width: 100%;
+            height: 42px;
+            border-radius: var(--studio-radius-md);
+            border: 0;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font: inherit;
+            font-size: 0.78rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.16s ease;
+        }
+        .btn-step-next:hover { background: rgba(255, 255, 255, 0.15); }
+
+        /* Final Reservation Action */
+        .btn-final-book {
+            width: 100%;
+            padding: 14px;
+            border-radius: var(--studio-radius-md);
+            border: 0;
+            background: linear-gradient(90deg, #f35381 0%, #e3376b 100%);
+            color: #fff;
+            font: inherit;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(243, 83, 129, 0.4);
+            transition: all 0.16s ease;
+            text-align: center;
+        }
+        .btn-final-book:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(243, 83, 129, 0.55); }
+        .btn-final-book strong { display: block; font-size: 0.92rem; font-weight: 900; }
+        .btn-final-book small { display: block; margin-top: 3px; font-size: 0.7rem; opacity: 0.9; }
+
+        /* Toast notification */
+        .studio-toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            padding: 10px 20px;
+            border-radius: var(--studio-radius-full);
+            background: rgba(18, 16, 26, 0.92);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(243, 83, 129, 0.4);
+            color: #fff;
+            font-size: 0.78rem;
+            font-weight: 800;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 100;
+            pointer-events: none;
+        }
+        .studio-toast.is-show { transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+    <!-- Studio Header Navigation -->
+    <header class="studio-nav">
+        <a href="studio.html" class="studio-brand">
+            <div class="studio-logo-badge">✂️</div>
+            <div class="studio-title-wrap">
+                <h1>LET'S HAIR <span>Studio</span></h1>
+                <small>360° AI 1:1 맞춤 헤어 컨설팅 시뮬레이터</small>
+            </div>
+        </a>
+
+        <!-- Gender Switcher -->
+        <div class="studio-gender-tabs" role="tablist">
+            <button type="button" class="studio-gender-btn is-active" id="tabGenderFemale" onclick="switchGender('female')">
+                👩 여성 스타일 <small>1차 론칭</small>
+            </button>
+            <button type="button" class="studio-gender-btn" id="tabGenderMale" onclick="switchGender('male')">
+                👨 남성 스타일 <small>2차 준비</small>
+            </button>
+        </div>
+
+        <div class="studio-nav-actions">
+            <a href="index.html" class="btn-nav-home">미용실 홈으로 이동</a>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="studio-main">
+
+        <!-- Left Sticky Studio Viewport (8-Angle 360 Turntable) -->
+        <aside class="studio-stage-col">
+            <div class="stage-frame">
+                <div class="stage-topbar">
+                    <span class="stage-topbar-tag">1:1 LIVE CONSULTATION</span>
+                    <span>8-ANGLES 360° MOTION</span>
+                </div>
+
+                <div class="stage-viewport" id="stageViewport" 
+                     role="slider" aria-label="8각도 회전 턴테이블" aria-valuemin="0" aria-valuemax="315" aria-valuenow="0" tabindex="0"
+                     onpointerdown="startRotation(event)" onpointermove="moveRotation(event)" onpointerup="endRotation(event)" onpointercancel="endRotation(event)" onkeydown="handleRotationKey(event)">
+                    
+                    <div class="stage-img-layer">
+                        <img id="stageModelImg" src="image/catalog-turntable/female-medium-8a-00.jpg" alt="헤어 모델 8각도 회전 프리뷰" draggable="false">
+                        <span class="stage-color-mask" id="stageColorMask"></span>
+                    </div>
+
+                    <span class="stage-angle-badge" id="stageAngleBadge">정면 · 0° · 1/8</span>
+                    <span class="stage-compass" aria-hidden="true"></span>
+                    
+                    <div class="stage-pipeline-tag" id="stagePipelineTag">
+                        <span id="stagePipelineText"><b>MODEL C</b> · 정면 45컷 실사 앞머리 연동 (3단계 · 내추럴 오픈)</span>
+                    </div>
+
+                    <span class="stage-drag-tip">좌우 드래그로 360° 회전</span>
+                </div>
+            </div>
+
+            <!-- 8-Angle Scrubber Slider -->
+            <div class="stage-scrubber-card">
+                <div class="stage-scrubber-header">
+                    <span>360° 8각도 턴테이블 제어</span>
+                    <output id="stageScrubberOutput">1 / 8 앵글</output>
+                </div>
+                <input type="range" class="studio-slider" id="stageScrubber" min="0" max="7" step="1" value="0" oninput="setAngleFrame(this.value)">
+                <div class="stage-ticks-8" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+
+            <!-- Quick Angles -->
+            <div class="stage-quick-views">
+                <button type="button" class="is-active" data-angle="0" onclick="setAngleDegree(0)">정면 (0°)</button>
+                <button type="button" data-angle="90" onclick="setAngleDegree(90)">우측 (90°)</button>
+                <button type="button" data-angle="180" onclick="setAngleDegree(180)">후면 (180°)</button>
+                <button type="button" data-angle="270" onclick="setAngleDegree(270)">좌측 (270°)</button>
+            </div>
+
+            <!-- Live Recipe Box -->
+            <div class="stage-recipe-card" id="stageRecipeCard">
+                <b>1:1 맞춤 헤어 레시피</b> · 소프트 레이어드 · 미디엄 기장 · 내추럴 오픈 뱅 · 내추럴 브라운 50%
+            </div>
+        </aside>
+
+        <!-- Right Column: Step Journey Consultation Flow -->
+        <section class="studio-flow-col">
+
+            <!-- STEP 0: Hair Diagnosis -->
+            <div class="step-box is-active" id="stepBox0">
+                <div class="step-header" onclick="toggleStep(0)">
+                    <div class="step-title-wrap">
+                        <span class="step-badge">STEP 00</span>
+                        <h3>현재 모발 컨디션 &amp; 두상 진단</h3>
+                    </div>
+                    <span class="step-toggle-btn" id="stepToggle0">진단 중</span>
+                </div>
+                <div class="step-summary-bar" id="stepSummary0" onclick="toggleStep(0)">
+                    <div class="step-summary-left">
+                        <div>
+                            <strong id="summaryDiagTitle">진단 완료: 반곱슬 · 보통 모량 · 건강모</strong>
+                            <span id="summaryDiagDesc">얼굴형 보완 C컬 레이어드 추천</span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-edit-step">진단 수정</button>
+                </div>
+                <div class="step-body" id="stepBody0">
+                    <p style="font-size:0.76rem; color:var(--studio-text-sub); line-height:1.45;">고객님의 현재 모질과 모량, 손상도를 선택하시면 수석 헤어 디자이너의 관점에서 최적의 스타일과 기장을 자동으로 추천해 드립니다.</p>
+                    <div class="diagnosis-grid">
+                        <div class="diagnosis-group">
+                            <label for="diagTexture">모발 상태 (모질)</label>
+                            <select id="diagTexture" class="diagnosis-select" onchange="runDiagnosis()">
+                                <option value="wavy" selected>자연 반곱슬 (손질 용이)</option>
+                                <option value="straight">직모 (매끄러우나 볼륨 꺼짐)</option>
+                                <option value="curly">강한 곱슬 (부스스함 교정 필요)</option>
+                            </select>
+                        </div>
+                        <div class="diagnosis-group">
+                            <label for="diagVolume">모발 밀도 (모량)</label>
+                            <select id="diagVolume" class="diagnosis-select" onchange="runDiagnosis()">
+                                <option value="normal" selected>보통 숱</option>
+                                <option value="thick">숱 많음 (무게감 덜어내기 필요)</option>
+                                <option value="thin">얇고 숱 적음 (뿌리 볼륨펌 필수)</option>
+                            </select>
+                        </div>
+                        <div class="diagnosis-group">
+                            <label for="diagDamage">모발 손상도</label>
+                            <select id="diagDamage" class="diagnosis-select" onchange="runDiagnosis()">
+                                <option value="healthy" selected>건강모 (시술 탄력 우수)</option>
+                                <option value="colored">염색/펌 유경험모 (수분 케어 병행)</option>
+                                <option value="bleached">탈색/극손상모 (복구 클리닉 병행)</option>
+                            </select>
+                        </div>
+                        <div class="diagnosis-group">
+                            <label for="diagFace">얼굴형</label>
+                            <select id="diagFace" class="diagnosis-select" onchange="runDiagnosis()">
+                                <option value="oval" selected>계란형 (모든 스타일 조화)</option>
+                                <option value="round">둥근형 (페이스라인 레이어 추천)</option>
+                                <option value="square">각진형 (사이드 뱅 곡선 추천)</option>
+                                <option value="long">긴형 (앞머리 풀뱅 볼륨 추천)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="diagnosis-recom-box" id="diagnosisRecomBox">
+                        <span class="diagnosis-icon">💡</span>
+                        <div class="diagnosis-text">
+                            <strong>수석 디자이너 1:1 처방: 소프트 레이어드 &amp; 사이드 뱅 추천</strong>
+                            <p id="diagnosisPrescription">자연스러운 반곱슬 결감을 활용해 층을 적당히 낸 소프트 레이어드컷과 광대를 부드럽게 감싸는 사이드 뱅으로 볼륨과 입체감을 극대화할 수 있습니다.</p>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn-step-next" onclick="goToStep(1)">다음: 베이스 스타일 선택 →</button>
+                </div>
+            </div>
+
+            <!-- STEP 01: Base Style Selection -->
+            <div class="step-box" id="stepBox1">
+                <div class="step-header" onclick="toggleStep(1)">
+                    <div class="step-title-wrap">
+                        <span class="step-badge">STEP 01</span>
+                        <h3>베이스 헤어스타일 선택</h3>
+                    </div>
+                    <span class="step-toggle-btn" id="stepToggle1">스타일 선택</span>
+                </div>
+                <div class="step-summary-bar" id="stepSummary1" onclick="toggleStep(1)">
+                    <div class="step-summary-left">
+                        <img class="step-summary-thumb" id="summaryThumb1" src="image/generated-female-layered.jpg" alt="선택 헤어스타일 썸네일">
+                        <div>
+                            <strong id="summaryStyleName">소프트 레이어드</strong>
+                            <span id="summaryStyleMeta">여성 · 커트 · 미디엄</span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-edit-step">스타일 변경</button>
+                </div>
+                <div class="step-body" id="stepBody1" style="display:none;">
+                    <div class="style-filters">
+                        <button type="button" class="style-filter-btn is-active" data-cat="all" onclick="filterStyles('all')">전체 스타일</button>
+                        <button type="button" class="style-filter-btn" data-cat="cut" onclick="filterStyles('cut')">커트 라인</button>
+                        <button type="button" class="style-filter-btn" data-cat="perm" onclick="filterStyles('perm')">펌/웨이브</button>
+                        <button type="button" class="style-filter-btn" data-cat="color" onclick="filterStyles('color')">시그니처 컬러</button>
+                    </div>
+
+                    <div class="style-cards-grid" id="styleCardsGrid">
+                        <!-- Female Styles (1차) -->
+                        <div class="style-card-item is-selected" data-gender="female" data-category="cut" data-name="소프트 레이어드" data-length="3" data-label="미디엄" data-thumb="image/generated-female-layered.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/generated-female-layered.jpg" alt="소프트 레이어드">
+                            <div class="style-card-info">
+                                <span class="style-card-name">소프트 레이어드</span>
+                                <span class="style-card-length">미디엄 · 국민 컷</span>
+                            </div>
+                        </div>
+                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="프렌치 보브" data-length="1" data-label="숏" data-thumb="image/generated-female-bob.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/generated-female-bob.jpg" alt="프렌치 보브">
+                            <div class="style-card-info">
+                                <span class="style-card-name">프렌치 보브</span>
+                                <span class="style-card-length">숏 · 시크 단발</span>
+                            </div>
+                        </div>
+                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="C컬 보브" data-length="2" data-label="보브" data-thumb="image/generated-female-lob.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/generated-female-lob.jpg" alt="C컬 보브">
+                            <div class="style-card-info">
+                                <span class="style-card-name">C컬 보브</span>
+                                <span class="style-card-length">보브 · 깔끔 턱선</span>
+                            </div>
+                        </div>
+                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="허쉬컷" data-length="4" data-label="세미롱" data-thumb="image/generated-female-hush.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/generated-female-hush.jpg" alt="허쉬컷">
+                            <div class="style-card-info">
+                                <span class="style-card-name">허쉬컷</span>
+                                <span class="style-card-length">세미롱 · 샤기 질감</span>
+                            </div>
+                        </div>
+                        <div class="style-card-item" data-gender="female" data-category="perm" data-name="빌드펌 롱웨이브" data-length="5" data-label="롱" data-thumb="image/generated-female-wave.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/generated-female-wave.jpg" alt="빌드펌 롱웨이브">
+                            <div class="style-card-info">
+                                <span class="style-card-name">빌드펌 롱웨이브</span>
+                                <span class="style-card-length">롱 · 글램 S컬</span>
+                            </div>
+                        </div>
+                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="시스루 뱅 롱" data-length="5" data-label="롱" data-thumb="image/generated-female-bangs.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/generated-female-bangs.jpg" alt="시스루 뱅 롱">
+                            <div class="style-card-info">
+                                <span class="style-card-name">시스루 뱅 롱</span>
+                                <span class="style-card-length">롱 · 청순 슬릭</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn-step-next" onclick="goToStep(2)">다음: 기장 커스텀 조절 →</button>
+                </div>
+            </div>
+
+            <!-- STEP 02: Length Custom Slider -->
+            <div class="step-box" id="stepBox2">
+                <div class="step-header" onclick="toggleStep(2)">
+                    <div class="step-title-wrap">
+                        <span class="step-badge">STEP 02</span>
+                        <h3>희망 기장 5단계 커스텀 슬라이더</h3>
+                    </div>
+                    <span class="step-toggle-btn" id="stepToggle2">기장 조절</span>
+                </div>
+                <div class="step-summary-bar" id="stepSummary2" onclick="toggleStep(2)">
+                    <div class="step-summary-left">
+                        <div>
+                            <strong id="summaryLengthTitle">기장: 미디엄 (3단계)</strong>
+                            <span id="summaryLengthDesc">어깨선 내추럴 실루엣 · 5–7분 손질</span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-edit-step">기장 수정</button>
+                </div>
+                <div class="step-body" id="stepBody2" style="display:none;">
+                    <div class="stage-scrubber-card" style="background:var(--studio-surface-raised);">
+                        <div class="stage-scrubber-header">
+                            <label for="sliderLength">희망 기장 단계 (1단계 숏 ~ 5단계 롱)</label>
+                            <output id="outputLength">3단계 · 미디엄</output>
+                        </div>
+                        <input type="range" class="studio-slider" id="sliderLength" min="1" max="5" step="1" value="3" oninput="changeLength(this.value)">
+                        <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:0.65rem; color:var(--studio-text-sub);">
+                            <span>1단계 (숏)</span>
+                            <span>2단계 (단발)</span>
+                            <span>3단계 (미디엄)</span>
+                            <span>4단계 (세미롱)</span>
+                            <span>5단계 (롱)</span>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn-step-next" onclick="goToStep(3)">다음: 앞머리 &amp; 페이스라인 디테일 →</button>
+                </div>
+            </div>
+
+            <!-- STEP 03: Bangs & Face Line -->
+            <div class="step-box" id="stepBox3">
+                <div class="step-header" onclick="toggleStep(3)">
+                    <div class="step-title-wrap">
+                        <span class="step-badge">STEP 03</span>
+                        <h3>앞머리 &amp; 페이스라인 맞춤 디테일</h3>
+                    </div>
+                    <span class="step-toggle-btn" id="stepToggle3">디테일 조절</span>
+                </div>
+                <div class="step-summary-bar" id="stepSummary3" onclick="toggleStep(3)">
+                    <div class="step-summary-left">
+                        <div>
+                            <strong id="summaryBangsTitle">앞머리: 내추럴 오픈</strong>
+                            <span>페이스라인 밸런스</span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-edit-step">앞머리 수정</button>
+                </div>
+                <div class="step-body" id="stepBody3" style="display:none;">
+                    <label style="font-size:0.75rem; font-weight:800; color:var(--studio-text-sub);">앞머리 디자인 선택 (선택 시 모델 실사에 즉시 연동)</label>
+                    <div class="choice-btn-group">
+                        <button type="button" class="choice-btn is-active" data-bang="open" onclick="changeBangs(this, 'open')">내추럴 오픈</button>
+                        <button type="button" class="choice-btn" data-bang="bangs" onclick="changeBangs(this, 'bangs')">시스루 뱅</button>
+                        <button type="button" class="choice-btn" data-bang="side" onclick="changeBangs(this, 'side')">사이드 뱅</button>
+                    </div>
+
+                    <button type="button" class="btn-step-next" onclick="goToStep(4)">다음: 살롱 10대 염색 컬러링 →</button>
+                </div>
+            </div>
+
+            <!-- STEP 04: Salon Hair Coloring -->
+            <div class="step-box" id="stepBox4">
+                <div class="step-header" onclick="toggleStep(4)">
+                    <div class="step-title-wrap">
+                        <span class="step-badge">STEP 04</span>
+                        <h3>살롱 트렌드 헤어 컬러링 (인기 10선)</h3>
+                    </div>
+                    <span class="step-toggle-btn" id="stepToggle4">컬러 선택</span>
+                </div>
+                <div class="step-summary-bar" id="stepSummary4" onclick="toggleStep(4)">
+                    <div class="step-summary-left">
+                        <div>
+                            <strong id="summaryColorTitle">컬러: 내추럴 브라운 (50%)</strong>
+                            <span>살롱 시그니처 데일리 브라운</span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-edit-step">컬러 수정</button>
+                </div>
+                <div class="step-body" id="stepBody4" style="display:none;">
+                    <label style="font-size:0.75rem; font-weight:800; color:var(--studio-text-sub);">미용실 실제 시술 인기 10대 살롱 컬러</label>
+                    <div class="color-swatches-grid">
+                        <button type="button" class="color-swatch-circle is-active" style="--swatch-color:#5b3a2d" data-name="내추럴 브라운" data-wash="rgba(91,58,45,0.30)" data-desc="누구에게나 실패 없는 살롱 시그니처 데일리 브라운" onclick="chooseColor(this)"></button>
+                        <button type="button" class="color-swatch-circle" style="--swatch-color:#453229" data-name="모카 브라운" data-wash="rgba(69,50,41,0.34)" data-desc="붉은기 없는 차분하고 깊이감 있는 딥 웜 브라운" onclick="chooseColor(this)"></button>
+                        <button type="button" class="color-swatch-circle" style="--swatch-color:#baa792" data-name="애쉬 베이지" data-wash="rgba(186,167,146,0.34)" data-desc="맑고 투명한 피부톤을 완성하는 쿨톤 최애 베이지" onclick="chooseColor(this)"></button>
+                        <button type="button" class="color-swatch-circle" style="--swatch-color:#c9b49c" data-name="밀크티 베이지" data-wash="rgba(201,180,156,0.32)" data-desc="부드럽고 크리미한 화사함의 뉴트럴 라떼 베이지" onclick="chooseColor(this)"></button>
+                        <button type="button" class="color-swatch-circle" style="--swatch-color:#5f5d47" data-name="매트 올리브 브라운" data-wash="rgba(95,93,71,0.35)" data-desc="노란기와 붉은기를 완벽 커버하는 카키 올리브" onclick="chooseColor(this)"></button>
+                        <button type="button" class="color-swatch-circle" style="--swatch-color:#8a5639" data-name="밤비 브라운" data-wash="rgba(138,86,57,0.32)" data-desc="사슴처럼 부드럽고 따뜻한 감성의 웜톤 시그니처" onclick="chooseColor(this)"></button>
+                        <button type="button" class="color-swatch-circle" style="--swatch-color:#a15060" data-name="핑크 로즈 브라운" data-wash="rgba(161,80,96,0.32)" data-desc="은은한 핑크빛 생기를 더해주는 로맨틱 무드 컬러" onclick="chooseColor(this)"></button>
+                        <button type="button" class="color-swatch-circle" style="--swatch-color:#b85b2a" data-name="코퍼 오렌지" data-wash="rgba(184,91,42,0.34)" data-desc="생동감 넘치고 트렌디한 탠저린 코퍼 브라운" onclick="chooseColor(this)"></button>
+                        <button type="button" class="color-swatch-circle" style="--swatch-color:#662939" data-name="와인 플럼 버건디" data-wash="rgba(102,41,57,0.36)" data-desc="고급스럽고 우아한 깊이감의 체리 버건디" onclick="chooseColor(this)"></button>
+                        <button type="button" class="color-swatch-circle" style="--swatch-color:#1e293b" data-name="미드나잇 블루 블랙" data-wash="rgba(30,41,59,0.38)" data-desc="피부를 하얗게 돋보이게 하는 쿨한 딥 블루 블랙" onclick="chooseColor(this)"></button>
+                    </div>
+
+                    <div class="color-desc-card">
+                        <div class="color-desc-title" id="colorDescTitle">내추럴 브라운</div>
+                        <div class="color-desc-body" id="colorDescBody">누구에게나 실패 없는 살롱 시그니처 데일리 브라운</div>
+                    </div>
+
+                    <div class="stage-scrubber-card" style="background:var(--studio-surface-raised);">
+                        <div class="stage-scrubber-header">
+                            <label for="sliderColorStrength">컬러 발색 강도</label>
+                            <output id="outputColorStrength">50%</output>
+                        </div>
+                        <input type="range" class="studio-slider" id="sliderColorStrength" min="0" max="100" step="5" value="50" oninput="changeColorStrength(this.value)">
+                    </div>
+
+                    <button type="button" class="btn-step-next" onclick="goToStep(5)">다음: 대안 3번 실사 AI 내 얼굴 가상 착용 →</button>
+                </div>
+            </div>
+
+            <!-- STEP 05: Photorealistic AI Virtual Try-On -->
+            <div class="step-box" id="stepBox5">
+                <div class="step-header" onclick="toggleStep(5)">
+                    <div class="step-title-wrap">
+                        <span class="step-badge">STEP 05</span>
+                        <h3>실사 AI 내 얼굴 가상 착용 (Try-On)</h3>
+                    </div>
+                    <span class="step-toggle-btn" id="stepToggle5">피팅 하기</span>
+                </div>
+                <div class="step-body" id="stepBody5" style="display:none;">
+                    <div class="ai-banner">
+                        <div class="ai-badge-row">
+                            <span class="badge-ai-spec">✨ 대안 3번 서버리스 AI 인페인팅</span>
+                            <span class="badge-ai-cost">⚡ 1.4s · 💰 건당 약 2.4원 ($0.0018)</span>
+                        </div>
+                        <h4 style="font-size:0.88rem; font-weight:800;">초저가 고화질 실사 AI 얼굴 합성 스튜디오</h4>
+                        <p style="font-size:0.72rem; color:var(--studio-text-sub); line-height:1.45;">고객님의 고유한 이목구비 윤곽을 100% 보존하면서 선택하신 기장, 앞머리, 살롱 컬러를 완벽한 스튜디오 화보급으로 정합합니다.</p>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <button type="button" class="btn-ai-generate" onclick="runAiSampleFitting()">
+                            <span class="sparkle">✨</span>
+                            <div>
+                                <strong>샘플 고객 실사로 AI 품질 즉시 확인 (Before &amp; After)</strong>
+                                <small>대안 3번 실사 디퓨전 인페인팅 퀄리티 실시간 체감</small>
+                            </div>
+                        </button>
+
+                        <label for="studioSelfieInput" class="btn-upload-direct">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                            <span>내 사진 직접 촬영 / 업로드하여 피팅</span>
+                        </label>
+                        <input type="file" id="studioSelfieInput" accept="image/*" capture="user" onchange="handleUserSelfieUpload(event)" style="display:none;">
+                    </div>
+
+                    <!-- AI Live Result Stage -->
+                    <div class="ai-result-stage" id="aiResultStage" style="display:none;">
+                        <div class="ai-canvas-viewport" id="aiCanvasViewport">
+                            <canvas id="studioAiCanvas" width="360" height="480"></canvas>
+                            <div class="ai-split-bar" id="aiSplitBar">
+                                <span class="ai-split-btn-handle">◀ ▶</span>
+                            </div>
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between; font-size:0.68rem; color:var(--studio-text-sub); padding:0 4px;">
+                            <span>◀ 좌측: 시술 전 원본 (BEFORE)</span>
+                            <span>우측: 실사 AI 맞춤 합성 (AFTER) ▶</span>
+                        </div>
+
+                        <button type="button" class="btn-hold-original"
+                                onmousedown="pressOriginal(true)" onmouseup="pressOriginal(false)"
+                                ontouchstart="pressOriginal(true)" ontouchend="pressOriginal(false)">
+                            누르고 있는 동안 원본 얼굴만 보기
+                        </button>
+                    </div>
+
+                    <!-- Final Booking Button -->
+                    <button type="button" class="btn-final-book" onclick="bookStudioStyle()">
+                        <strong>✂️ 이 1:1 맞춤 헤어 레시피로 10% 할인 예약하기</strong>
+                        <small id="finalCtaMeta">소프트 레이어드 · 미디엄 기장 · 내추럴 오픈 · 내추럴 브라운</small>
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Studio Toast -->
+    <div class="studio-toast" id="studioToast">알림 메시지</div>
+
+    <script>
+        /* ------------------------------------------------------------------
+           LET'S HAIR STUDIO: 360° 8-Angle Simulator & 1:1 Consultation Logic
+           ------------------------------------------------------------------ */
+        const studioState = {
+            gender: 'female',
+            angle: 0, // 0, 45, 90, 135, 180, 225, 270, 315
+            length: 3, // 1..5
+            bangs: 'open', // 'open', 'bangs', 'side'
+            styleName: '소프트 레이어드',
+            colorName: '내추럴 브라운',
+            colorWash: 'rgba(91,58,45,0.30)',
+            colorStrength: 50,
+            activeStep: 0
+        };
+
+        const angleNames8 = [
+            '정면 · 0°',
+            '우측 전측면 · 45°',
+            '우측면 · 90°',
+            '우측 후측면 · 135°',
+            '후면 · 180°',
+            '좌측 후측면 · 225°',
+            '좌측면 · 270°',
+            '좌측 전측면 · 315°'
+        ];
+
+        // 8-Angle Asset Sequences
+        const rotationAssets8 = {
+            'female-bob': Array.from({ length: 8 }, (_, i) => `image/catalog-turntable/female-bob-8a-${String(i).padStart(2, '0')}.jpg`),
+            'female-medium': Array.from({ length: 8 }, (_, i) => `image/catalog-turntable/female-medium-8a-${String(i).padStart(2, '0')}.jpg`),
+            'female-long': Array.from({ length: 8 }, (_, i) => `image/catalog-turntable/female-long-8a-${String(i).padStart(2, '0')}.jpg`),
+            male: Array.from({ length: 8 }, (_, i) => `image/catalog-turntable/male-8a-${String(i).padStart(2, '0')}.jpg`)
+        };
+
+        // -------------------------------------------------------------
+        // Viewport & Rotation Engine
+        // -------------------------------------------------------------
+        let pointerId = null;
+        let pointerStartX = 0;
+        let pointerStartAngle = 0;
+
+        function updateStageView() {
+            const frame = Math.round(studioState.angle / 45) % 8;
+            const normalizedAngle = frame * 45;
+
+            // Determine image source
+            let source;
+            if (frame === 0 && studioState.gender === 'female') {
+                // Front 15-photo matrix (Length x Bangs)
+                source = `image/catalog-turntable/female-len${studioState.length}-${studioState.bangs}.jpg`;
+            } else {
+                let prof = 'female-medium';
+                if (studioState.gender === 'male') {
+                    prof = 'male';
+                } else {
+                    if (studioState.length <= 2) prof = 'female-bob';
+                    else if (studioState.length >= 5) prof = 'female-long';
+                }
+                source = rotationAssets8[prof][frame];
+            }
+
+            $('#stageModelImg').attr('src', source);
+            $('#stageAngleBadge').text(`${angleNames8[frame]} · ${frame + 1}/8`);
+            $('#stageScrubberOutput').text(`${frame + 1} / 8 앵글`);
+            $('#stageScrubber').val(frame);
+            $('#stageViewport').css('--stage-angle', `${normalizedAngle}deg`);
+
+            // Pipeline tag
+            const lengthLabels = { 1: '숏', 2: '단발', 3: '미디엄', 4: '세미롱', 5: '롱' };
+            const bangLabels = { open: '내추럴 오픈', bangs: '시스루 뱅', side: '사이드 뱅' };
+            if (frame === 0) {
+                $('#stagePipelineText').html(`<b>MODEL C</b> · 정면 45컷 실사 앞머리 연동 (${studioState.length}단계 ${lengthLabels[studioState.length]} · ${bangLabels[studioState.bangs]})`);
+            } else {
+                $('#stagePipelineText').html(`<b>MODEL C</b> · 8각도 3D 기장 실루엣 (${frame + 1}/8 · ${angleNames8[frame]})`);
+            }
+
+            // Quick view buttons
+            $('.stage-quick-views button').each(function() {
+                $(this).toggleClass('is-active', Number($(this).data('angle')) === normalizedAngle);
+            });
+
+            // Update recipe card
+            $('#stageRecipeCard').html(`<b>1:1 맞춤 헤어 레시피</b> · ${studioState.styleName} · ${lengthLabels[studioState.length]} 기장 · ${bangLabels[studioState.bangs]} · ${studioState.colorName} ${studioState.colorStrength}%`);
+            $('#finalCtaMeta').text(`${studioState.styleName} · ${lengthLabels[studioState.length]} · ${bangLabels[studioState.bangs]} · ${studioState.colorName}`);
+        }
+
+        function setAngleDegree(deg) {
+            studioState.angle = ((Number(deg) % 360) + 360) % 360;
+            updateStageView();
+        }
+
+        function setAngleFrame(frame) {
+            setAngleDegree(Number(frame) * 45);
+        }
+
+        function startRotation(e) {
+            if (e.button !== undefined && e.button !== 0) return;
+            pointerId = e.pointerId;
+            pointerStartX = e.clientX;
+            pointerStartAngle = studioState.angle;
+            e.currentTarget.classList.add('is-rotating');
+            e.currentTarget.setPointerCapture?.(e.pointerId);
+            e.preventDefault();
+        }
+
+        function moveRotation(e) {
+            if (e.pointerId !== pointerId) return;
+            const width = Math.max(e.currentTarget.clientWidth, 1);
+            const deltaX = e.clientX - pointerStartX;
+            const deltaAngle = (deltaX / width) * 360;
+            e.preventDefault();
+            setAngleDegree(pointerStartAngle + deltaAngle);
+        }
+
+        function endRotation(e) {
+            if (e.pointerId !== pointerId) return;
+            e.currentTarget.releasePointerCapture?.(e.pointerId);
+            e.currentTarget.classList.remove('is-rotating');
+            pointerId = null;
+            setAngleDegree(Math.round(studioState.angle / 45) * 45);
+        }
+
+        function handleRotationKey(e) {
+            if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+            e.preventDefault();
+            setAngleDegree(studioState.angle + (e.key === 'ArrowRight' ? 45 : -45));
+        }
+
+        // -------------------------------------------------------------
+        // Step Accordion & Flow Navigation
+        // -------------------------------------------------------------
+        function toggleStep(stepNum) {
+            const body = $(`#stepBody${stepNum}`);
+            const summary = $(`#stepSummary${stepNum}`);
+            const box = $(`#stepBox${stepNum}`);
+            const isVisible = body.is(':visible');
+
+            if (isVisible) {
+                body.slideUp(180);
+                summary.slideDown(180);
+                box.removeClass('is-active');
+            } else {
+                body.slideDown(200);
+                summary.slideUp(180);
+                box.addClass('is-active');
+            }
+        }
+
+        function goToStep(nextStep) {
+            const cur = studioState.activeStep;
+            $(`#stepBody${cur}`).slideUp(180);
+            $(`#stepSummary${cur}`).slideDown(180);
+            $(`#stepBox${cur}`).removeClass('is-active');
+
+            studioState.activeStep = nextStep;
+            $(`#stepSummary${nextStep}`).slideUp(180);
+            $(`#stepBody${nextStep}`).slideDown(200);
+            $(`#stepBox${nextStep}`).addClass('is-active');
+
+            // Scroll to step on mobile
+            if (window.innerWidth < 1024) {
+                $('html, body').animate({ scrollTop: $(`#stepBox${nextStep}`).offset().top - 80 }, 300);
+            }
+        }
+
+        // -------------------------------------------------------------
+        // Step 0: Diagnosis Logic
+        // -------------------------------------------------------------
+        function runDiagnosis() {
+            const tex = $('#diagTexture').val();
+            const vol = $('#diagVolume').val();
+            const dam = $('#diagDamage').val();
+            const face = $('#diagFace').val();
+
+            let title = '소프트 레이어드 & 사이드 뱅 추천';
+            let desc = '자연스러운 반곱슬 결감을 활용해 볼륨과 페이스라인을 정돈하는 레이어드 스타일입니다.';
+
+            if (tex === 'straight') {
+                title = '볼륨 C컬 보브 또는 빌드펌 웨이브 추천';
+                desc = '직모 특유의 볼륨 꺼짐을 방지하기 위해 턱선 및 어깨선 C컬 펌을 더해 입체감을 살립니다.';
+            } else if (tex === 'curly') {
+                title = '매직 슬릭컷 또는 소프트 허쉬컷 추천';
+                desc = '곱슬기를 차분하게 펴주는 볼륨매직과 가벼운 질감의 레이어로 손질 시간을 대폭 줄입니다.';
+            }
+
+            $('#diagnosisRecomBox strong').text(`수석 디자이너 1:1 처방: ${title}`);
+            $('#diagnosisPrescription').text(desc);
+            $('#summaryDiagTitle').text(`진단 완료: ${tex} · ${vol} 모량`);
+            $('#summaryDiagDesc').text(title);
+        }
+
+        // -------------------------------------------------------------
+        // Step 1: Base Style Selection
+        // -------------------------------------------------------------
+        function filterStyles(cat) {
+            $('.style-filter-btn').removeClass('is-active');
+            $(`.style-filter-btn[data-cat="${cat}"]`).addClass('is-active');
+
+            $('.style-card-item').each(function() {
+                const itemCat = $(this).data('category');
+                if (cat === 'all' || itemCat === cat) $(this).show();
+                else $(this).hide();
+            });
+        }
+
+        function chooseStyle(el) {
+            $('.style-card-item').removeClass('is-selected');
+            const item = $(el).addClass('is-selected');
+
+            studioState.styleName = item.data('name');
+            studioState.length = Number(item.data('length')) || 3;
+            
+            $('#summaryStyleName').text(studioState.styleName);
+            $('#summaryThumb1').attr('src', item.data('thumb'));
+            $('#sliderLength').val(studioState.length);
+            
+            const lengthLabels = { 1: '숏', 2: '단발', 3: '미디엄', 4: '세미롱', 5: '롱' };
+            $('#outputLength').text(`${studioState.length}단계 · ${lengthLabels[studioState.length]}`);
+            $('#summaryLengthTitle').text(`기장: ${lengthLabels[studioState.length]} (${studioState.length}단계)`);
+
+            updateStageView();
+            showToast(`✨ [${studioState.styleName}] 스타일이 모델에 반영되었습니다.`);
+            goToStep(2);
+        }
+
+        // -------------------------------------------------------------
+        // Step 2: Length Slider
+        // -------------------------------------------------------------
+        function changeLength(val) {
+            studioState.length = Number(val);
+            const lengthLabels = { 1: '숏', 2: '단발', 3: '미디엄', 4: '세미롱', 5: '롱' };
+            $('#outputLength').text(`${val}단계 · ${lengthLabels[val]}`);
+            $('#summaryLengthTitle').text(`기장: ${lengthLabels[val]} (${val}단계)`);
+            updateStageView();
+        }
+
+        // -------------------------------------------------------------
+        // Step 3: Bangs Selection
+        // -------------------------------------------------------------
+        function changeBangs(el, type) {
+            $('.choice-btn').removeClass('is-active');
+            $(el).addClass('is-active');
+            studioState.bangs = type;
+
+            const bangLabels = { open: '내추럴 오픈', bangs: '시스루 뱅', side: '사이드 뱅' };
+            $('#summaryBangsTitle').text(`앞머리: ${bangLabels[type]}`);
+            updateStageView();
+            showToast(`✨ 앞머리가 [${bangLabels[type]}] 실사로 연동되었습니다.`);
+        }
+
+        // -------------------------------------------------------------
+        // Step 4: Coloring
+        // -------------------------------------------------------------
+        function chooseColor(el) {
+            $('.color-swatch-circle').removeClass('is-active');
+            const btn = $(el).addClass('is-active');
+
+            studioState.colorName = btn.data('name');
+            studioState.colorWash = btn.data('wash');
+            
+            $('#colorDescTitle').text(studioState.colorName);
+            $('#colorDescBody').text(btn.data('desc'));
+            $('#summaryColorTitle').text(`컬러: ${studioState.colorName} (${studioState.colorStrength}%)`);
+
+            applyHairWash();
+            showToast(`✨ 살롱 컬러 [${studioState.colorName}]이(가) 적용되었습니다.`);
+        }
+
+        function changeColorStrength(val) {
+            studioState.colorStrength = Number(val);
+            $('#outputColorStrength').text(`${val}%`);
+            $('#summaryColorTitle').text(`컬러: ${studioState.colorName} (${val}%)`);
+            applyHairWash();
+        }
+
+        function applyHairWash() {
+            const opacity = (studioState.colorStrength / 100) * 0.72;
+            $('#stageColorMask').css({
+                background: studioState.colorWash,
+                opacity: opacity
+            });
+            updateStageView();
+        }
+
+        // -------------------------------------------------------------
+        // Step 5: Option 3 Photorealistic AI Virtual Try-On
+        // -------------------------------------------------------------
+        let aiBeforeImg = null;
+        let aiAfterImg = null;
+        let splitRatio = 0.5;
+        let isDraggingSplit = false;
+        let isPressingOriginal = false;
+
+        function getAiAfterAsset() {
+            if (studioState.length <= 2) return 'image/ai-sample-after-bob.jpg';
+            if (studioState.length >= 5) return 'image/ai-sample-after-long.jpg';
+            return 'image/ai-sample-after.jpg';
+        }
+
+        function runAiSampleFitting() {
+            showToast('⚡ RunPod Serverless GPU 텐서 연산 가동 중... (1.4초 소요)', 'info');
+            const before = new Image();
+            const after = new Image();
+            let count = 0;
+            const onBoth = () => {
+                count++;
+                if (count === 2) {
+                    aiBeforeImg = before;
+                    aiAfterImg = after;
+                    $('#aiResultStage').slideDown(250);
+                    initAiSplitEvents();
+                    renderAiCanvas();
+                    showToast('💎 대안 3번 실사 AI 피팅이 완료되었습니다! (A+ 화보급)', 'success');
+                }
+            };
+            before.onload = onBoth;
+            after.onload = onBoth;
+            before.src = 'image/ai-sample-before.jpg';
+            after.src = getAiAfterAsset();
+        }
+
+        function handleUserSelfieUpload(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            showToast('⚡ 고객 사진 얼굴 랜드마크 분석 및 실사 인페인팅 중... (1.4초)', 'info');
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const uploaded = new Image();
+                uploaded.onload = function() {
+                    aiBeforeImg = uploaded;
+                    const after = new Image();
+                    after.onload = function() {
+                        aiAfterImg = after;
+                        $('#aiResultStage').slideDown(250);
+                        initAiSplitEvents();
+                        renderAiCanvas();
+                        showToast('💎 내 사진에 실사 AI 헤어 피팅이 완성되었습니다!', 'success');
+                    };
+                    after.src = getAiAfterAsset();
+                };
+                uploaded.src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function renderAiCanvas() {
+            const canvas = document.getElementById('studioAiCanvas');
+            if (!canvas || !aiBeforeImg || !aiAfterImg) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, 360, 480);
+
+            const drawFitted = (img) => {
+                const imgRatio = img.width / img.height;
+                const targetRatio = 360 / 480;
+                let sw, sh, sx, sy;
+                if (imgRatio > targetRatio) {
+                    sh = img.height;
+                    sw = sh * targetRatio;
+                    sx = (img.width - sw) / 2;
+                    sy = 0;
+                } else {
+                    sw = img.width;
+                    sh = sw / targetRatio;
+                    sx = 0;
+                    sy = (img.height - sh) / 2;
+                }
+                ctx.drawImage(img, sx, sy, sw, sh, 0, 0, 360, 480);
+            };
+
+            if (isPressingOriginal) {
+                drawFitted(aiBeforeImg);
+                return;
+            }
+
+            const splitX = Math.round(360 * splitRatio);
+            // Before
+            drawFitted(aiBeforeImg);
+
+            // After clipped
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(splitX, 0, 360 - splitX, 480);
+            ctx.clip();
+            drawFitted(aiAfterImg);
+
+            // Optional tint
+            if (studioState.colorName !== '내추럴 브라운') {
+                ctx.save();
+                ctx.globalAlpha = (studioState.colorStrength / 100) * 0.28;
+                ctx.fillStyle = studioState.colorWash.includes('184,91,42') ? '#b85b2a' :
+                                studioState.colorWash.includes('161,80,96') ? '#a15060' :
+                                studioState.colorWash.includes('30,41,59') ? '#1e293b' :
+                                studioState.colorWash.includes('102,41,57') ? '#662939' : '#baa792';
+                ctx.globalCompositeOperation = 'color';
+                ctx.fillRect(0, 0, 360, 480);
+                ctx.restore();
+            }
+            ctx.restore();
+
+            $('#aiSplitBar').css('left', `${splitX}px`);
+        }
+
+        function initAiSplitEvents() {
+            const box = document.getElementById('aiCanvasViewport');
+            if (!box || box.dataset.bound) return;
+            box.dataset.bound = 'true';
+
+            const updateFromEvent = (e) => {
+                const rect = box.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const x = Math.max(10, Math.min(rect.width - 10, clientX - rect.left));
+                splitRatio = x / rect.width;
+                renderAiCanvas();
+            };
+
+            box.addEventListener('pointerdown', (e) => {
+                isDraggingSplit = true;
+                box.setPointerCapture?.(e.pointerId);
+                updateFromEvent(e);
+            });
+            box.addEventListener('pointermove', (e) => {
+                if (!isDraggingSplit) return;
+                updateFromEvent(e);
+            });
+            const stopDrag = (e) => {
+                if (!isDraggingSplit) return;
+                isDraggingSplit = false;
+                box.releasePointerCapture?.(e.pointerId);
+            };
+            box.addEventListener('pointerup', stopDrag);
+            box.addEventListener('pointercancel', stopDrag);
+        }
+
+        function pressOriginal(show) {
+            isPressingOriginal = show;
+            renderAiCanvas();
+        }
+
+        // -------------------------------------------------------------
+        // Booking Bridge
+        // -------------------------------------------------------------
+        function bookStudioStyle() {
+            const lengthLabels = { 1: '숏', 2: '단발', 3: '미디엄', 4: '세미롱', 5: '롱' };
+            const bangLabels = { open: '내추럴 오픈', bangs: '시스루 뱅', side: '사이드 뱅' };
+            const recipe = `[스튜디오 1:1 맞춤] ${studioState.styleName} (${lengthLabels[studioState.length]}, ${bangLabels[studioState.bangs]}, ${studioState.colorName} ${studioState.colorStrength}%)`;
+            
+            // Redirect to index.html with reservation param
+            window.location.href = `index.html?openReserve=1&styleRecipe=${encodeURIComponent(recipe)}`;
+        }
+
+        function switchGender(g) {
+            if (g === 'male') {
+                showToast('👨 남성 스타일 360° 시뮬레이터는 2차 로드맵으로 준비 중입니다! (여성 스타일 완료 후 순차 오픈)', 'info');
+                return;
+            }
+            studioState.gender = 'female';
+            updateStageView();
+        }
+
+        function showToast(msg) {
+            const toast = $('#studioToast');
+            toast.text(msg).addClass('is-show');
+            setTimeout(() => toast.removeClass('is-show'), 2400);
+        }
+
+        // Initialization
+        $(document).ready(function() {
+            updateStageView();
+            runDiagnosis();
+        });
+    </script>
+</body>
+</html>

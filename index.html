@@ -415,13 +415,16 @@
         .catalog-rotation-scrubber { padding: 10px 12px; border: 1px solid rgba(243,83,129,0.16); border-radius: 12px; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
         .catalog-rotation-scrubber label { display: flex; justify-content: space-between; align-items: center; color: #4b5563; font-size: 0.73rem; font-weight: 800; }
         .catalog-rotation-scrubber output { color: #e3376b; font-weight: 800; }
-        .catalog-rotation-ticks { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; margin-top: 4px; }
+        .catalog-rotation-ticks { display: grid; grid-template-columns: repeat(8, 1fr); gap: 3px; margin-top: 4px; }
         .catalog-rotation-ticks i { height: 3px; border-radius: 999px; background: #e5e7eb; }
-        .catalog-rotation-ticks i:nth-child(3n + 1) { background: #f6a3bf; }
+        .catalog-rotation-ticks i:nth-child(2n + 1) { background: #f6a3bf; }
 
         .catalog-view-controls { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
         .catalog-view-controls button { min-height: 31px; border: 1px solid #e5e7eb; border-radius: 8px; background: #ffffff; color: #6b7280; font: inherit; font-size: 0.68rem; font-weight: 800; cursor: pointer; transition: all 0.16s ease; }
         .catalog-view-controls button:hover, .catalog-view-controls button.is-active { border-color: #f35381; background: #fff0f5; color: #df2e66; box-shadow: 0 2px 6px rgba(243,83,129,0.16); }
+
+        .btn-studio-fullscreen { display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 999px; background: linear-gradient(90deg, #f35381, #e3376b); color: #ffffff !important; text-decoration: none; font-size: 0.72rem; font-weight: 800; box-shadow: 0 3px 10px rgba(243, 83, 129, 0.3); transition: all 0.16s ease; margin-left: 8px; }
+        .btn-studio-fullscreen:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(243, 83, 129, 0.45); }
 
         .catalog-recipe { padding: 10px 12px; border-radius: 12px; background: linear-gradient(135deg, rgba(243,83,129,0.10), rgba(255,255,255,0.7)); border: 1px solid rgba(243,83,129,0.2); color: #524755; font-size: 0.68rem; font-weight: 700; line-height: 1.5; }
         .catalog-recipe b { color: #e3376b; font-weight: 900; }
@@ -912,9 +915,12 @@
             <div class="catalog-card">
                 <div class="catalog-heading">
                     <div>
-                        <span class="catalog-kicker">LET'S HAIR · STYLE JOURNAL</span>
-                        <h2 id="catalogTitle">헤어 카탈로그</h2>
-                        <p>기장과 무드를 조절해 보세요. 선택한 스타일이 실시간 프리뷰와 360° 상담 뷰에 반영됩니다.</p>
+                        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                            <span class="catalog-kicker" style="margin-bottom:0;">LET'S HAIR · STYLE JOURNAL</span>
+                            <a href="studio.html" target="_blank" class="btn-studio-fullscreen">✨ 360° 풀스크린 스튜디오 ↗</a>
+                        </div>
+                        <h2 id="catalogTitle" style="margin-top:4px;">헤어 카탈로그 &amp; 시뮬레이터</h2>
+                        <p>1:1 맞춤 컨설팅으로 기장, 앞머리, 살롱 컬러를 조율하고 8각도 360° 턴테이블과 실사 AI 피팅을 경험하세요.</p>
                     </div>
                     <span class="catalog-edition" aria-hidden="true">STYLE EDIT <b>01</b></span>
                     <button type="button" class="catalog-close" onclick="closeCatalog()" aria-label="카탈로그 닫기">
@@ -926,18 +932,18 @@
                     <div class="catalog-sticky-col">
                         <div class="catalog-stage-frame">
                             <div class="catalog-preview-topline">
-                                <span>THE LOOKBOOK · 360 MOTION</span>
-                                <span>LIVE CONSULT</span>
+                                <span>THE LOOKBOOK · 360 8-ANGLES</span>
+                                <span>1:1 LIVE CONSULT</span>
                             </div>
-                            <div class="catalog-360-stage" id="catalog360Stage" role="slider" aria-label="모델 360도 회전 미리보기" aria-valuemin="0" aria-valuemax="330" aria-valuenow="0" tabindex="0" draggable="false" ondragstart="return false" onpointerdown="startCatalogRotation(event)" onpointermove="moveCatalogRotation(event)" onpointerup="endCatalogRotation(event)" onpointercancel="endCatalogRotation(event)" onkeydown="handleCatalogRotationKey(event)">
+                            <div class="catalog-360-stage" id="catalog360Stage" role="slider" aria-label="모델 360도 8각도 회전 미리보기" aria-valuemin="0" aria-valuemax="315" aria-valuenow="0" tabindex="0" draggable="false" ondragstart="return false" onpointerdown="startCatalogRotation(event)" onpointermove="moveCatalogRotation(event)" onpointerup="endCatalogRotation(event)" onpointercancel="endCatalogRotation(event)" onkeydown="handleCatalogRotationKey(event)">
                                 <div class="catalog-preview-image">
-                                    <img id="catalogModelImage" src="image/catalog-turntable/female-medium-00.jpg" alt="소프트 레이어드 여성 스타일 12컷 회전 프리뷰 정면" draggable="false">
+                                    <img id="catalogModelImage" src="image/catalog-turntable/female-medium-8a-00.jpg" alt="소프트 레이어드 여성 스타일 8각도 회전 프리뷰 정면" draggable="false">
                                     <span class="catalog-color-wash" id="catalogColorWash"></span>
                                     <div class="catalog-bangs-layer" id="catalogBangsLayer">
                                         <svg viewBox="0 0 360 480" preserveAspectRatio="xMidYMid meet" id="catalogBangsSvg"></svg>
                                     </div>
                                 </div>
-                                <span class="catalog-rotation-badge" id="catalogRotationOutput">정면 · 0° · 1/12</span>
+                                <span class="catalog-rotation-badge" id="catalogRotationOutput">정면 · 0° · 1/8</span>
                                 <span class="catalog-rotation-dial" aria-hidden="true"></span>
                                 <div class="catalog-pipeline-tag" id="catalogPipelineTag">
                                     <span class="pipeline-dot"></span>
@@ -950,18 +956,18 @@
 
                         <div class="catalog-rotation-scrubber">
                             <label for="catalogRotationScrubber">
-                                <span>360° 회전 앵글 슬라이드</span>
-                                <output id="catalogFrameOutput">1 / 12</output>
+                                <span>360° 8각도 회전 앵글 슬라이드</span>
+                                <output id="catalogFrameOutput">1 / 8</output>
                             </label>
-                            <input id="catalogRotationScrubber" class="lh-slider" type="range" min="0" max="11" step="1" value="0" oninput="setCatalogFrame(this.value)" aria-label="360도 회전 프레임">
-                            <div class="catalog-rotation-ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                            <input id="catalogRotationScrubber" class="lh-slider" type="range" min="0" max="7" step="1" value="0" oninput="setCatalogFrame(this.value)" aria-label="360도 8각도 회전 프레임">
+                            <div class="catalog-rotation-ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
                         </div>
 
                         <div class="catalog-view-controls" aria-label="모델 방향 바로보기">
-                            <button type="button" class="is-active" data-catalog-angle="0" onclick="setCatalogAngle(0)">정면</button>
-                            <button type="button" data-catalog-angle="90" onclick="setCatalogAngle(90)">우측면</button>
-                            <button type="button" data-catalog-angle="180" onclick="setCatalogAngle(180)">후면</button>
-                            <button type="button" data-catalog-angle="270" onclick="setCatalogAngle(270)">좌측면</button>
+                            <button type="button" class="is-active" data-catalog-angle="0" onclick="setCatalogAngle(0)">정면 (0°)</button>
+                            <button type="button" data-catalog-angle="90" onclick="setCatalogAngle(90)">우측 (90°)</button>
+                            <button type="button" data-catalog-angle="180" onclick="setCatalogAngle(180)">후면 (180°)</button>
+                            <button type="button" data-catalog-angle="270" onclick="setCatalogAngle(270)">좌측 (270°)</button>
                         </div>
 
                         <div class="catalog-recipe" id="catalogRecipe" aria-live="polite">
@@ -2924,26 +2930,26 @@
     let catalogColorStrength = 50;
     let catalogDetailState = { texture: 55, volume: 50, choice: '내추럴 오픈' };
     const catalogRotationAssets = {
-        'female-bob': Array.from({ length: 12 }, (_, index) => `image/catalog-turntable/female-bob-${String(index).padStart(2, '0')}.jpg`),
-        'female-medium': Array.from({ length: 12 }, (_, index) => `image/catalog-turntable/female-medium-${String(index).padStart(2, '0')}.jpg`),
+        'female-bob': Array.from({ length: 8 }, (_, index) => `image/catalog-turntable/female-bob-8a-${String(index).padStart(2, '0')}.jpg`),
+        'female-medium': Array.from({ length: 8 }, (_, index) => `image/catalog-turntable/female-medium-8a-${String(index).padStart(2, '0')}.jpg`),
         'female-hush': [
             'image/catalog-turntable/female-hush-00.jpg',
-            ...Array.from({ length: 11 }, (_, index) => `image/catalog-turntable/female-medium-${String(index + 1).padStart(2, '0')}.jpg`)
+            ...Array.from({ length: 7 }, (_, index) => `image/catalog-turntable/female-medium-8a-${String(index + 1).padStart(2, '0')}.jpg`)
         ],
         'female-lob': [
             'image/catalog-turntable/female-lob-00.jpg',
-            ...Array.from({ length: 11 }, (_, index) => `image/catalog-turntable/female-bob-${String(index + 1).padStart(2, '0')}.jpg`)
+            ...Array.from({ length: 7 }, (_, index) => `image/catalog-turntable/female-bob-8a-${String(index + 1).padStart(2, '0')}.jpg`)
         ],
         'female-bangs': [
             'image/catalog-turntable/female-bangs-00.jpg',
-            ...Array.from({ length: 11 }, (_, index) => `image/catalog-turntable/female-long-${String(index + 1).padStart(2, '0')}.jpg`)
+            ...Array.from({ length: 7 }, (_, index) => `image/catalog-turntable/female-long-8a-${String(index + 1).padStart(2, '0')}.jpg`)
         ],
         'female-wave': [
             'image/catalog-turntable/female-wave-00.jpg',
-            ...Array.from({ length: 11 }, (_, index) => `image/catalog-turntable/female-long-${String(index + 1).padStart(2, '0')}.jpg`)
+            ...Array.from({ length: 7 }, (_, index) => `image/catalog-turntable/female-long-8a-${String(index + 1).padStart(2, '0')}.jpg`)
         ],
-        'female-long': Array.from({ length: 12 }, (_, index) => `image/catalog-turntable/female-long-${String(index).padStart(2, '0')}.jpg`),
-        male: Array.from({ length: 12 }, (_, index) => `image/catalog-turntable/male-${String(index).padStart(2, '0')}.jpg`)
+        'female-long': Array.from({ length: 8 }, (_, index) => `image/catalog-turntable/female-long-8a-${String(index).padStart(2, '0')}.jpg`),
+        male: Array.from({ length: 8 }, (_, index) => `image/catalog-turntable/male-8a-${String(index).padStart(2, '0')}.jpg`)
     };
     const catalogRotationProfileNames = {
         'female-bob': '프렌치 보브 실루엣',
@@ -2955,7 +2961,16 @@
         'female-long': '롱 레이어드 실루엣',
         male: '남성 텍스처'
     };
-    const catalogFrameNames = ['정면', '우측 30°', '우측 3/4', '우측면', '우측 후면', '후면 3/4', '후면', '좌측 후면', '좌측 3/4', '좌측면', '좌측 정면', '정면 3/4'];
+    const catalogFrameNames = [
+        '정면 · 0°',
+        '우측 전측면 · 45°',
+        '우측면 · 90°',
+        '우측 후측면 · 135°',
+        '후면 · 180°',
+        '좌측 후측면 · 225°',
+        '좌측면 · 270°',
+        '좌측 전측면 · 315°'
+    ];
     const catalogStyleProfiles = {
         '소프트 레이어드': { silhouette: '중간 레이어', texture: '소프트 C컬', maintenance: '5–7분', detailLabel: '레이어 위치', detail: 55, volume: 50, choices: ['내추럴 오픈', '사이드 뱅', '페이스 레이어'] },
         '프렌치 보브': { silhouette: '턱선 인사이드', texture: '매끈한 C컬', maintenance: '4–6분', detailLabel: '끝선 인사이드', detail: 60, volume: 45, choices: ['가르마 오픈', '사이드 볼륨', '턱선 포인트'] },
@@ -3368,8 +3383,8 @@
     function updateCatalogView() {
         const selected = $('.catalog-style-card.is-selected');
         if (!selected.length) return;
-        const frame = Math.round(catalogAngle / 30) % 12;
-        const normalizedAngle = frame * 30;
+        const frame = Math.round(catalogAngle / 45) % 8;
+        const normalizedAngle = frame * 45;
         const styleName = selected.data('name');
         const rotationProfile = getCatalogRotationProfile(selected);
         
@@ -3394,10 +3409,10 @@
             modelImage.one('load', function() { $('.catalog-preview-image').removeClass('is-frame-changing'); });
             window.setTimeout(() => $('.catalog-preview-image').removeClass('is-frame-changing'), 250);
         }
-        modelImage.attr('src', source).attr('alt', `${styleName} ${catalogFrameNames[frame]} · 동일 기장 12컷 회전 프리뷰`);
-        $('#catalogRotationOutput').text(`${catalogFrameNames[frame]} · ${normalizedAngle}° · ${frame + 1}/12`);
-        $('#catalogFrameOutput').text(`${frame + 1} / 12`);
-        $('#catalogRotationReference').text(`${catalogRotationProfileNames[rotationProfile]} · 12컷 연속 턴테이블`);
+        modelImage.attr('src', source).attr('alt', `${styleName} ${catalogFrameNames[frame]} · 8각도 360° 프리뷰`);
+        $('#catalogRotationOutput').text(`${catalogFrameNames[frame]} · ${frame + 1}/8`);
+        $('#catalogFrameOutput').text(`${frame + 1} / 8`);
+        $('#catalogRotationReference').text(`${catalogRotationProfileNames[rotationProfile]} · 8각도 360° 턴테이블`);
         $('#catalogRotationScrubber').val(frame);
         $('#catalog360Stage').css('--catalog-angle', `${normalizedAngle}deg`).attr('aria-valuenow', normalizedAngle).attr('aria-valuetext', catalogFrameNames[frame]);
         
@@ -3407,7 +3422,7 @@
         if (frame === 0) {
             $('#catalogPipelineLabel').html(`<b>MODEL C</b> · 정면 45컷 실사 앞머리 연동 (${currentLength}단계 · ${currentChoice})`);
         } else {
-            $('#catalogPipelineLabel').html(`<b>MODEL C</b> · 3D 기장 실루엣 턴테이블 (${frame + 1}/12 · ${catalogFrameNames[frame]})`);
+            $('#catalogPipelineLabel').html(`<b>MODEL C</b> · 8각도 3D 기장 실루엣 (${frame + 1}/8 · ${catalogFrameNames[frame]})`);
         }
 
         $('.catalog-view-controls button').each(function() {
@@ -3423,7 +3438,7 @@
     }
 
     function setCatalogFrame(frame) {
-        setCatalogAngle(Number(frame) * 30);
+        setCatalogAngle(Number(frame) * 45);
     }
 
     function startCatalogRotation(event) {
@@ -3452,13 +3467,13 @@
         event.currentTarget.releasePointerCapture?.(event.pointerId);
         event.currentTarget.classList.remove('is-rotating');
         catalogPointerId = null;
-        setCatalogAngle(Math.round(catalogAngle / 30) * 30);
+        setCatalogAngle(Math.round(catalogAngle / 45) * 45);
     }
 
     function handleCatalogRotationKey(event) {
         if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
         event.preventDefault();
-        setCatalogAngle(catalogAngle + (event.key === 'ArrowRight' ? 30 : -30));
+        setCatalogAngle(catalogAngle + (event.key === 'ArrowRight' ? 45 : -45));
     }
 
     /* Option 3: Serverless AI Virtual Try-On Canvas Engine */
@@ -4149,10 +4164,21 @@
             $('#dateBackdropDim').show();
             $('#dateBackdrop').show();
         }
-        if (new URLSearchParams(location.search).has('openReserve')) {
+        if (urlParams.has('openReserve')) {
             popup_reserve('2026', '10', '30', '금', '14');
             $('.formcover').css('display', 'flex').show();
             $('#formReserve').show();
+            const recipe = urlParams.get('styleRecipe');
+            if (recipe) {
+                $('#cname').val(recipe);
+                const prevComment = $('#rcomment').val();
+                $('#rcomment').val(prevComment ? prevComment + '\n' + recipe : recipe);
+                $('#cb1').prop('checked', true);
+                if (recipe.includes('염색') || recipe.includes('브라운') || recipe.includes('베이지') || recipe.includes('애쉬') || recipe.includes('핑크')) {
+                    $('#cb2').prop('checked', true);
+                }
+                showToast(`✨ 스튜디오 1:1 맞춤 레시피가 예약 폼에 연동되었습니다!`, 'success');
+            }
         }
         if (new URLSearchParams(location.search).has('openNewShop')) {
             openNewShopModal();
