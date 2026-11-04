@@ -64,3 +64,8 @@ jhair/
 
 ## 📄 라이선스
 Copyright © 2024 J.Hairshop & Let's Hair by pyw31337. All Rights Reserved.
+
+## v3.1 — 스타일별 실사 염색 이미지 (진행 중 체크포인트)
+- 목표: 124 스타일 × 공식 9색 = 1,116장. **현재 99/1,116장, 11/124 스타일 완료.** `python3 catalog/tools/color_progress.py catalog`로 현황/남은 목록 확인.
+- 해당 스타일에 염색 이미지가 있으면 컬러 선택 시 컷·앞머리·컬이 그대로 유지됨(스타일 자동 보정 없음). 아직 없는 스타일은 가장 가까운 컬러 이미지로 보정(토스트 안내).
+- 이미지: WebP 480×640(q72) + 썸네일 150×200(q60), 칩 썸네일 lazy loading, hover/idle 시 인접 이미지 preload. 평균 약 21KB/장(썸네일 포함), 전체 완성 시 약 27MB 예상.
