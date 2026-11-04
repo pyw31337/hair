@@ -224,45 +224,7 @@
             filter: contrast(0.91) saturate(0.85) brightness(0.97);
         }
 
-        /* 3. Facial Diagnostic Contour Guide */
-        .stage-face-guide {
-            position: absolute;
-            top: 42%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            opacity: 0;
-            transition: all 0.25s ease;
-            z-index: 3;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .stage-face-guide.is-active {
-            opacity: 1;
-        }
-        .stage-face-oval {
-            width: 140px;
-            height: 180px;
-            border-radius: 50%;
-            border: 1.5px dashed rgba(243, 83, 129, 0.7);
-            box-shadow: 0 0 20px rgba(243, 83, 129, 0.35);
-            transition: all 0.25s ease;
-        }
-        .stage-face-label {
-            margin-top: 10px;
-            padding: 4px 12px;
-            border-radius: 9999px;
-            background: rgba(18, 16, 26, 0.88);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(243, 83, 129, 0.45);
-            color: #f472b6;
-            font-size: 0.64rem;
-            font-weight: 800;
-            letter-spacing: -0.01em;
-            white-space: nowrap;
-        }
+
 
         .stage-color-mask {
             position: absolute;
@@ -475,54 +437,191 @@
 
         .step-body { padding: 20px; border-top: 1px solid var(--studio-border); display: flex; flex-direction: column; gap: 16px; }
 
-        /* Step 0: Diagnosis */
+        /* Step 0: Diagnosis & Custom Select */
         .diagnosis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
         .diagnosis-group label { display: block; font-size: 0.72rem; font-weight: 800; color: var(--studio-text-sub); margin-bottom: 6px; }
-        .diagnosis-select {
+
+        /* Custom Design System Select & Dropdown Modal */
+        .custom-select-wrap {
+            position: relative;
             width: 100%;
-            height: 38px;
-            border-radius: var(--studio-radius-sm);
+        }
+        .custom-select-trigger {
+            width: 100%;
+            height: 42px;
+            padding: 0 14px;
+            border-radius: var(--studio-radius-md);
             background: var(--studio-surface-raised);
             border: 1px solid var(--studio-border);
             color: #fff;
-            padding: 0 10px;
             font: inherit;
             font-size: 0.78rem;
             font-weight: 700;
-            outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             cursor: pointer;
+            transition: all 0.18s ease;
+            text-align: left;
         }
-        .diagnosis-select:focus { border-color: var(--studio-pink); }
+        .custom-select-trigger:hover, .custom-select-wrap.is-open .custom-select-trigger {
+            border-color: var(--studio-pink);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 12px rgba(243, 83, 129, 0.25);
+        }
+        .custom-select-val {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #fff;
+        }
+        .custom-select-arrow {
+            font-size: 0.7rem;
+            color: var(--studio-pink);
+            transition: transform 0.2s ease;
+            margin-left: 6px;
+        }
+        .custom-select-wrap.is-open .custom-select-arrow {
+            transform: rotate(180deg);
+        }
+        .custom-select-dropdown {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            background: #181622;
+            border: 1px solid rgba(243, 83, 129, 0.4);
+            border-radius: var(--studio-radius-md);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 16px rgba(243, 83, 129, 0.2);
+            padding: 6px;
+            z-index: 100;
+            display: none;
+            backdrop-filter: blur(12px);
+            max-height: 220px;
+            overflow-y: auto;
+        }
+        .custom-select-wrap.is-open .custom-select-dropdown {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            animation: selectSlideDown 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes selectSlideDown {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .custom-option {
+            padding: 8px 12px;
+            border-radius: var(--studio-radius-sm);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            transition: all 0.14s ease;
+            user-select: none;
+        }
+        .custom-option:hover {
+            background: rgba(243, 83, 129, 0.15);
+        }
+        .custom-option.is-selected {
+            background: var(--studio-pink-soft);
+            border-left: 3px solid var(--studio-pink);
+        }
+        .custom-opt-title {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .custom-option.is-selected .custom-opt-title::after {
+            content: '✓';
+            color: var(--studio-pink);
+            font-weight: 900;
+            font-size: 0.75rem;
+        }
+        .custom-opt-sub {
+            font-size: 0.66rem;
+            color: #94a3b8;
+            line-height: 1.3;
+        }
 
-        .diagnosis-recom-box {
+        /* Real-time Build-up Stack Card */
+        .buildup-stack-card {
             padding: 12px 14px;
             border-radius: var(--studio-radius-md);
-            background: rgba(16, 185, 129, 0.08);
-            border: 1px solid rgba(16, 185, 129, 0.25);
+            background: linear-gradient(135deg, rgba(243, 83, 129, 0.1), rgba(99, 102, 241, 0.08));
+            border: 1px solid rgba(243, 83, 129, 0.3);
             display: flex;
-            align-items: start;
-            gap: 10px;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
         }
-        .diagnosis-icon { font-size: 1.2rem; }
-        .diagnosis-text p { font-size: 0.72rem; color: #cbd5e1; line-height: 1.4; }
-        .btn-apply-prescription {
-            margin-top: 8px;
-            padding: 6px 14px;
-            border-radius: var(--studio-radius-sm);
-            border: 0;
-            background: linear-gradient(90deg, #f35381, #e3376b);
+        .stack-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .stack-badge-title {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.74rem;
             color: #fff;
-            font: inherit;
-            font-size: 0.72rem;
-            font-weight: 800;
+        }
+        .stack-pulse-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+            animation: stackPulse 1.8s infinite;
+        }
+        @keyframes stackPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+        }
+        .stack-status-label {
+            font-size: 0.65rem;
+            color: var(--studio-pink);
+            font-weight: 700;
+        }
+        .buildup-chips-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .stack-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 9px;
+            border-radius: var(--studio-radius-full);
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #f1f5f9;
+            font-size: 0.68rem;
+            font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(243, 83, 129, 0.35);
-            transition: all 0.16s ease;
+            transition: all 0.15s ease;
+            user-select: none;
         }
-        .btn-apply-prescription:hover {
+        .stack-chip:hover {
+            border-color: var(--studio-pink);
+            background: rgba(243, 83, 129, 0.18);
             transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(243, 83, 129, 0.5);
         }
+        .stack-chip-label {
+            color: #94a3b8;
+            font-size: 0.62rem;
+            font-weight: 600;
+        }
+        .stack-chip.chip-step0 { border-color: rgba(59, 130, 246, 0.35); }
+        .stack-chip.chip-step1 { border-color: rgba(243, 83, 129, 0.5); background: rgba(243, 83, 129, 0.12); }
+        .stack-chip.chip-step2 { border-color: rgba(168, 85, 247, 0.4); }
+        .stack-chip.chip-step3 { border-color: rgba(234, 179, 8, 0.4); }
+        .stack-chip.chip-step4 { border-color: rgba(236, 72, 153, 0.5); }
 
         /* Step 1: Base Styles Grid */
         .style-filters { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -807,10 +906,6 @@
                         <span class="stage-shine-layer" id="stageShineLayer"></span>
                         <span class="stage-damage-frizz" id="stageFrizzLayer"></span>
                         <span class="stage-color-mask" id="stageColorMask"></span>
-                        <div class="stage-face-guide" id="stageFaceGuide">
-                            <div class="stage-face-oval" id="stageFaceOval"></div>
-                            <span class="stage-face-label" id="stageFaceLabel">계란형 · 황금비 1:1.618 밸런스</span>
-                        </div>
                     </div>
 
                     <span class="stage-angle-badge" id="stageAngleBadge">정면 · 0° · 1/8</span>
@@ -840,6 +935,20 @@
                 <button type="button" data-angle="90" onclick="setAngleDegree(90)">우측 (90°)</button>
                 <button type="button" data-angle="180" onclick="setAngleDegree(180)">후면 (180°)</button>
                 <button type="button" data-angle="270" onclick="setAngleDegree(270)">좌측 (270°)</button>
+            </div>
+
+            <!-- Build-Up Stack Panel (Real-time Option Accumulator) -->
+            <div class="buildup-stack-card" id="buildupStackCard">
+                <div class="stack-card-header">
+                    <div class="stack-badge-title">
+                        <span class="stack-pulse-dot"></span>
+                        <strong>나의 맞춤 빌드업 스택</strong>
+                    </div>
+                    <span class="stack-status-label" id="stackSummaryCount">진단 4종 + 스타일 빌드업 중</span>
+                </div>
+                <div class="buildup-chips-row" id="buildupChipsRow">
+                    <!-- Populated dynamically via renderBuildUpStack() -->
+                </div>
             </div>
 
             <!-- Live Recipe Box -->
@@ -872,47 +981,108 @@
                 <div class="step-body" id="stepBody0">
                     <p style="font-size:0.76rem; color:var(--studio-text-sub); line-height:1.45;">고객님의 현재 모질과 모량, 손상도를 선택하시면 수석 헤어 디자이너의 관점에서 최적의 스타일과 기장을 자동으로 추천해 드립니다.</p>
                     <div class="diagnosis-grid">
+                        <!-- 1. 모발 상태 (모질) -->
                         <div class="diagnosis-group">
-                            <label for="diagTexture">모발 상태 (모질)</label>
-                            <select id="diagTexture" class="diagnosis-select" onchange="runDiagnosis()">
-                                <option value="wavy" selected>자연 반곱슬 (손질 용이)</option>
-                                <option value="straight">직모 (매끄러우나 볼륨 꺼짐)</option>
-                                <option value="curly">강한 곱슬 (부스스함 교정 필요)</option>
-                            </select>
+                            <label>모발 상태 (모질)</label>
+                            <div class="custom-select-wrap" id="selectWrapTexture" data-field="diagTexture">
+                                <button type="button" class="custom-select-trigger" onclick="toggleCustomSelect('selectWrapTexture')">
+                                    <span class="custom-select-val" id="selectValTexture">자연 반곱슬</span>
+                                    <span class="custom-select-arrow">▾</span>
+                                </button>
+                                <div class="custom-select-dropdown">
+                                    <div class="custom-option is-selected" data-value="wavy" onclick="selectCustomOption('selectWrapTexture', 'wavy', '자연 반곱슬')">
+                                        <div class="custom-opt-title">자연 반곱슬</div>
+                                        <div class="custom-opt-sub">손질 용이 · 자연스러운 볼륨감</div>
+                                    </div>
+                                    <div class="custom-option" data-value="straight" onclick="selectCustomOption('selectWrapTexture', 'straight', '직모')">
+                                        <div class="custom-opt-title">직모</div>
+                                        <div class="custom-opt-sub">매끄러운 결감 · 볼륨 꺼짐 커버</div>
+                                    </div>
+                                    <div class="custom-option" data-value="curly" onclick="selectCustomOption('selectWrapTexture', 'curly', '강한 곱슬')">
+                                        <div class="custom-opt-title">강한 곱슬</div>
+                                        <div class="custom-opt-sub">개성 컬감 · 부스스함 교정 필요</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="diagnosis-group">
-                            <label for="diagVolume">모발 밀도 (모량)</label>
-                            <select id="diagVolume" class="diagnosis-select" onchange="runDiagnosis()">
-                                <option value="normal" selected>보통 숱</option>
-                                <option value="thick">숱 많음 (무게감 덜어내기 필요)</option>
-                                <option value="thin">얇고 숱 적음 (뿌리 볼륨펌 필수)</option>
-                            </select>
-                        </div>
-                        <div class="diagnosis-group">
-                            <label for="diagDamage">모발 손상도</label>
-                            <select id="diagDamage" class="diagnosis-select" onchange="runDiagnosis()">
-                                <option value="healthy" selected>건강모 (시술 탄력 우수)</option>
-                                <option value="colored">염색/펌 유경험모 (수분 케어 병행)</option>
-                                <option value="bleached">탈색/극손상모 (복구 클리닉 병행)</option>
-                            </select>
-                        </div>
-                        <div class="diagnosis-group">
-                            <label for="diagFace">얼굴형</label>
-                            <select id="diagFace" class="diagnosis-select" onchange="runDiagnosis()">
-                                <option value="oval" selected>계란형 (모든 스타일 조화)</option>
-                                <option value="round">둥근형 (페이스라인 레이어 추천)</option>
-                                <option value="square">각진형 (사이드 뱅 곡선 추천)</option>
-                                <option value="long">긴형 (앞머리 풀뱅 볼륨 추천)</option>
-                            </select>
-                        </div>
-                    </div>
 
-                    <div class="diagnosis-recom-box" id="diagnosisRecomBox">
-                        <span class="diagnosis-icon">💡</span>
-                        <div class="diagnosis-text">
-                            <strong>수석 디자이너 1:1 처방: 소프트 레이어드 &amp; 사이드 뱅 추천</strong>
-                            <p id="diagnosisPrescription">자연스러운 반곱슬 결감을 활용해 층을 적당히 낸 소프트 레이어드컷과 광대를 부드럽게 감싸는 사이드 뱅으로 볼륨과 입체감을 극대화할 수 있습니다.</p>
-                            <button type="button" class="btn-apply-prescription" id="btnApplyPrescription" onclick="applyPrescription()">✨ 처방 스타일 모델에 즉시 반영하기</button>
+                        <!-- 2. 모발 밀도 (모량) -->
+                        <div class="diagnosis-group">
+                            <label>모발 밀도 (모량)</label>
+                            <div class="custom-select-wrap" id="selectWrapVolume" data-field="diagVolume">
+                                <button type="button" class="custom-select-trigger" onclick="toggleCustomSelect('selectWrapVolume')">
+                                    <span class="custom-select-val" id="selectValVolume">보통 숱</span>
+                                    <span class="custom-select-arrow">▾</span>
+                                </button>
+                                <div class="custom-select-dropdown">
+                                    <div class="custom-option is-selected" data-value="normal" onclick="selectCustomOption('selectWrapVolume', 'normal', '보통 숱')">
+                                        <div class="custom-opt-title">보통 숱</div>
+                                        <div class="custom-opt-sub">안정적인 볼륨 밸런스</div>
+                                    </div>
+                                    <div class="custom-option" data-value="thick" onclick="selectCustomOption('selectWrapVolume', 'thick', '숱 많음')">
+                                        <div class="custom-opt-title">숱 많음</div>
+                                        <div class="custom-opt-sub">무게감 덜어내기 질감 컷 필요</div>
+                                    </div>
+                                    <div class="custom-option" data-value="thin" onclick="selectCustomOption('selectWrapVolume', 'thin', '얇고 숱 적음')">
+                                        <div class="custom-opt-title">얇고 숱 적음</div>
+                                        <div class="custom-opt-sub">뿌리 볼륨 &amp; 가벼운 층감 필요</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. 모발 손상도 -->
+                        <div class="diagnosis-group">
+                            <label>모발 손상도</label>
+                            <div class="custom-select-wrap" id="selectWrapDamage" data-field="diagDamage">
+                                <button type="button" class="custom-select-trigger" onclick="toggleCustomSelect('selectWrapDamage')">
+                                    <span class="custom-select-val" id="selectValDamage">건강모</span>
+                                    <span class="custom-select-arrow">▾</span>
+                                </button>
+                                <div class="custom-select-dropdown">
+                                    <div class="custom-option is-selected" data-value="healthy" onclick="selectCustomOption('selectWrapDamage', 'healthy', '건강모')">
+                                        <div class="custom-opt-title">건강모</div>
+                                        <div class="custom-opt-sub">시술 유지력 및 탄력도 최상</div>
+                                    </div>
+                                    <div class="custom-option" data-value="colored" onclick="selectCustomOption('selectWrapDamage', 'colored', '염색/펌 유경험모')">
+                                        <div class="custom-opt-title">염색/펌 유경험모</div>
+                                        <div class="custom-opt-sub">수분 및 유분 밸런스 케어 병행</div>
+                                    </div>
+                                    <div class="custom-option" data-value="bleached" onclick="selectCustomOption('selectWrapDamage', 'bleached', '탈색/극손상모')">
+                                        <div class="custom-opt-title">탈색/극손상모</div>
+                                        <div class="custom-opt-sub">모발 복구 단백질 클리닉 필수</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4. 얼굴형 -->
+                        <div class="diagnosis-group">
+                            <label>얼굴형</label>
+                            <div class="custom-select-wrap" id="selectWrapFace" data-field="diagFace">
+                                <button type="button" class="custom-select-trigger" onclick="toggleCustomSelect('selectWrapFace')">
+                                    <span class="custom-select-val" id="selectValFace">계란형</span>
+                                    <span class="custom-select-arrow">▾</span>
+                                </button>
+                                <div class="custom-select-dropdown">
+                                    <div class="custom-option is-selected" data-value="oval" onclick="selectCustomOption('selectWrapFace', 'oval', '계란형')">
+                                        <div class="custom-opt-title">계란형</div>
+                                        <div class="custom-opt-sub">모든 헤어스타일 황금 밸런스</div>
+                                    </div>
+                                    <div class="custom-option" data-value="round" onclick="selectCustomOption('selectWrapFace', 'round', '둥근형')">
+                                        <div class="custom-opt-title">둥근형</div>
+                                        <div class="custom-opt-sub">턱선 슬리밍 &amp; 세로 볼륨 보완</div>
+                                    </div>
+                                    <div class="custom-option" data-value="square" onclick="selectCustomOption('selectWrapFace', 'square', '각진형')">
+                                        <div class="custom-opt-title">각진형</div>
+                                        <div class="custom-opt-sub">부드러운 곡선 사이드 뱅 추천</div>
+                                    </div>
+                                    <div class="custom-option" data-value="long" onclick="selectCustomOption('selectWrapFace', 'long', '긴형')">
+                                        <div class="custom-opt-title">긴형</div>
+                                        <div class="custom-opt-sub">시스루/풀뱅 &amp; 가로 볼륨 커버</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -931,7 +1101,7 @@
                 </div>
                 <div class="step-summary-bar" id="stepSummary1" onclick="toggleStep(1)">
                     <div class="step-summary-left">
-                        <img class="step-summary-thumb" id="summaryThumb1" src="image/generated-female-layered.jpg" alt="선택 헤어스타일 썸네일">
+                        <img class="step-summary-thumb" id="summaryThumb1" src="image/catalog-turntable/thumb-layered.jpg" alt="선택 헤어스타일 썸네일">
                         <div>
                             <strong id="summaryStyleName">소프트 레이어드</strong>
                             <span id="summaryStyleMeta">여성 · 커트 · 미디엄</span>
@@ -948,91 +1118,114 @@
                     </div>
 
                     <div class="style-cards-grid" id="styleCardsGrid">
-                        <!-- Female Styles (1차) -->
-                        <div class="style-card-item is-selected" data-gender="female" data-category="cut" data-name="소프트 레이어드" data-length="3" data-bangs="side" data-label="미디엄" data-thumb="image/generated-female-layered.jpg" onclick="chooseStyle(this)">
-                            <img class="style-card-thumb" src="image/generated-female-layered.jpg" alt="소프트 레이어드">
+                        <!-- 1. 소프트 레이어드 -->
+                        <div class="style-card-item is-selected" data-gender="female" data-category="cut" data-style-key="layered" data-name="소프트 레이어드" data-length="3" data-bangs="side" data-label="미디엄" data-thumb="image/catalog-turntable/thumb-layered.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/catalog-turntable/thumb-layered.jpg" alt="소프트 레이어드">
                             <div class="style-card-info">
                                 <span class="style-card-name">소프트 레이어드</span>
                                 <span class="style-card-length">미디엄 · 사이드 뱅</span>
                             </div>
                         </div>
-                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="프렌치 보브" data-length="1" data-bangs="open" data-label="숏" data-thumb="image/generated-female-bob.jpg" onclick="chooseStyle(this)">
-                            <img class="style-card-thumb" src="image/generated-female-bob.jpg" alt="프렌치 보브">
+
+                        <!-- 2. 프렌치 보브 -->
+                        <div class="style-card-item" data-gender="female" data-category="cut" data-style-key="frenchbob" data-name="프렌치 보브" data-length="1" data-bangs="open" data-label="숏" data-thumb="image/catalog-turntable/thumb-frenchbob.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/catalog-turntable/thumb-frenchbob.jpg" alt="프렌치 보브">
                             <div class="style-card-info">
                                 <span class="style-card-name">프렌치 보브</span>
                                 <span class="style-card-length">숏 · 내추럴 오픈</span>
                             </div>
                         </div>
-                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="C컬 보브" data-length="2" data-bangs="open" data-label="보브" data-thumb="image/generated-female-lob.jpg" onclick="chooseStyle(this)">
-                            <img class="style-card-thumb" src="image/generated-female-lob.jpg" alt="C컬 보브">
+
+                        <!-- 3. C컬 보브 -->
+                        <div class="style-card-item" data-gender="female" data-category="cut" data-style-key="ccurlbob" data-name="C컬 보브" data-length="2" data-bangs="open" data-label="단발" data-thumb="image/catalog-turntable/thumb-ccurlbob.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/catalog-turntable/thumb-ccurlbob.jpg" alt="C컬 보브">
                             <div class="style-card-info">
                                 <span class="style-card-name">C컬 보브</span>
                                 <span class="style-card-length">단발 · 턱선 라인</span>
                             </div>
                         </div>
-                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="허쉬컷" data-length="4" data-bangs="bangs" data-label="세미롱" data-thumb="image/generated-female-hush.jpg" onclick="chooseStyle(this)">
-                            <img class="style-card-thumb" src="image/generated-female-hush.jpg" alt="허쉬컷">
+
+                        <!-- 4. 허쉬컷 -->
+                        <div class="style-card-item" data-gender="female" data-category="cut" data-style-key="hush" data-name="허쉬컷" data-length="4" data-bangs="bangs" data-label="세미롱" data-thumb="image/catalog-turntable/thumb-hush.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/catalog-turntable/thumb-hush.jpg" alt="허쉬컷">
                             <div class="style-card-info">
                                 <span class="style-card-name">허쉬컷</span>
                                 <span class="style-card-length">세미롱 · 시스루 뱅</span>
                             </div>
                         </div>
-                        <div class="style-card-item" data-gender="female" data-category="perm" data-name="빌드펌 롱웨이브" data-length="5" data-bangs="side" data-label="롱" data-thumb="image/generated-female-wave.jpg" onclick="chooseStyle(this)">
-                            <img class="style-card-thumb" src="image/generated-female-wave.jpg" alt="빌드펌 롱웨이브">
+
+                        <!-- 5. 빌드펌 롱웨이브 -->
+                        <div class="style-card-item" data-gender="female" data-category="perm" data-style-key="buildwave" data-name="빌드펌 롱웨이브" data-length="5" data-bangs="side" data-label="롱" data-thumb="image/catalog-turntable/thumb-buildwave.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/catalog-turntable/thumb-buildwave.jpg" alt="빌드펌 롱웨이브">
                             <div class="style-card-info">
                                 <span class="style-card-name">빌드펌 롱웨이브</span>
                                 <span class="style-card-length">롱 · 사이드 뱅</span>
                             </div>
                         </div>
-                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="시스루 뱅 롱" data-length="5" data-bangs="bangs" data-label="롱" data-thumb="image/generated-female-bangs.jpg" onclick="chooseStyle(this)">
-                            <img class="style-card-thumb" src="image/generated-female-bangs.jpg" alt="시스루 뱅 롱">
+
+                        <!-- 6. 시스루 뱅 롱 -->
+                        <div class="style-card-item" data-gender="female" data-category="cut" data-style-key="seethrough" data-name="시스루 뱅 롱" data-length="5" data-bangs="bangs" data-label="롱" data-thumb="image/catalog-turntable/thumb-seethrough.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/catalog-turntable/thumb-seethrough.jpg" alt="시스루 뱅 롱">
                             <div class="style-card-info">
                                 <span class="style-card-name">시스루 뱅 롱</span>
                                 <span class="style-card-length">롱 · 시스루 뱅</span>
                             </div>
                         </div>
-                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="단발 태슬컷" data-length="2" data-bangs="open" data-label="단발" data-thumb="image/generated-female-lob.jpg" onclick="chooseStyle(this)">
-                            <img class="style-card-thumb" src="image/generated-female-lob.jpg" alt="단발 태슬컷">
+
+                        <!-- 7. 단발 태슬컷 -->
+                        <div class="style-card-item" data-gender="female" data-category="cut" data-style-key="tassel" data-name="단발 태슬컷" data-length="2" data-bangs="open" data-label="단발" data-thumb="image/catalog-turntable/thumb-tassel.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/catalog-turntable/thumb-tassel.jpg" alt="단발 태슬컷">
                             <div class="style-card-info">
                                 <span class="style-card-name">단발 태슬컷</span>
                                 <span class="style-card-length">단발 · 스트레이트</span>
                             </div>
                         </div>
-                        <div class="style-card-item" data-gender="female" data-category="perm" data-name="볼륨 C컬 단발" data-length="2" data-bangs="bangs" data-label="단발" data-thumb="image/generated-female-bob.jpg" onclick="chooseStyle(this)">
-                            <img class="style-card-thumb" src="image/generated-female-bob.jpg" alt="볼륨 C컬 단발">
+
+                        <!-- 8. 볼륨 C컬 단발 -->
+                        <div class="style-card-item" data-gender="female" data-category="perm" data-style-key="volumebob" data-name="볼륨 C컬 단발" data-length="2" data-bangs="bangs" data-label="단발" data-thumb="image/catalog-turntable/thumb-volumebob.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/catalog-turntable/thumb-volumebob.jpg" alt="볼륨 C컬 단발">
                             <div class="style-card-info">
                                 <span class="style-card-name">볼륨 C컬 단발</span>
                                 <span class="style-card-length">단발 · 풍성한 볼륨</span>
                             </div>
                         </div>
-                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="픽시 숏컷" data-length="1" data-bangs="open" data-label="숏" data-thumb="image/generated-female-bob.jpg" onclick="chooseStyle(this)">
-                            <img class="style-card-thumb" src="image/generated-female-bob.jpg" alt="픽시 숏컷">
+
+                        <!-- 9. 픽시 숏컷 -->
+                        <div class="style-card-item" data-gender="female" data-category="cut" data-style-key="pixie" data-name="픽시 숏컷" data-length="1" data-bangs="open" data-label="숏" data-thumb="image/catalog-turntable/thumb-pixie.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/catalog-turntable/thumb-pixie.jpg" alt="픽시 숏컷">
                             <div class="style-card-info">
                                 <span class="style-card-name">픽시 숏컷</span>
                                 <span class="style-card-length">숏 · 도회적 무드</span>
                             </div>
                         </div>
-                        <div class="style-card-item" data-gender="female" data-category="perm" data-name="히피펌 세미롱" data-length="4" data-bangs="open" data-label="세미롱" data-thumb="image/generated-female-hush.jpg" onclick="chooseStyle(this)">
-                            <img class="style-card-thumb" src="image/generated-female-hush.jpg" alt="히피펌 세미롱">
+
+                        <!-- 10. 히피펌 세미롱 -->
+                        <div class="style-card-item" data-gender="female" data-category="perm" data-style-key="hippie" data-name="히피펌 세미롱" data-length="4" data-bangs="open" data-label="세미롱" data-thumb="image/catalog-turntable/thumb-hippie.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/catalog-turntable/thumb-hippie.jpg" alt="히피펌 세미롱">
                             <div class="style-card-info">
                                 <span class="style-card-name">히피펌 세미롱</span>
                                 <span class="style-card-length">세미롱 · 자유로운 컬</span>
                             </div>
                         </div>
-                        <div class="style-card-item" data-gender="female" data-category="cut" data-name="슬릭 레이어드" data-length="3" data-bangs="open" data-label="미디엄" data-thumb="image/generated-female-layered.jpg" onclick="chooseStyle(this)">
-                            <img class="style-card-thumb" src="image/generated-female-layered.jpg" alt="슬릭 레이어드">
+
+                        <!-- 11. 슬릭 레이어드 -->
+                        <div class="style-card-item" data-gender="female" data-category="cut" data-style-key="sleek" data-name="슬릭 레이어드" data-length="3" data-bangs="open" data-label="미디엄" data-thumb="image/catalog-turntable/thumb-sleek.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/catalog-turntable/thumb-sleek.jpg" alt="슬릭 레이어드">
                             <div class="style-card-info">
                                 <span class="style-card-name">슬릭 레이어드</span>
                                 <span class="style-card-length">미디엄 · 매끄러운 결</span>
                             </div>
                         </div>
-                        <div class="style-card-item" data-gender="female" data-category="perm" data-name="젤리펌 롱" data-length="5" data-bangs="bangs" data-label="롱" data-thumb="image/generated-female-wave.jpg" onclick="chooseStyle(this)">
-                            <img class="style-card-thumb" src="image/generated-female-wave.jpg" alt="젤리펌 롱">
+
+                        <!-- 12. 젤리펌 롱 -->
+                        <div class="style-card-item" data-gender="female" data-category="perm" data-style-key="jelly" data-name="젤리펌 롱" data-length="5" data-bangs="bangs" data-label="롱" data-thumb="image/catalog-turntable/thumb-jelly.jpg" onclick="chooseStyle(this)">
+                            <img class="style-card-thumb" src="image/catalog-turntable/thumb-jelly.jpg" alt="젤리펌 롱">
                             <div class="style-card-info">
                                 <span class="style-card-name">젤리펌 롱</span>
                                 <span class="style-card-length">롱 · 탱글한 탄력</span>
                             </div>
                         </div>
+                    </div>
                     </div>
 
                     <button type="button" class="btn-step-next" onclick="goToStep(2)">다음: 기장 커스텀 조절 →</button>
@@ -1237,6 +1430,7 @@
             angle: 0, // 0, 45, 90, 135, 180, 225, 270, 315
             length: 3, // 1..5
             bangs: 'side', // 'open', 'bangs', 'side'
+            styleKey: 'layered',
             styleName: '소프트 레이어드',
             colorName: '내추럴 브라운',
             colorWash: 'rgba(91,58,45,0.30)',
@@ -1259,7 +1453,7 @@
             '좌측 전측면 · 315°'
         ];
 
-        // 8-Angle Asset Sequences for all 5 Lengths & Male
+        // 8-Angle Asset Sequences for all 5 Lengths & Male (720x960 Retina 2x)
         const rotationAssets8 = {
             1: Array.from({ length: 8 }, (_, i) => `image/catalog-turntable/female-len1-8a-${String(i).padStart(2, '0')}.jpg`),
             2: Array.from({ length: 8 }, (_, i) => `image/catalog-turntable/female-len2-8a-${String(i).padStart(2, '0')}.jpg`),
@@ -1280,19 +1474,22 @@
             const frame = Math.round(studioState.angle / 45) % 8;
             const normalizedAngle = frame * 45;
 
-            // Determine image source in real-time across all options
+            // Determine image source in real-time across all options (720x960 Retina)
             let source;
             if (studioState.gender === 'female') {
-                if (studioState.activeStep === 0 && frame === 0) {
-                    // STEP 00: Dedicated photorealistic diagnosis image matrix
-                    source = `image/catalog-turntable/diag-${studioState.diagTexture}-${studioState.diagVolume}-${studioState.diagDamage}-${studioState.diagFace}.jpg`;
-                } else {
-                    const len = studioState.length;
-                    if (frame === 0) {
-                        source = `image/catalog-turntable/female-len${len}-${studioState.bangs}.jpg`;
+                if (frame === 0) {
+                    if (studioState.activeStep === 0) {
+                        // STEP 00: Dedicated photorealistic diagnosis image matrix (720x960)
+                        source = `image/catalog-turntable/diag-${studioState.diagTexture}-${studioState.diagVolume}-${studioState.diagDamage}-${studioState.diagFace}.jpg`;
+                    } else if (studioState.activeStep === 1) {
+                        // STEP 01: Distinct style master cut for each of the 12 styles (720x960)
+                        source = `image/catalog-turntable/style-master-${studioState.styleKey || 'layered'}.jpg`;
                     } else {
-                        source = rotationAssets8[len][frame];
+                        // STEP 02~04: Length & Bangs build-up matrix (720x960)
+                        source = `image/catalog-turntable/female-len${studioState.length}-${studioState.bangs}.jpg`;
                     }
+                } else {
+                    source = rotationAssets8[studioState.length][frame];
                 }
             } else {
                 source = rotationAssets8.male[frame];
@@ -1304,41 +1501,26 @@
             $('#stageScrubber').val(frame);
             $('#stageViewport').css('--stage-angle', `${normalizedAngle}deg`);
 
-            // Real-time Visual Effects for Volume (모량), Damage (손상도), Face (얼굴형)
+            // Real-time Visual Effects for Volume (모량) & Damage (손상도)
             const layer = $('#stageImgLayer');
             layer.removeClass('vol-thin vol-normal vol-thick damage-healthy damage-colored damage-bleached');
             layer.addClass(`vol-${studioState.diagVolume}`);
             layer.addClass(`damage-${studioState.diagDamage}`);
 
-            // Face guide display
-            const faceGuide = $('#stageFaceGuide');
-            if (studioState.activeStep === 0 && frame === 0) {
-                faceGuide.addClass('is-active');
-                const faceConfigs = {
-                    oval: { label: '계란형 · 황금비 1:1.618 밸런스', w: 140, h: 180, rad: '50%' },
-                    round: { label: '둥근형 · 정수리 볼륨 & 턱선 슬리밍 커버', w: 154, h: 164, rad: '50%' },
-                    square: { label: '각진형 · 사이드 뱅 페이스라인 곡선 완화', w: 150, h: 174, rad: '44% 44% 36% 36%' },
-                    long: { label: '긴형 · 이마 뱅 라인 & 가로 볼륨 확장', w: 132, h: 192, rad: '50%' }
-                };
-                const cfg = faceConfigs[studioState.diagFace] || faceConfigs.oval;
-                $('#stageFaceOval').css({ width: `${cfg.w}px`, height: `${cfg.h}px`, borderRadius: cfg.rad });
-                $('#stageFaceLabel').text(cfg.label);
-            } else {
-                faceGuide.removeClass('is-active');
-            }
-
             // Pipeline tag with full context
             const lengthLabels = { 1: '숏', 2: '단발', 3: '미디엄', 4: '세미롱', 5: '롱' };
             const bangLabels = { open: '내추럴 오픈', bangs: '시스루 뱅', side: '사이드 뱅' };
-            const volLabels = { normal: '보통 숱', thick: '숱 많음(풍성)', thin: '숱 적음(슬릭)' };
-            const damLabels = { healthy: '건강모(윤기)', colored: '염색모', bleached: '탈색·극손상' };
+            const volLabels = { normal: '보통 숱', thick: '숱 많음', thin: '얇고 숱 적음' };
+            const damLabels = { healthy: '건강모', colored: '염색모', bleached: '탈색·극손상' };
             const texLabels = { straight: '직모', wavy: '반곱슬', curly: '강한 곱슬' };
             const faceLabels = { oval: '계란형', round: '둥근형', square: '각진형', long: '긴형' };
 
             if (studioState.activeStep === 0 && frame === 0) {
-                $('#stagePipelineText').html(`<b>1:1 모발 실사 진단</b> · ${texLabels[studioState.diagTexture]} · ${volLabels[studioState.diagVolume]} · ${damLabels[studioState.diagDamage]} · ${faceLabels[studioState.diagFace]}`);
+                $('#stagePipelineText').html(`<b>1:1 실사 모발 진단</b> · ${texLabels[studioState.diagTexture]} · ${volLabels[studioState.diagVolume]} · ${damLabels[studioState.diagDamage]} · ${faceLabels[studioState.diagFace]}`);
+            } else if (studioState.activeStep === 1 && frame === 0) {
+                $('#stagePipelineText').html(`<b>시그니처 스타일</b> · ${studioState.styleName} (${lengthLabels[studioState.length]}) · ${bangLabels[studioState.bangs]}`);
             } else if (frame === 0) {
-                $('#stagePipelineText').html(`<b>1:1 맞춤 컨설팅</b> · ${lengthLabels[studioState.length]} (${studioState.styleName}) · ${bangLabels[studioState.bangs]} · ${volLabels[studioState.diagVolume]} · ${damLabels[studioState.diagDamage]}`);
+                $('#stagePipelineText').html(`<b>1:1 맞춤 컨설팅</b> · ${lengthLabels[studioState.length]} (${studioState.styleName}) · ${bangLabels[studioState.bangs]} · ${volLabels[studioState.diagVolume]}`);
             } else {
                 $('#stagePipelineText').html(`<b>360° 턴테이블</b> · ${lengthLabels[studioState.length]} 기장 (${frame + 1}/8 · ${angleNames8[frame]})`);
             }
@@ -1348,9 +1530,44 @@
                 $(this).toggleClass('is-active', Number($(this).data('angle')) === normalizedAngle);
             });
 
-            // Update recipe card
+            // Update recipe card & build-up stack chips
             $('#stageRecipeCard').html(`<b>1:1 맞춤 헤어 레시피</b> · ${studioState.styleName} (${lengthLabels[studioState.length]}) · ${bangLabels[studioState.bangs]} · ${volLabels[studioState.diagVolume]} · ${studioState.colorName} ${studioState.colorStrength}%`);
             $('#finalCtaMeta').text(`${studioState.styleName} · ${lengthLabels[studioState.length]} · ${bangLabels[studioState.bangs]} · ${studioState.colorName}`);
+
+            renderBuildUpStack();
+        }
+
+        // -------------------------------------------------------------
+        // Build-Up Stack Renderer (Real-time Option Accumulator)
+        // -------------------------------------------------------------
+        function renderBuildUpStack() {
+            const texLabels = { straight: '직모', wavy: '반곱슬', curly: '곱슬' };
+            const volLabels = { normal: '보통 숱', thick: '숱 많음', thin: '숱 적음' };
+            const damLabels = { healthy: '건강모', colored: '염색모', bleached: '탈색/극손상' };
+            const faceLabels = { oval: '계란형', round: '둥근형', square: '각진형', long: '긴형' };
+            const lenLabels = { 1: '숏 (1단계)', 2: '단발 (2단계)', 3: '미디엄 (3단계)', 4: '세미롱 (4단계)', 5: '롱 (5단계)' };
+            const bangLabels = { open: '내추럴 오픈', bangs: '시스루 뱅', side: '사이드 뱅' };
+
+            const chips = [
+                { step: 0, label: '모질', value: texLabels[studioState.diagTexture] || '반곱슬', cls: 'chip-step0' },
+                { step: 0, label: '모량', value: volLabels[studioState.diagVolume] || '보통 숱', cls: 'chip-step0' },
+                { step: 0, label: '손상도', value: damLabels[studioState.diagDamage] || '건강모', cls: 'chip-step0' },
+                { step: 0, label: '얼굴형', value: faceLabels[studioState.diagFace] || '계란형', cls: 'chip-step0' },
+                { step: 1, label: '스타일', value: studioState.styleName, cls: 'chip-step1' },
+                { step: 2, label: '기장', value: lenLabels[studioState.length], cls: 'chip-step2' },
+                { step: 3, label: '앞머리', value: bangLabels[studioState.bangs], cls: 'chip-step3' },
+                { step: 4, label: '컬러', value: `${studioState.colorName} ${studioState.colorStrength}%`, cls: 'chip-step4' }
+            ];
+
+            const html = chips.map(c => `
+                <button type="button" class="stack-chip ${c.cls}" onclick="goToStep(${c.step})" title="STEP 0${c.step}로 이동">
+                    <span class="stack-chip-label">${c.label}</span>
+                    <span>${c.value}</span>
+                </button>
+            `).join('');
+
+            $('#buildupChipsRow').html(html);
+            $('#stackSummaryCount').text(`${chips.length}개 맞춤 옵션 실시간 결합 완료`);
         }
 
         function setAngleDegree(deg) {
@@ -1437,75 +1654,47 @@
         }
 
         // -------------------------------------------------------------
-        // Step 0: Diagnosis Logic (Real-time Visual Buildup)
+        // Step 0: Custom Select & Real-time Diagnostic Handlers
         // -------------------------------------------------------------
-        function runDiagnosis() {
-            studioState.diagTexture = $('#diagTexture').val();
-            studioState.diagVolume = $('#diagVolume').val();
-            studioState.diagDamage = $('#diagDamage').val();
-            studioState.diagFace = $('#diagFace').val();
-
-            let targetStyle = '소프트 레이어드';
-            let targetLength = 3;
-            let targetBangs = 'side';
-            let title = '소프트 레이어드 & 사이드 뱅 추천';
-            let desc = '자연스러운 반곱슬 결감을 활용해 층을 적당히 낸 소프트 레이어드컷과 광대를 부드럽게 감싸는 사이드 뱅으로 볼륨과 입체감을 극대화할 수 있습니다.';
-
-            if (studioState.diagTexture === 'straight') {
-                targetStyle = 'C컬 보브';
-                targetLength = 2;
-                targetBangs = 'open';
-                title = 'C컬 단발 보브 & 내추럴 오픈 추천';
-                desc = '직모 특유의 볼륨 꺼짐을 방지하기 위해 턱선 C컬을 더해 단정하고 시크한 입체감을 살립니다.';
-            } else if (studioState.diagTexture === 'curly') {
-                targetStyle = '허쉬컷';
-                targetLength = 4;
-                targetBangs = 'bangs';
-                title = '소프트 허쉬컷 & 시스루 뱅 추천';
-                desc = '가벼운 샤기 레이어로 모량을 덜어내고 공기감 넘치는 스타일리시한 실루엣을 완성합니다.';
+        function toggleCustomSelect(wrapId) {
+            const wrap = $(`#${wrapId}`);
+            const isOpen = wrap.hasClass('is-open');
+            $('.custom-select-wrap').removeClass('is-open');
+            if (!isOpen) {
+                wrap.addClass('is-open');
             }
-
-            const volNames = { normal: '보통 숱', thick: '숱 많음', thin: '숱 적음' };
-            const damNames = { healthy: '건강모', colored: '염색모', bleached: '극손상모' };
-            $('#summaryDiagTitle').text(`진단: ${studioState.diagTexture} · ${volNames[studioState.diagVolume]} · ${damNames[studioState.diagDamage]}`);
-            $('#summaryDiagDesc').text(title);
-            $('#diagnosisRecomBox strong').text(`수석 디자이너 1:1 처방: ${title}`);
-            $('#diagnosisPrescription').text(desc);
-
-            // Store recommended values in apply button
-            $('#btnApplyPrescription').data('style', targetStyle).data('len', targetLength).data('bangs', targetBangs);
-
-            updateStageView();
-            showToast(`💡 모발 진단(모량·손상도·얼굴형)이 모델에 실시간 반영되었습니다.`);
         }
 
-        function applyPrescription() {
-            const btn = $('#btnApplyPrescription');
-            const targetStyle = btn.data('style') || '소프트 레이어드';
-            const targetLength = Number(btn.data('len')) || 3;
-            const targetBangs = btn.data('bangs') || 'side';
+        function selectCustomOption(wrapId, val, label) {
+            const wrap = $(`#${wrapId}`);
+            const field = wrap.data('field');
+            wrap.find('.custom-option').removeClass('is-selected');
+            wrap.find(`.custom-option[data-value="${val}"]`).addClass('is-selected');
+            wrap.find('.custom-select-val').text(label);
+            wrap.removeClass('is-open');
 
-            studioState.styleName = targetStyle;
-            studioState.length = targetLength;
-            studioState.bangs = targetBangs;
-
-            // Sync UI elements
-            $('.style-card-item').removeClass('is-selected');
-            $(`.style-card-item[data-name="${targetStyle}"]`).addClass('is-selected');
-            $('#summaryStyleName').text(targetStyle);
-            $('#sliderLength').val(targetLength);
-            const lengthLabels = { 1: '숏', 2: '단발', 3: '미디엄', 4: '세미롱', 5: '롱' };
-            const bangLabels = { open: '내추럴 오픈', bangs: '시스루 뱅', side: '사이드 뱅' };
-            $('#outputLength').text(`${targetLength}단계 · ${lengthLabels[targetLength]}`);
-            $('#summaryLengthTitle').text(`기장: ${lengthLabels[targetLength]} (${targetLength}단계)`);
-            $('.choice-btn').removeClass('is-active');
-            $(`.choice-btn[data-bang="${targetBangs}"]`).addClass('is-active');
-            $('#summaryBangsTitle').text(`앞머리: ${bangLabels[targetBangs]}`);
-
+            studioState[field] = val;
+            updateDiagnosisSummary();
             updateStageView();
-            showToast(`✨ 디자이너 처방 [${targetStyle}]이(가) 기본 스타일로 적용되었습니다.`);
-            goToStep(1);
+            showToast(`💡 [${label}] 옵션이 모델에 실시간 반영되었습니다.`);
         }
+
+        function updateDiagnosisSummary() {
+            const texLabels = { straight: '직모', wavy: '반곱슬', curly: '강한 곱슬' };
+            const volLabels = { normal: '보통 숱', thick: '숱 많음', thin: '얇고 숱 적음' };
+            const damLabels = { healthy: '건강모', colored: '염색모', bleached: '탈색/극손상' };
+            const faceLabels = { oval: '계란형', round: '둥근형', square: '각진형', long: '긴형' };
+
+            $('#summaryDiagTitle').text(`진단: ${texLabels[studioState.diagTexture]} · ${volLabels[studioState.diagVolume]} · ${damLabels[studioState.diagDamage]}`);
+            $('#summaryDiagDesc').text(`${faceLabels[studioState.diagFace]} 맞춤형 스타일 빌드업 준비 완료`);
+        }
+
+        // Global dismiss for custom dropdowns
+        $(document).on('pointerdown click', function(e) {
+            if (!$(e.target).closest('.custom-select-wrap').length) {
+                $('.custom-select-wrap').removeClass('is-open');
+            }
+        });
 
         // -------------------------------------------------------------
         // Step 1: Base Style Selection
@@ -1525,6 +1714,7 @@
             $('.style-card-item').removeClass('is-selected');
             const item = $(el).addClass('is-selected');
 
+            studioState.styleKey = item.data('style-key') || 'layered';
             studioState.styleName = item.data('name');
             studioState.length = Number(item.data('length')) || 3;
             
@@ -1818,12 +2008,17 @@
         $(document).ready(function() {
             preloadTurntableAssets();
             const params = new URLSearchParams(location.search);
-            if (params.has('testTex')) $('#diagTexture').val(params.get('testTex'));
-            if (params.has('testVol')) $('#diagVolume').val(params.get('testVol'));
-            if (params.has('testDam')) $('#diagDamage').val(params.get('testDam'));
-            if (params.has('testFace')) $('#diagFace').val(params.get('testFace'));
+            const texMap = { wavy: '자연 반곱슬', straight: '직모', curly: '강한 곱슬' };
+            const volMap = { normal: '보통 숱', thick: '숱 많음', thin: '얇고 숱 적음' };
+            const damMap = { healthy: '건강모', colored: '염색/펌 유경험모', bleached: '탈색/극손상모' };
+            const faceMap = { oval: '계란형', round: '둥근형', square: '각진형', long: '긴형' };
 
-            runDiagnosis();
+            if (params.has('testTex') && texMap[params.get('testTex')]) selectCustomOption('selectWrapTexture', params.get('testTex'), texMap[params.get('testTex')]);
+            if (params.has('testVol') && volMap[params.get('testVol')]) selectCustomOption('selectWrapVolume', params.get('testVol'), volMap[params.get('testVol')]);
+            if (params.has('testDam') && damMap[params.get('testDam')]) selectCustomOption('selectWrapDamage', params.get('testDam'), damMap[params.get('testDam')]);
+            if (params.has('testFace') && faceMap[params.get('testFace')]) selectCustomOption('selectWrapFace', params.get('testFace'), faceMap[params.get('testFace')]);
+
+            updateDiagnosisSummary();
 
             if (params.has('testLength')) {
                 studioState.length = Number(params.get('testLength'));
