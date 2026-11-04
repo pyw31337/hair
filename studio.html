@@ -172,57 +172,7 @@
             transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), filter 0.24s ease, opacity 0.12s ease;
         }
 
-        /* 1. Hair Density / Volume Visual Reactions */
-        .stage-img-layer.vol-thin img {
-            transform: scaleX(0.965);
-        }
-        .stage-img-layer.vol-normal img {
-            transform: scaleX(1.0);
-        }
-        .stage-img-layer.vol-thick img {
-            transform: scaleX(1.045);
-            filter: drop-shadow(0 0 12px rgba(35, 20, 15, 0.4));
-        }
 
-        /* 2. Hair Damage / Sheen & Frizz Visual Reactions */
-        .stage-shine-layer {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            opacity: 0;
-            mix-blend-mode: overlay;
-            background: radial-gradient(ellipse 55% 15% at 50% 27%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.2) 48%, transparent 78%),
-                        radial-gradient(ellipse 65% 20% at 50% 64%, rgba(255, 255, 255, 0.35), transparent 70%);
-            transition: opacity 0.25s ease;
-            z-index: 2;
-        }
-        .stage-img-layer.damage-healthy .stage-shine-layer {
-            opacity: 0.95;
-        }
-        .stage-img-layer.damage-colored .stage-shine-layer {
-            opacity: 0.32;
-        }
-        .stage-img-layer.damage-bleached .stage-shine-layer {
-            opacity: 0;
-        }
-
-        .stage-damage-frizz {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            opacity: 0;
-            mix-blend-mode: screen;
-            background: radial-gradient(ellipse 85% 75% at 50% 50%, transparent 60%, rgba(255, 255, 255, 0.2) 85%, transparent 100%),
-                        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 1px, transparent 1px, transparent 4px);
-            transition: opacity 0.25s ease;
-            z-index: 2;
-        }
-        .stage-img-layer.damage-bleached .stage-damage-frizz {
-            opacity: 0.88;
-        }
-        .stage-img-layer.damage-bleached img {
-            filter: contrast(0.91) saturate(0.85) brightness(0.97);
-        }
 
 
 
@@ -390,10 +340,15 @@
             border-radius: var(--studio-radius-lg);
             background: var(--studio-surface-card);
             border: 1px solid var(--studio-border);
-            overflow: hidden;
+            overflow: visible;
+            position: relative;
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
         .step-box.is-active { border-color: rgba(243, 83, 129, 0.5); box-shadow: 0 8px 24px rgba(243, 83, 129, 0.1); }
+        .step-box.has-open-select, .step-box:has(.custom-select-wrap.is-open) {
+            overflow: visible !important;
+            z-index: 50 !important;
+        }
 
         .step-header {
             display: flex;
@@ -403,6 +358,8 @@
             cursor: pointer;
             user-select: none;
             background: rgba(255, 255, 255, 0.02);
+            border-top-left-radius: var(--studio-radius-lg);
+            border-top-right-radius: var(--studio-radius-lg);
         }
         .step-header:hover { background: rgba(255, 255, 255, 0.04); }
         .step-title-wrap { display: flex; align-items: center; gap: 12px; }
@@ -435,16 +392,21 @@
         .step-summary-bar span { color: var(--studio-text-sub); font-size: 0.72rem; }
         .btn-edit-step { padding: 4px 10px; border-radius: var(--studio-radius-full); border: 1px solid var(--studio-border); background: transparent; color: var(--studio-pink); font: inherit; font-size: 0.68rem; font-weight: 800; cursor: pointer; }
 
-        .step-body { padding: 20px; border-top: 1px solid var(--studio-border); display: flex; flex-direction: column; gap: 16px; }
+        .step-body { padding: 20px; border-top: 1px solid var(--studio-border); display: flex; flex-direction: column; gap: 16px; overflow: visible; position: relative; }
 
         /* Step 0: Diagnosis & Custom Select */
-        .diagnosis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .diagnosis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; overflow: visible; position: relative; }
+        .diagnosis-group { position: relative; }
+        .diagnosis-group.is-open, .diagnosis-group:has(.custom-select-wrap.is-open) { z-index: 100; }
         .diagnosis-group label { display: block; font-size: 0.72rem; font-weight: 800; color: var(--studio-text-sub); margin-bottom: 6px; }
 
         /* Custom Design System Select & Dropdown Modal */
         .custom-select-wrap {
             position: relative;
             width: 100%;
+        }
+        .custom-select-wrap.is-open {
+            z-index: 200;
         }
         .custom-select-trigger {
             width: 100%;
@@ -490,14 +452,14 @@
             left: 0;
             right: 0;
             background: #181622;
-            border: 1px solid rgba(243, 83, 129, 0.4);
+            border: 1px solid rgba(243, 83, 129, 0.55);
             border-radius: var(--studio-radius-md);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 16px rgba(243, 83, 129, 0.2);
-            padding: 6px;
-            z-index: 100;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), 0 0 20px rgba(243, 83, 129, 0.3);
+            padding: 8px;
+            z-index: 9999;
             display: none;
-            backdrop-filter: blur(12px);
-            max-height: 220px;
+            backdrop-filter: blur(14px);
+            max-height: 250px;
             overflow-y: auto;
         }
         .custom-select-wrap.is-open .custom-select-dropdown {
@@ -901,10 +863,7 @@
                      role="slider" aria-label="8각도 회전 턴테이블" aria-valuemin="0" aria-valuemax="315" aria-valuenow="0" tabindex="0"
                      onpointerdown="startRotation(event)" onpointermove="moveRotation(event)" onpointerup="endRotation(event)" onpointercancel="endRotation(event)" onkeydown="handleRotationKey(event)">
                     
-                    <div class="stage-img-layer" id="stageImgLayer">
                         <img id="stageModelImg" src="image/catalog-turntable/female-len3-side.jpg" alt="헤어 모델 8각도 회전 프리뷰" draggable="false">
-                        <span class="stage-shine-layer" id="stageShineLayer"></span>
-                        <span class="stage-damage-frizz" id="stageFrizzLayer"></span>
                         <span class="stage-color-mask" id="stageColorMask"></span>
                     </div>
 
@@ -1501,11 +1460,6 @@
             $('#stageScrubber').val(frame);
             $('#stageViewport').css('--stage-angle', `${normalizedAngle}deg`);
 
-            // Real-time Visual Effects for Volume (모량) & Damage (손상도)
-            const layer = $('#stageImgLayer');
-            layer.removeClass('vol-thin vol-normal vol-thick damage-healthy damage-colored damage-bleached');
-            layer.addClass(`vol-${studioState.diagVolume}`);
-            layer.addClass(`damage-${studioState.diagDamage}`);
 
             // Pipeline tag with full context
             const lengthLabels = { 1: '숏', 2: '단발', 3: '미디엄', 4: '세미롱', 5: '롱' };
@@ -1660,8 +1614,12 @@
             const wrap = $(`#${wrapId}`);
             const isOpen = wrap.hasClass('is-open');
             $('.custom-select-wrap').removeClass('is-open');
+            $('.diagnosis-group').removeClass('is-open');
+            $('.step-box').removeClass('has-open-select');
             if (!isOpen) {
                 wrap.addClass('is-open');
+                wrap.closest('.diagnosis-group').addClass('is-open');
+                wrap.closest('.step-box').addClass('has-open-select');
             }
         }
 
@@ -1672,6 +1630,8 @@
             wrap.find(`.custom-option[data-value="${val}"]`).addClass('is-selected');
             wrap.find('.custom-select-val').text(label);
             wrap.removeClass('is-open');
+            wrap.closest('.diagnosis-group').removeClass('is-open');
+            wrap.closest('.step-box').removeClass('has-open-select');
 
             studioState[field] = val;
             updateDiagnosisSummary();
@@ -1693,6 +1653,8 @@
         $(document).on('pointerdown click', function(e) {
             if (!$(e.target).closest('.custom-select-wrap').length) {
                 $('.custom-select-wrap').removeClass('is-open');
+                $('.diagnosis-group').removeClass('is-open');
+                $('.step-box').removeClass('has-open-select');
             }
         });
 
@@ -2039,6 +2001,9 @@
             }
             if (params.has('testStep')) {
                 goToStep(Number(params.get('testStep')));
+            }
+            if (params.has('testOpen')) {
+                toggleCustomSelect(params.get('testOpen') || 'selectWrapTexture');
             }
             updateStageView();
         });

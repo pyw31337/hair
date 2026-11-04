@@ -27,15 +27,19 @@ def build_diagnosis_matrix():
 
     Y, X = np.indices((480, 360), dtype=np.float32)
 
-    # Face mask to protect facial features from deformation and discoloration
-    face_ell = ((X - 180.0) / 44.0)**2 + ((Y - 240.0) / 72.0)**2
+    # Face mask to protect facial features and neck from any deformation
+    face_ell = ((X - 180.0) / 52.0)**2 + ((Y - 240.0) / 80.0)**2
     face_weight = np.clip(1.0 - face_ell, 0.0, 1.0)
-    face_mask = cv2.GaussianBlur(face_weight, (25, 25), 0)
+    face_mask = cv2.GaussianBlur(face_weight, (31, 31), 0)
+    face_protected = np.clip(face_mask * 1.5, 0.0, 1.0)
 
     # Hair mask: area outside face but within head/shoulder silhouette
-    hair_weight = np.clip((1.0 - face_mask) * (Y / 380.0), 0.0, 1.0)
+    hair_weight = np.clip((1.0 - face_protected) * (Y / 380.0), 0.0, 1.0)
     hair_weight[Y > 430] *= 0.1 # Protect white clothing
     hair_weight[Y < 30] = 0
+
+    # Side hair mask: Strictly lateral hair only (X < 120 or X > 240), zero effect on central face
+    side_hair_mask = np.clip((np.abs(X - 180.0) - 60.0) / 30.0, 0.0, 1.0) * hair_weight * (1.0 - face_protected)
 
     textures = ['straight', 'wavy', 'curly']
     volumes = ['thin', 'normal', 'thick']
@@ -48,15 +52,15 @@ def build_diagnosis_matrix():
         base_img = base_templates[tex].copy()
 
         for vol in volumes:
-            # 1. Volume Warping (Continuous Sine Shift to prevent seam)
+            # 1. Volume Warping: Strictly on outer side hair only, zero facial distortion
             if vol == 'thick':
-                # Smooth lateral expansion
-                shift_x = np.sin((X - 180.0) / 180.0 * np.pi) * 14.0 * hair_weight * (1.0 - face_mask)
+                # Lateral hair density expansion
+                shift_x = np.sin((X - 180.0) / 180.0 * np.pi) * 12.0 * side_hair_mask
                 map_x = np.clip(X - shift_x, 0, 359).astype(np.float32)
                 vol_img = cv2.remap(base_img, map_x, Y, cv2.INTER_LANCZOS4)
             elif vol == 'thin':
-                # Smooth lateral contraction
-                shift_x = -np.sin((X - 180.0) / 180.0 * np.pi) * 11.0 * hair_weight * (1.0 - face_mask)
+                # Lateral hair density contraction
+                shift_x = -np.sin((X - 180.0) / 180.0 * np.pi) * 9.0 * side_hair_mask
                 map_x = np.clip(X - shift_x, 0, 359).astype(np.float32)
                 vol_img = cv2.remap(base_img, map_x, Y, cv2.INTER_LANCZOS4)
             else: # normal
@@ -71,14 +75,14 @@ def build_diagnosis_matrix():
                 active_hair_mask = hair_weight * hair_is_dark * (1.0 - face_mask)
 
                 if dam == 'healthy':
-                    # Rich espresso depth + Luminous Angel Ring gloss reflection
-                    dam_img[:, :, 0] -= active_hair_mask * 12 # Blue down
-                    dam_img[:, :, 1] -= active_hair_mask * 8  # Green down
-                    dam_img[:, :, 2] -= active_hair_mask * 6  # Red down
-                    crown_gloss = np.exp(-((Y - 140.0)**2)/(2*10.0**2)) * np.exp(-((X - 180.0)**2)/(2*45.0**2))
-                    wave_gloss = np.exp(-((Y - 310.0)**2)/(2*15.0**2)) * np.exp(-((X - 110.0)**2)/(2*30.0**2)) + \
-                                np.exp(-((Y - 310.0)**2)/(2*15.0**2)) * np.exp(-((X - 250.0)**2)/(2*30.0**2))
-                    total_gloss = np.clip((crown_gloss * 75.0 + wave_gloss * 50.0) * (1.0 - face_mask), 0.0, 85.0)
+                    # Rich espresso depth with natural studio hair luster (No artificial forehead lighting)
+                    dam_img[:, :, 0] -= active_hair_mask * 10 # Subtle Blue down
+                    dam_img[:, :, 1] -= active_hair_mask * 6  # Subtle Green down
+                    dam_img[:, :, 2] -= active_hair_mask * 4  # Subtle Red down
+                    # Natural wave side gloss only (strictly outside face)
+                    side_gloss = np.exp(-((Y - 320.0)**2)/(2*20.0**2)) * np.exp(-((X - 90.0)**2)/(2*25.0**2)) + \
+                                 np.exp(-((Y - 320.0)**2)/(2*20.0**2)) * np.exp(-((X - 270.0)**2)/(2*25.0**2))
+                    total_gloss = np.clip(side_gloss * 28.0 * active_hair_mask, 0.0, 35.0)
                     dam_img += total_gloss[:, :, None]
 
                 elif dam == 'colored':
@@ -104,15 +108,15 @@ def build_diagnosis_matrix():
                     out_img = dam_img.copy()
 
                     if face == 'round':
-                        shift_y = np.clip((Y - 240.0)/60.0, 0.0, 1.0) * np.exp(-((X - 180.0)**2)/(2*55.0**2)) * 8.0 * (1.0 - face_mask)
+                        shift_y = np.clip((Y - 240.0)/60.0, 0.0, 1.0) * np.exp(-((X - 180.0)**2)/(2*55.0**2)) * 8.0 * (1.0 - face_protected)
                         map_y_round = np.clip(Y - shift_y, 0, 479).astype(np.float32)
                         out_img = cv2.remap(out_img, X, map_y_round, cv2.INTER_LANCZOS4)
                     elif face == 'square':
-                        jaw_in = np.exp(-((Y - 305.0)**2)/(2*25.0**2)) * -np.sin((X - 180.0)/180.0 * np.pi) * 8.0 * (1.0 - face_mask)
+                        jaw_in = np.exp(-((Y - 305.0)**2)/(2*25.0**2)) * -np.sin((X - 180.0)/180.0 * np.pi) * 8.0 * (1.0 - face_protected)
                         map_x_square = np.clip(X - jaw_in, 0, 359).astype(np.float32)
                         out_img = cv2.remap(out_img, map_x_square, Y, cv2.INTER_LANCZOS4)
                     elif face == 'long':
-                        ear_out = np.exp(-((Y - 240.0)**2)/(2*30.0**2)) * np.sin((X - 180.0)/180.0 * np.pi) * 9.0 * (1.0 - face_mask)
+                        ear_out = np.exp(-((Y - 240.0)**2)/(2*30.0**2)) * np.sin((X - 180.0)/180.0 * np.pi) * 9.0 * (1.0 - face_protected)
                         map_x_long = np.clip(X - ear_out, 0, 359).astype(np.float32)
                         out_img = cv2.remap(out_img, map_x_long, Y, cv2.INTER_LANCZOS4)
 
