@@ -29,7 +29,7 @@ button{font:inherit;cursor:pointer;color:inherit}
 .tag{font-size:.65rem;color:#7a5600;background:#fff4d6;padding:2px 7px;border-radius:999px;margin-left:6px}
 .chips{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .chip{position:relative;border:2px solid transparent;background:#fff;border-radius:14px;padding:0 0 8px;text-align:center;transition:.15s}
-.chip .thumb{display:block;aspect-ratio:3/4;border-radius:12px 12px 0 0;background-size:cover;background-position:50% 40%}
+.chip .thumb{display:block;width:100%;object-fit:cover;object-position:50% 40%;aspect-ratio:3/4;border-radius:12px 12px 0 0;background-size:cover;background-position:50% 40%}
 .chip b{display:block;margin-top:6px;font-size:.78rem}
 .chip i{position:absolute;top:6px;left:6px;font-style:normal;font-size:.6rem;font-weight:800;background:rgba(23,24,39,.75);color:#fff;padding:2px 6px;border-radius:999px}
 .chip:hover{transform:translateY(-2px)}

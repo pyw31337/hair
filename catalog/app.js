@@ -12,7 +12,8 @@
   const axisOrder = () => D.groups.flatMap(x => x.axes);
   const allValues = (g, a) => axesOf(g)[a].values === 'COLORS' ? D.colors : axesOf(g)[a].values;
   const findVal = (g, a, id) => allValues(g, a).find(v => v.id === id);
-  const src = f => `img/${f}.jpg`;
+  const src = f => `img/${f}.webp`, tsrc = f => `img/t/${f}.webp`;
+  const pre = new Set(); const preload = f => { if (pre.has(f)) return; pre.add(f); const i = new Image(); i.decoding = 'async'; i.src = src(f); };
 
   // 후보 = 실제 이미지가 있는 상태 전체
   const parse = k => { const p = k.split('-'), s = {}; IMG_AXES.forEach((a, i) => s[a] = p[i + 1]); return { g: p[0], s }; };
@@ -91,7 +92,7 @@
     const c = snap(gender, want, a);
     const name = v.code ? `${v.code}<small>${v.name}</small>` : v.label;
     return `<button class="chip ${on ? 'on' : ''}" data-axis="${a}" data-id="${v.id}" title="${ok ? '' : '현재 조합의 이미지가 없어 선택 시 다른 옵션이 자동 조정됩니다'}">
-      <span class="thumb" style="background-image:url(${src(c.file)})"></span><b>${name}</b>${ok ? '' : '<i>자동 조정</i>'}</button>`;
+      <img class="thumb" loading="lazy" decoding="async" src="${tsrc(c.file)}" data-full="${c.file}" alt=""><b>${name}</b>${ok ? '' : '<i>자동 조정</i>'}</button>`;
   }
   function axisBody(a) {
     const vals = valuesOf(gender, a);
@@ -116,7 +117,13 @@
       </div>`;
     }).join('');
     $('#panel').querySelectorAll('.ghead,.next').forEach(b => b.onclick = () => { openGroup = openGroup === b.dataset.group && b.classList.contains('ghead') ? '' : b.dataset.group; drawPanel(); });
-    $('#panel').querySelectorAll('.chip').forEach(b => b.onclick = () => choose(b.dataset.axis, b.dataset.id));
+    $('#panel').querySelectorAll('.chip').forEach(b => {
+      b.onclick = () => choose(b.dataset.axis, b.dataset.id);
+      b.onpointerenter = () => preload(b.querySelector('.thumb').dataset.full);
+    });
+    // 이웃 프리로드: 열린 그룹에서 바로 고를 수 있는 이미지(최대 12장)를 유휴 시간에 미리 받음
+    const next = [...$('#panel').querySelectorAll('.group.open .thumb')].map(i => i.dataset.full).slice(0, 12);
+    (window.requestIdleCallback || setTimeout)(() => next.forEach(preload));
   }
 
   function setGender(g) {
