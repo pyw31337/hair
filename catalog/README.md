@@ -1,9 +1,25 @@
-# Let's Hair · 헤어 시뮬레이터 (Phase 1)
+# Let's Hair · 헤어 시뮬레이터
 독립 정적 앱. GitHub Pages에서 `/hair/catalog/` 로 배포됩니다. 기존 사이트 파일은 건드리지 않습니다.
-- `data.js` 옵션 체계(그룹 4개 · 축 · 값). `placeholder:true` 값은 이미지 준비중 → `fallback` 이미지 표시
-- `img/` 프리뷰 매트릭스(`f-{length}-{bangs}-{curl}.jpg`, `m-{length}-{bangs}.jpg`) + 머리카락 마스크(`*-mask.png`)
-- `tools/build_masks.py` 원본 렌더 → 600x800 리사이즈 + MediaPipe hair 마스크 추출
+
+## 구성
+- `data.js` 옵션 체계(그룹 4개 · 축 · 값) + `available`(실제 렌더가 있는 조합 124개)
+- `img/` 프리뷰 매트릭스 `{f|m}-{length}-{cut}-{bangs}-{curl}.jpg` + 머리카락 마스크 `*-mask.png` + 인물(전경) 마스크 `*-fg.png`
+- `tools/build_masks.py` 원본 렌더 → 600x800 리사이즈 + MediaPipe selfie_multiclass로 hair/전경 마스크 추출
+
+## 옵션
+| 그룹 | 여성 | 남성 | 방식 |
+|---|---|---|---|
+| 형태 | 기장(보브·미디엄·롱), 커트(내추럴·레이어드·허쉬·히메), 볼륨(보통·볼륨업) | 기장(숏·미디엄), 커트(내추럴·투블럭·울프), 볼륨 | 기장·커트 = 이미지, 볼륨 = 마스크로 머리 레이어 확대 |
+| 앞머리 | 없음·시스루·풀뱅·사이드뱅, 가르마 좌/우 | 다운·업, 가르마 좌/우 | 앞머리 = 이미지, 가르마 = 좌우 반전 |
+| 질감 | 스트레이트·C컬·웨이브·히피 | 스트레이트·다운펌·쉐도우펌 | 이미지 |
+| 컬러 | 7색 × 전체/하이라이트/발레아쥬 + 강도 | 동일 | hair 마스크 기반 캔버스 염색 |
+
+## 조합 규칙 (비현실적 조합 제외)
+- 여성: 보브는 내추럴/레이어드만, 히피펌 없음 · 히피펌은 레이어드만 · 허쉬컷은 풀뱅/히피 불가 · 히메컷은 미디엄/롱 + 풀뱅 + 스트레이트만
+- 남성: 숏 = 내추럴/투블럭, 미디엄 = 내추럴/울프
+- 불가능한 조합을 고르면 방금 고른 값은 유지하고 나머지 축을 최소 변경해 자동 조정 + 토스트 안내 (썸네일에 `자동 조정` 배지)
+
 ## 이미지 추가 방법
-1. 같은 모델·구도로 새 조합 렌더 (예: `f-medium-full-straight`)
-2. `build_masks.py` 실행 → `img/`에 결과 저장
-3. `data.js`에서 해당 값의 `placeholder`/`fallback` 제거 (새 축이면 `imageKey`에 추가)
+1. 같은 모델·구도로 새 조합 렌더 → `raw/{g}-{length}-{cut}-{bangs}-{curl}.jpg`
+2. `python tools/build_masks.py raw img selfie_multiclass_256x256.tflite`
+3. `data.js`의 `available`에 키 추가 (새 값이면 해당 축 `values`에도 추가)
