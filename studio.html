@@ -1283,11 +1283,16 @@
             // Determine image source in real-time across all options
             let source;
             if (studioState.gender === 'female') {
-                const len = studioState.length;
-                if (frame === 0) {
-                    source = `image/catalog-turntable/female-len${len}-${studioState.bangs}.jpg`;
+                if (studioState.activeStep === 0 && frame === 0) {
+                    // STEP 00: Dedicated photorealistic diagnosis image matrix
+                    source = `image/catalog-turntable/diag-${studioState.diagTexture}-${studioState.diagVolume}-${studioState.diagDamage}-${studioState.diagFace}.jpg`;
                 } else {
-                    source = rotationAssets8[len][frame];
+                    const len = studioState.length;
+                    if (frame === 0) {
+                        source = `image/catalog-turntable/female-len${len}-${studioState.bangs}.jpg`;
+                    } else {
+                        source = rotationAssets8[len][frame];
+                    }
                 }
             } else {
                 source = rotationAssets8.male[frame];
@@ -1326,9 +1331,13 @@
             const lengthLabels = { 1: '숏', 2: '단발', 3: '미디엄', 4: '세미롱', 5: '롱' };
             const bangLabels = { open: '내추럴 오픈', bangs: '시스루 뱅', side: '사이드 뱅' };
             const volLabels = { normal: '보통 숱', thick: '숱 많음(풍성)', thin: '숱 적음(슬릭)' };
-            const damLabels = { healthy: '건강모(윤기)', colored: '염색모', bleached: '극손상(매트)' };
+            const damLabels = { healthy: '건강모(윤기)', colored: '염색모', bleached: '탈색·극손상' };
+            const texLabels = { straight: '직모', wavy: '반곱슬', curly: '강한 곱슬' };
+            const faceLabels = { oval: '계란형', round: '둥근형', square: '각진형', long: '긴형' };
 
-            if (frame === 0) {
+            if (studioState.activeStep === 0 && frame === 0) {
+                $('#stagePipelineText').html(`<b>1:1 모발 실사 진단</b> · ${texLabels[studioState.diagTexture]} · ${volLabels[studioState.diagVolume]} · ${damLabels[studioState.diagDamage]} · ${faceLabels[studioState.diagFace]}`);
+            } else if (frame === 0) {
                 $('#stagePipelineText').html(`<b>1:1 맞춤 컨설팅</b> · ${lengthLabels[studioState.length]} (${studioState.styleName}) · ${bangLabels[studioState.bangs]} · ${volLabels[studioState.diagVolume]} · ${damLabels[studioState.diagDamage]}`);
             } else {
                 $('#stagePipelineText').html(`<b>360° 턴테이블</b> · ${lengthLabels[studioState.length]} 기장 (${frame + 1}/8 · ${angleNames8[frame]})`);
@@ -1783,6 +1792,15 @@
         }
 
         function preloadTurntableAssets() {
+            // Preload diagnosis matrix
+            ['straight', 'wavy', 'curly'].forEach(t => {
+                ['thin', 'normal', 'thick'].forEach(v => {
+                    ['healthy', 'colored', 'bleached'].forEach(d => {
+                        const img = new Image();
+                        img.src = `image/catalog-turntable/diag-${t}-${v}-${d}-oval.jpg`;
+                    });
+                });
+            });
             // Preload all 40 turntable frames and 15 front matrix frames into browser cache
             for (let len = 1; len <= 5; len++) {
                 ['open', 'bangs', 'side'].forEach(b => {
@@ -1799,8 +1817,14 @@
         // Initialization
         $(document).ready(function() {
             preloadTurntableAssets();
-            runDiagnosis();
             const params = new URLSearchParams(location.search);
+            if (params.has('testTex')) $('#diagTexture').val(params.get('testTex'));
+            if (params.has('testVol')) $('#diagVolume').val(params.get('testVol'));
+            if (params.has('testDam')) $('#diagDamage').val(params.get('testDam'));
+            if (params.has('testFace')) $('#diagFace').val(params.get('testFace'));
+
+            runDiagnosis();
+
             if (params.has('testLength')) {
                 studioState.length = Number(params.get('testLength'));
                 $('#sliderLength').val(studioState.length);
