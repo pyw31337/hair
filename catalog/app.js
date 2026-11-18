@@ -111,7 +111,7 @@
       return `<div class="group ${open ? 'open' : ''}">
         <button class="ghead" data-group="${g.id}"><em>0${gi + 1}</em><span><b>${g.title}</b><small>${open ? g.sub : picked}</small></span><i>${open ? '−' : '+'}</i></button>
         ${open ? `<div class="gbody">${g.axes.map(a => `<div class="axis"><h4>${axesOf(gender)[a].label}</h4>${axisBody(a)}</div>`).join('')}
-          ${g.id === 'color' ? `<p class="note">컬러·기법·볼륨·가르마 이미지는 기장별 기본 스타일에서 생성했습니다. 다른 스타일에서 고르면 그 스타일로 자동 조정됩니다.</p>` : ''}
+          ${g.id === 'color' ? `<p class="note">컬러는 모든 스타일에 전용 사진이 있습니다. 기법·볼륨·가르마도 해당 스타일 사진이 있으면 그대로 보여 주고, 아직 없는 조합만 가장 가까운 사진으로 자동 조정됩니다.</p>` : ''}
           ${gi < D.groups.length - 1 ? `<button class="next" data-group="${D.groups[gi + 1].id}">다음: ${D.groups[gi + 1].title} →</button>` : ''}
         </div>` : ''}
       </div>`;
