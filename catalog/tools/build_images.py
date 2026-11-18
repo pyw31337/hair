@@ -17,6 +17,10 @@ for f in sorted(glob.glob(os.path.join(raw, '*.jpg'))):
     im = Image.open(f).convert('RGB')
     im.resize((480, 640), Image.LANCZOS).save(dst, 'WEBP', quality=72, method=6)
     im.resize((150, 200), Image.LANCZOS).save(os.path.join(th, name + '.webp'), 'WEBP', quality=60, method=6)
+# Keep already-built catalog images even if their raw JPG is missing on this machine.
+existing = [os.path.splitext(os.path.basename(f))[0]
+            for f in glob.glob(os.path.join(out, '*.webp'))]
+names = sorted(set(names) | set(existing))
 with open(os.path.join(out, 'manifest.js'), 'w') as fh:
     fh.write('window.IMAGES=' + json.dumps(names, separators=(',', ':')) + ';\n')
 print('images', len(names))
